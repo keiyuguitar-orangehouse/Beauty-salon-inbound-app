@@ -212,6 +212,16 @@ input[type=range]{width:100%;accent-color:#1D9E75}
 .fee-table tbody tr td{vertical-align:middle}
 .fee-client-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:0.5px solid #E5E5EA;font-size:13px;gap:8px}
 .fee-client-row:last-child{border-bottom:none}
+
+/* ── サブステップタブ ── */
+.substep-btn{
+  flex:1;padding:8px 6px;border:0.5px solid #E5E5EA;border-radius:8px;
+  background:#fff;color:#8E8E93;font-size:11px;font-weight:500;cursor:pointer;
+  transition:all .15s;text-align:center;
+}
+.substep-btn.s2-active{
+  background:#534AB7;color:#fff;border-color:#534AB7;
+}
 </style>
 </head>
 <body>
@@ -234,48 +244,166 @@ input[type=range]{width:100%;accent-color:#1D9E75}
 
 <!-- ① -->
 <div class="screen on" id="sc1">
-  <div class="card">
-    <div class="card-title">お客様の言語を選んでください</div>
-    <div class="lang-grid">
-      <div class="lcard" onclick="pickLang(this,'ja')"><div class="flag">🇯🇵</div><div class="lng">日本語</div><div class="sub">Japanese</div></div>
-      <div class="lcard on" onclick="pickLang(this,'en')"><div class="flag">🇺🇸</div><div class="lng">English</div><div class="sub">英語</div></div>
-      <div class="lcard" onclick="pickLang(this,'zh')"><div class="flag">🇨🇳</div><div class="lng">中文</div><div class="sub">中国語</div></div>
-      <div class="lcard" onclick="pickLang(this,'ko')"><div class="flag">🇰🇷</div><div class="lng">한국어</div><div class="sub">韓国語</div></div>
+
+<!-- お客様向けメイン画面 -->
+<div class="client-screen" id="sc1-welcome-block">
+  <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
+  <div style="padding:18px">
+    <!-- 日本語あいさつ（常時） -->
+    <div style="font-size:13px;color:#534AB7;font-weight:600;margin-bottom:4px">いらっしゃいませ。本日のご予約はありますか？</div>
+    <!-- 選択言語 -->
+    <div id="welcome-msg" style="font-size:20px;font-weight:600;color:#1C1C1E;line-height:1.7;margin-bottom:4px"></div>
+    <!-- カタカナ読み -->
+    <div id="welcome-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none;margin-bottom:14px"></div>
+    <!-- YES / NO ボタン -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px" id="sc1-yn-btns">
+      <button class="yn-btn y" onclick="sc1Answer('yes')" style="border:none;border-radius:12px;cursor:pointer;overflow:hidden;padding:0">
+        <span class="yn-client-area" style="padding:18px 12px 12px;display:block">
+          <span id="sc1-yes-lbl" style="font-size:28px;font-weight:700;display:block;margin-bottom:4px">YES ✓</span>
+          <span id="sc1-yes-sub" style="font-size:12px;display:block;opacity:.85">I have a reservation</span>
+        </span>
+        <span class="yn-stylist-area">→ 美容師メモ：「予約あり」</span>
+      </button>
+      <button class="yn-btn n" onclick="sc1Answer('no')" style="border:none;border-radius:12px;cursor:pointer;overflow:hidden;padding:0">
+        <span class="yn-client-area" style="padding:18px 12px 12px;display:block">
+          <span id="sc1-no-lbl" style="font-size:28px;font-weight:700;display:block;margin-bottom:4px">NO ✗</span>
+          <span id="sc1-no-sub" style="font-size:12px;display:block;opacity:.85">No reservation</span>
+        </span>
+        <span class="yn-stylist-area">→ 美容師メモ：「予約なし」</span>
+      </button>
     </div>
-    <div class="client-screen">
-      <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
-      <div style="padding:14px">
-        <div id="welcome-msg" style="font-size:18px;font-weight:500;color:#1C1C1E;line-height:1.8">Welcome! Please feel free to let us know your hair preferences today.</div>
-        <div class="jp-gloss"><span class="jp-gloss-label">🗣 美容師メモ：</span>ようこそ！本日のご希望をお気軽にお聞かせください。</div>
-        <div class="kana-guide" id="kana-welcome" style="display:none"><div class="kana-guide-label">🗣 読み方（カタカナ）</div><div class="kana-text" id="kana-welcome-text"></div></div>
+  </div>
+</div>
+
+<!-- YES後：予約あり対応 -->
+<div id="sc1-yes-block" style="display:none">
+  <div class="client-screen" style="margin-bottom:10px">
+    <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
+    <div style="padding:18px">
+      <div style="font-size:13px;color:#1D9E75;font-weight:600;margin-bottom:3px">お名前をお聞かせください。</div>
+      <div id="sc1-yes-q1" style="font-size:18px;font-weight:500;color:#1C1C1E;line-height:1.7;margin-bottom:3px"></div>
+      <div id="sc1-yes-q1-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none;margin-bottom:14px"></div>
+      <div style="border-top:0.5px solid #E5E5EA;padding-top:12px;margin-top:4px">
+        <div style="font-size:13px;color:#1D9E75;font-weight:600;margin-bottom:3px">少々お待ちください。</div>
+        <div id="sc1-yes-q2" style="font-size:18px;font-weight:500;color:#1C1C1E;line-height:1.7;margin-bottom:3px"></div>
+        <div id="sc1-yes-q2-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none"></div>
       </div>
     </div>
   </div>
-  <button class="next-btn nb1" onclick="goStep(2)">次へ：事前問診 →</button>
+  <div class="card" style="padding:10px;background:#F9F9FB;margin-bottom:8px">
+    <div style="font-size:11px;color:#8E8E93;font-weight:500;margin-bottom:4px">📋 美容師メモ</div>
+    <div style="font-size:12px;color:#1C1C1E">✅ 予約あり → お名前確認 → 少々お待ちいただく</div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button onclick="sc1Reset()" style="flex:1;padding:11px;border:0.5px solid #E5E5EA;border-radius:8px;background:#fff;color:#8E8E93;font-size:12px;cursor:pointer">← 最初に戻る</button>
+    <button class="next-btn nb1" onclick="goStep(2)" style="flex:2;margin-top:0">次へ：事前問診 →</button>
+  </div>
+</div>
+
+<!-- NO後：予約なし対応 -->
+<div id="sc1-no-block" style="display:none">
+  <!-- 選択肢A: 今すぐ施術できる -->
+  <div class="client-screen" style="margin-bottom:10px;border-color:#BA7517">
+    <div class="client-bar" style="background:#BA7517"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 担当者がいる場合</span></div>
+    <div style="padding:16px">
+      <div style="font-size:13px;color:#BA7517;font-weight:600;margin-bottom:3px">当店は予約制になっておりますが、今施術できる担当者がおります。少々お待ちください。</div>
+      <div id="sc1-no-q1" style="font-size:16px;font-weight:500;color:#1C1C1E;line-height:1.7;margin-bottom:3px"></div>
+      <div id="sc1-no-q1-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none"></div>
+    </div>
+  </div>
+  <!-- 選択肢B: 今は対応できない -->
+  <div class="client-screen" style="margin-bottom:10px;border-color:#D85A30">
+    <div class="client-bar" style="background:#D85A30"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 担当者がいない場合</span></div>
+    <div style="padding:16px">
+      <div style="font-size:13px;color:#D85A30;font-weight:600;margin-bottom:3px">当店は予約制になっており、ただいま施術できる担当者がおりません。改めてご予約の上、ご来店ください。</div>
+      <div id="sc1-no-q2" style="font-size:16px;font-weight:500;color:#1C1C1E;line-height:1.7;margin-bottom:3px"></div>
+      <div id="sc1-no-q2-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none"></div>
+    </div>
+  </div>
+  <div class="card" style="padding:10px;background:#F9F9FB;margin-bottom:8px">
+    <div style="font-size:11px;color:#8E8E93;font-weight:500;margin-bottom:4px">📋 美容師メモ</div>
+    <div style="font-size:12px;color:#1C1C1E">⚠️ 予約なし → 上の2つから状況に合わせて見せてください</div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button onclick="sc1Reset()" style="flex:1;padding:11px;border:0.5px solid #E5E5EA;border-radius:8px;background:#fff;color:#8E8E93;font-size:12px;cursor:pointer">← 最初に戻る</button>
+    <button class="next-btn nb1" onclick="goStep(2)" style="flex:2;margin-top:0">次へ：事前問診 →</button>
+  </div>
+</div>
 </div>
 
 <!-- ② -->
 <div class="screen" id="sc2">
+<!-- サブステップタブ -->
+<div style="display:flex;gap:6px;margin-bottom:12px">
+  <button class="substep-btn s2-active" id="sub21" onclick="goSub(1)">2-1　施術歴</button>
+  <button class="substep-btn" id="sub22" onclick="goSub(2)">2-2　アレルギー</button>
+  <button class="substep-btn" id="sub23" onclick="goSub(3)">2-3　本日のご希望</button>
+</div>
+
+<!-- ══ 2-1 施術歴 ══ -->
+<div id="sub2-1">
   <div class="card">
-    <div class="card-title">② 事前問診 — 日本語でタップ → お客様言語でも同時表示</div>
-    <div class="chips-wrap">
-      <div class="bilabel">🗂 施術歴（過去2年）</div>
+    <div class="card-title" style="display:flex;align-items:center;gap:8px">
+      <span style="background:#534AB7;color:#fff;font-size:10px;padding:2px 8px;border-radius:999px">2-1</span>
+      施術歴（過去2年）
+    </div>
+    <!-- 案内文3段 -->
+    <div style="background:#F9F9FB;border-radius:8px;padding:10px 13px;margin-bottom:10px;border-left:3px solid #534AB7">
+      <div style="font-size:11px;color:#8E8E93;margin-bottom:5px;font-weight:500">📋 お客様に見せる / 美容師が読み上げる</div>
+      <div style="font-size:12px;color:#534AB7;font-weight:500;margin-bottom:3px">過去2年の施術歴を教えてください。</div>
+      <div id="hist-q-lang" style="font-size:15px;font-weight:500;color:#1C1C1E;margin-bottom:3px;line-height:1.6"></div>
+      <div id="hist-q-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none"></div>
+    </div>
+    <!-- 美容師側チップ -->
+    <div class="chips-wrap" style="margin-bottom:0">
       <div class="bichips" id="hist-chips"></div>
-      <div class="selection-summary"><div class="ss-label">📋 選択中の施術歴</div><div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="hist-ja-out"><span class="ss-empty">未選択</span></div></div><div class="ss-row"><span class="ss-flag" id="lang-flag-hist">🇺🇸</span><div class="ss-chips" id="hist-fl-out"><span class="ss-empty">—</span></div></div></div>
-    </div>
-    <div class="chips-wrap">
-      <div class="bilabel">⚠️ アレルギー</div>
-      <div class="bichips" id="allergy-chips"></div>
-      <div class="selection-summary"><div class="ss-label">📋 選択中のアレルギー</div><div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="allergy-ja-out"><span class="ss-empty">未選択</span></div></div><div class="ss-row"><span class="ss-flag" id="lang-flag-allergy">🇺🇸</span><div class="ss-chips" id="allergy-fl-out"><span class="ss-empty">—</span></div></div></div>
-    </div>
-    <div class="chips-wrap">
-      <div class="bilabel">✂️ 本日のご希望</div>
-      <div class="birgroup" id="menu-chips"></div>
-      <div class="selection-summary" style="margin-top:6px"><div class="ss-label">📋 選択中のメニュー</div><div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="menu-ja-out"><span class="ss-empty">未選択</span></div></div><div class="ss-row"><span class="ss-flag" id="lang-flag-menu">🇺🇸</span><div class="ss-chips" id="menu-fl-out"><span class="ss-empty">—</span></div></div></div>
+      <div class="selection-summary" style="margin-top:8px">
+        <div class="ss-label">📋 選択中の施術歴</div>
+        <div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="hist-ja-out"><span class="ss-empty">未選択</span></div></div>
+        <div class="ss-row"><span class="ss-flag" id="lang-flag-hist">🇺🇸</span><div class="ss-chips" id="hist-fl-out"><span class="ss-empty">—</span></div></div>
+      </div>
     </div>
   </div>
-  <div class="client-screen">
-    <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📋 お客様に見せる確認文</span></div>
+  <!-- お客様に見せる画面 -->
+  <div class="client-screen" style="margin-bottom:8px">
+    <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
+    <div style="padding:14px">
+      <div id="hist-client-q" style="font-size:18px;font-weight:500;color:#1C1C1E;line-height:1.8">Please tell us about any hair treatments in the past 2 years.</div>
+      <div class="jp-gloss" style="margin-top:5px"><span class="jp-gloss-label">🗣 美容師メモ：</span>過去2年の施術歴を教えてください。</div>
+      <div id="hist-client-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;margin-top:5px;display:none"></div>
+    </div>
+  </div>
+  <button class="next-btn nb2" onclick="goSub(2)" style="margin-top:0">次へ：アレルギー確認 →</button>
+</div>
+
+<!-- ══ 2-2 アレルギー ══ -->
+<div id="sub2-2" style="display:none">
+  <div class="card">
+    <div class="card-title" style="display:flex;align-items:center;gap:8px">
+      <span style="background:#D85A30;color:#fff;font-size:10px;padding:2px 8px;border-radius:999px">2-2</span>
+      アレルギー確認
+    </div>
+    <!-- 案内文3段 -->
+    <div style="background:#FFF4F0;border-radius:8px;padding:10px 13px;margin-bottom:10px;border-left:3px solid #D85A30">
+      <div style="font-size:11px;color:#8E8E93;margin-bottom:5px;font-weight:500">📋 お客様に見せる / 美容師が読み上げる</div>
+      <div style="font-size:12px;color:#D85A30;font-weight:500;margin-bottom:3px">ヘアカラーや薬剤にアレルギーはありますか？</div>
+      <div id="allergy-q-lang" style="font-size:15px;font-weight:500;color:#1C1C1E;margin-bottom:3px;line-height:1.6"></div>
+      <div id="allergy-q-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none"></div>
+    </div>
+    <!-- 美容師側チップ -->
+    <div class="chips-wrap" style="margin-bottom:10px">
+      <div class="bilabel" style="font-size:11px;color:#8E8E93;margin-bottom:6px">⚠️ 美容師側チェック</div>
+      <div class="bichips" id="allergy-chips"></div>
+      <div class="selection-summary" style="margin-top:8px">
+        <div class="ss-label">📋 選択中のアレルギー</div>
+        <div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="allergy-ja-out"><span class="ss-empty">未選択</span></div></div>
+        <div class="ss-row"><span class="ss-flag" id="lang-flag-allergy">🇺🇸</span><div class="ss-chips" id="allergy-fl-out"><span class="ss-empty">—</span></div></div>
+      </div>
+    </div>
+  </div>
+  <!-- お客様に見せる画面（アレルギー確認チップ付き） -->
+  <div class="client-screen" style="margin-bottom:8px">
+    <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
     <div style="padding:14px">
       <div id="s2-consent" style="font-size:17px;font-weight:500;color:#1C1C1E;line-height:1.9">Do you have any allergies to hair dye or chemical treatments?<br>Please let us know before we begin.</div>
       <div class="jp-gloss" style="margin-top:6px"><span class="jp-gloss-label">🗣 美容師メモ：</span>ヘアカラーや薬剤にアレルギーはありますか？</div>
@@ -286,7 +414,104 @@ input[type=range]{width:100%;accent-color:#1D9E75}
       <div class="kana-guide" id="kana-consent" style="margin-top:10px;display:none"><div class="kana-guide-label">🗣 読み方（カタカナ）</div><div class="kana-text" id="kana-consent-text"></div></div>
     </div>
   </div>
-  <button class="next-btn nb2" onclick="goStep(3)" style="margin-top:10px">次へ：技術カウンセリング →</button>
+  <div style="display:flex;gap:8px;margin-top:0">
+    <button onclick="goSub(1)" style="flex:1;padding:11px;border:0.5px solid #E5E5EA;border-radius:8px;background:#fff;color:#8E8E93;font-size:12px;cursor:pointer">← 施術歴に戻る</button>
+    <button onclick="goSub(3)" style="flex:2;padding:11px;border:none;border-radius:8px;background:#534AB7;color:#fff;font-size:12px;font-weight:600;cursor:pointer">次へ：本日のご希望 →</button>
+  </div>
+</div>
+
+<!-- ══ 2-3 本日のご希望 ══ -->
+<div id="sub2-3" style="display:none">
+  <div class="card">
+    <div class="card-title" style="display:flex;align-items:center;gap:8px">
+      <span style="background:#3B6D11;color:#fff;font-size:10px;padding:2px 8px;border-radius:999px">2-3</span>
+      本日のご希望
+    </div>
+    <!-- 案内文3段 -->
+    <div style="background:#F0FAF0;border-radius:8px;padding:10px 13px;margin-bottom:10px;border-left:3px solid #3B6D11">
+      <div style="font-size:11px;color:#8E8E93;margin-bottom:5px;font-weight:500">📋 お客様に見せる / 美容師が読み上げる</div>
+      <div style="font-size:12px;color:#3B6D11;font-weight:500;margin-bottom:3px">本日はどのようなメニューをご希望ですか？</div>
+      <div id="menu-q-lang" style="font-size:15px;font-weight:500;color:#1C1C1E;margin-bottom:3px;line-height:1.6"></div>
+      <div id="menu-q-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none"></div>
+    </div>
+    <!-- 美容師側チップ -->
+    <div class="chips-wrap" style="margin-bottom:0">
+      <div class="birgroup" id="menu-chips"></div>
+      <div class="selection-summary" style="margin-top:8px">
+        <div class="ss-label">📋 選択中のメニュー</div>
+        <div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="menu-ja-out"><span class="ss-empty">未選択</span></div></div>
+        <div class="ss-row"><span class="ss-flag" id="lang-flag-menu">🇺🇸</span><div class="ss-chips" id="menu-fl-out"><span class="ss-empty">—</span></div></div>
+      </div>
+    </div>
+  </div>
+  <!-- お客様に見せる画面 -->
+  <div class="client-screen" style="margin-bottom:8px">
+    <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
+    <div style="padding:14px">
+      <div id="menu-client-q" style="font-size:18px;font-weight:500;color:#1C1C1E;line-height:1.8">What services would you like today?</div>
+      <div class="jp-gloss" style="margin-top:5px"><span class="jp-gloss-label">🗣 美容師メモ：</span>本日はどのようなメニューをご希望ですか？</div>
+      <div id="menu-client-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;margin-top:5px;display:none"></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:0">
+    <button onclick="goSub(2)" style="flex:1;padding:11px;border:0.5px solid #E5E5EA;border-radius:8px;background:#fff;color:#8E8E93;font-size:12px;cursor:pointer">← アレルギーに戻る</button>
+    <button class="next-btn nb2" onclick="goSub(4)" style="flex:2;margin-top:0">確認画面へ →</button>
+  </div>
+</div>
+
+<!-- 2-4 お客様確認（最終確認画面） -->
+<div id="sub2-4" style="display:none">
+  <!-- お客様向け確認画面（緑枠） -->
+  <div class="client-screen" style="margin-bottom:10px">
+    <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 内容を確認してください / Please confirm your selections</span></div>
+    <div style="padding:16px">
+      <!-- 確認タイトル -->
+      <div id="confirm-title-lang" style="font-size:17px;font-weight:600;color:#1C1C1E;margin-bottom:4px;line-height:1.6"></div>
+      <div style="font-size:12px;color:#534AB7;font-weight:500;margin-bottom:12px">以下の内容でよろしいですか？</div>
+
+      <!-- 選択内容サマリー（お客様に見せる） -->
+      <div id="confirm-summary-block" style="background:#F9F9FB;border-radius:8px;padding:12px;margin-bottom:14px">
+        <!-- 施術歴 -->
+        <div style="margin-bottom:10px">
+          <div style="font-size:10px;color:#8E8E93;font-weight:500;margin-bottom:4px" id="confirm-hist-label">施術歴 / Past treatments</div>
+          <div id="confirm-hist-items" style="display:flex;flex-wrap:wrap;gap:4px"></div>
+        </div>
+        <!-- アレルギー -->
+        <div style="margin-bottom:10px">
+          <div style="font-size:10px;color:#8E8E93;font-weight:500;margin-bottom:4px" id="confirm-allergy-label">アレルギー / Allergies</div>
+          <div id="confirm-allergy-items" style="display:flex;flex-wrap:wrap;gap:4px"></div>
+        </div>
+        <!-- 本日のご希望 -->
+        <div>
+          <div style="font-size:10px;color:#8E8E93;font-weight:500;margin-bottom:4px" id="confirm-menu-label">本日のご希望 / Today's service</div>
+          <div id="confirm-menu-item" style="font-size:14px;font-weight:600;color:#1C1C1E"></div>
+        </div>
+      </div>
+
+      <!-- YES / NO ボタン -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px">
+        <button class="yn-btn y" onclick="confirmYes()" style="border:none;border-radius:12px;cursor:pointer;overflow:hidden;padding:0">
+          <span style="padding:20px 12px 14px;display:block;font-size:30px;font-weight:700" id="confirm-yes-lbl">YES ✓</span>
+          <span style="display:block;padding:6px;font-size:10px;font-weight:500;background:rgba(0,0,0,.08)">→ カウンセリングへ進む</span>
+        </button>
+        <button class="yn-btn n" onclick="confirmNo()" style="border:none;border-radius:12px;cursor:pointer;overflow:hidden;padding:0">
+          <span style="padding:20px 12px 14px;display:block;font-size:30px;font-weight:700" id="confirm-no-lbl">NO ✗</span>
+          <span style="display:block;padding:6px;font-size:10px;font-weight:500;background:rgba(0,0,0,.08)">→ 2-1に戻って修正</span>
+        </button>
+      </div>
+      <div id="confirm-res" style="display:none;padding:10px;border-radius:8px;font-size:13px;text-align:center;margin-top:4px"></div>
+    </div>
+  </div>
+  <!-- 美容師メモ -->
+  <div class="card" style="padding:10px;background:#F9F9FB;margin-bottom:8px">
+    <div style="font-size:11px;color:#8E8E93;font-weight:500;margin-bottom:6px">📋 美容師メモ（選択内容サマリー）</div>
+    <div id="stylist-confirm-memo" style="font-size:12px;color:#1C1C1E;line-height:1.8"></div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button onclick="goSub(1)" style="flex:1;padding:11px;border:0.5px solid #E5E5EA;border-radius:8px;background:#fff;color:#8E8E93;font-size:12px;cursor:pointer">← 2-1に戻る</button>
+    <button id="confirm-go-btn" onclick="goStep(3)" style="flex:2;padding:11px;border:none;border-radius:8px;background:#1D9E75;color:#fff;font-size:12px;font-weight:600;cursor:pointer;display:none">✓ カウンセリングへ →</button>
+  </div>
+</div>
 </div>
 
 <!-- ③ -->
@@ -870,6 +1095,311 @@ function updateFeeDisplay(){
   renderFeeTable();
 }
 
+
+
+/* ── 施術歴問診文（多言語） ── */
+var HIST_Q={
+  en:{txt:'Please tell us about any hair treatments you have had in the past 2 years.',
+      kana:'プリーズ テル アス アバウト エニー ヘア トリートメンツ ユー ハヴ ハッド イン ザ パスト トゥー イヤーズ。'},
+  zh:{txt:'请告诉我们您过去2年内接受过哪些美发服务。',
+      kana:'チン ガオ スー ウォー メン ニン グォ チュー リャン ニェン ネイ ジェ ショウ グォ ナー シェ メイ ファ フゥ ウー。'},
+  ko:{txt:'지난 2년간 받으신 미용 시술을 알려주세요。',
+      kana:'ジナン イニョンガン バドゥシン ミヨン シスルル アリョジュセヨ。'},
+  ja:{txt:'',kana:''}
+};
+/* updateHistQ → updateAllSubQに統合 */
+
+
+/* ── 2-2 アレルギー・2-3 本日のご希望 案内文（多言語） ── */
+var ALLERGY_Q={
+  en:{txt:'Do you have any allergies to hair dye or chemical treatments?',
+      kana:'ドゥ ユー ハヴ エニー アレルジーズ トゥ ヘア ダイ オア ケミカル トリートメンツ？'},
+  zh:{txt:'您对染发剂或化学药品有过敏史吗？',
+      kana:'ニン ドゥイ ラン ファ ジー フォ ホア シュエ ヤオ ピン ヨウ グオ ミン シー マ？'},
+  ko:{txt:'헤어 염료나 화학 약품에 알레르기가 있으신가요?',
+      kana:'ヘオ ヨムニョナ ファハク ヤクプメ アルレルギガ イッスシンガヨ？'},
+  ja:{txt:'',kana:''}
+};
+var MENU_Q={
+  en:{txt:'What services would you like today?',
+      kana:'ワット サービシズ ウッド ユー ライク トゥデイ？'},
+  zh:{txt:'您今天想要什么服务？',
+      kana:'ニン ジン ティエン シャン ヤオ シェン マ フゥ ウー？'},
+  ko:{txt:'오늘은 어떤 시술을 원하시나요?',
+      kana:'オヌルン オットン シスルル ウォナシナヨ？'},
+  ja:{txt:'',kana:''}
+};
+
+function updateSubQ(elLangId, elKanaId, dataObj){
+  var ql=document.getElementById(elLangId);
+  var qk=document.getElementById(elKanaId);
+  if(!ql||!qk)return;
+  var d=dataObj[lang]||dataObj.en;
+  if(lang==='ja'){
+    ql.textContent=''; qk.style.display='none'; qk.textContent='';
+  } else {
+    ql.textContent=d.txt||'';
+    if(d.kana){qk.style.display='';qk.textContent='🗣 '+d.kana;}
+    else{qk.style.display='none';}
+  }
+}
+function updateAllSubQ(){
+  updateSubQ('hist-q-lang','hist-q-kana',HIST_Q);
+  updateSubQ('allergy-q-lang','allergy-q-kana',ALLERGY_Q);
+  updateSubQ('menu-q-lang','menu-q-kana',MENU_Q);
+  /* お客様向け画面のテキストも更新 */
+  var hcq=document.getElementById('hist-client-q');
+  var hck=document.getElementById('hist-client-kana');
+  if(hcq){hcq.textContent=lang==='ja'?'過去2年の施術歴を教えてください。':(HIST_Q[lang]?HIST_Q[lang].txt:'');}
+  if(hck){var k=HIST_Q[lang]?HIST_Q[lang].kana:'';hck.textContent=k?'🗣 '+k:'';hck.style.display=(k&&lang!=='ja')?'':'none';}
+  var mcq=document.getElementById('menu-client-q');
+  var mck=document.getElementById('menu-client-kana');
+  if(mcq){mcq.textContent=lang==='ja'?'本日はどのようなメニューをご希望ですか？':(MENU_Q[lang]?MENU_Q[lang].txt:'');}
+  if(mck){var mk=MENU_Q[lang]?MENU_Q[lang].kana:'';mck.textContent=mk?'🗣 '+mk:'';mck.style.display=(mk&&lang!=='ja')?'':'none';}
+  /* s2-consent も言語更新 */
+  var sc=document.getElementById('s2-consent');
+  if(sc){
+    var consent_txt={
+      en:'Do you have any allergies to hair dye or chemical treatments?<br>Please let us know before we begin.',
+      zh:'您对染发剂或化学药品有过敏史吗？<br>开始前请告知我们。',
+      ko:'헤어 염료나 화학 제품에 알레르기가 있으신가요?<br>시술 전에 알려주세요。',
+      ja:'ヘアカラーや薬剤にアレルギーはありますか？<br>施術前にお知らせください。'
+    };
+    sc.innerHTML=consent_txt[lang]||consent_txt.en;
+  }
+  ['en','zh','ko','ja'].forEach(function(l){var el=document.getElementById('s2-chips-'+l);if(el)el.style.display=l===lang?'flex':'none';});
+  /* 確認画面が表示中の場合は再構築 */
+  if(currentSub===4)buildConfirmScreen();
+}
+
+/* ── 事前問診サブステップ ── */
+var currentSub=1;
+
+/* ────── 事前問診 確認画面 ────── */
+var CONFIRM_LABELS={
+  title:{
+    en:'Please confirm your selections.',
+    zh:'请确认以下内容。',
+    ko:'다음 내용을 확인해 주세요。',
+    ja:'以下の内容でよろしいですか？'
+  },
+  yes:{en:'YES ✓',zh:'✓ 确认',ko:'✓ 확인',ja:'✓ はい'},
+  no:{en:'NO ✗',zh:'✗ 修改',ko:'✗ 수정',ja:'✗ 修正する'},
+  histLabel:{en:'Past treatments',zh:'过去施术',ko:'과거 시술',ja:'施術歴'},
+  allergyLabel:{en:'Allergies',zh:'过敏',ko:'알레르기',ja:'アレルギー'},
+  menuLabel:{en:"Today's service",zh:'今日服务',ko:'오늘의 메뉴',ja:'本日のご希望'},
+  none:{en:'None selected',zh:'未选择',ko:'미선택',ja:'未選択'}
+};
+
+function buildConfirmScreen(){
+  /* タイトル */
+  var ct=document.getElementById('confirm-title-lang');
+  if(ct)ct.textContent=lang==='ja'?'':(CONFIRM_LABELS.title[lang]||'');
+
+  /* YES/NO ラベル */
+  var yl=document.getElementById('confirm-yes-lbl');
+  var nl=document.getElementById('confirm-no-lbl');
+  if(yl)yl.textContent=CONFIRM_LABELS.yes[lang]||'YES ✓';
+  if(nl)nl.textContent=CONFIRM_LABELS.no[lang]||'NO ✗';
+
+  /* セクションラベル */
+  var hl=document.getElementById('confirm-hist-label');
+  var al=document.getElementById('confirm-allergy-label');
+  var ml=document.getElementById('confirm-menu-label');
+  if(hl)hl.textContent=(lang==='ja'?'施術歴':'施術歴 / ')+(lang!=='ja'?CONFIRM_LABELS.histLabel[lang]:'');
+  if(al)al.textContent=(lang==='ja'?'アレルギー':'アレルギー / ')+(lang!=='ja'?CONFIRM_LABELS.allergyLabel[lang]:'');
+  if(ml)ml.textContent=(lang==='ja'?'本日のご希望':'本日のご希望 / ')+(lang!=='ja'?CONFIRM_LABELS.menuLabel[lang]:'');
+
+  /* 施術歴チップ */
+  var hi=document.getElementById('confirm-hist-items');
+  if(hi){
+    hi.innerHTML='';
+    if(histSel.size===0){
+      hi.innerHTML='<span style="font-size:12px;color:#8E8E93;font-style:italic">'+CONFIRM_LABELS.none[lang]+'</span>';
+    } else {
+      histSel.forEach(function(i){
+        var it=HIST[i];var langTxt=fl(it);
+        var chip=document.createElement('span');
+        chip.style.cssText='display:inline-flex;flex-direction:column;align-items:center;padding:5px 10px;background:'+(it.red?'#FAECE7':'#E1F5EE')+';border-radius:999px;font-size:12px;font-weight:500;color:'+(it.red?'#993C1D':'#085041');
+        chip.innerHTML='<span>'+it.ja+'</span>'+(lang!=='ja'?'<span style="font-size:10px;opacity:.8">'+langTxt+'</span>':'');
+        hi.appendChild(chip);
+      });
+    }
+  }
+
+  /* アレルギーチップ */
+  var ai=document.getElementById('confirm-allergy-items');
+  if(ai){
+    ai.innerHTML='';
+    if(allergySel.size===0){
+      ai.innerHTML='<span style="font-size:12px;color:#8E8E93;font-style:italic">'+CONFIRM_LABELS.none[lang]+'</span>';
+    } else {
+      allergySel.forEach(function(i){
+        var it=ALLERGY[i];var langTxt=fl(it);
+        var chip=document.createElement('span');
+        chip.style.cssText='display:inline-flex;flex-direction:column;align-items:center;padding:5px 10px;background:'+(it.red?'#FAECE7':'#E1F5EE')+';border-radius:999px;font-size:12px;font-weight:500;color:'+(it.red?'#993C1D':'#085041');
+        chip.innerHTML='<span>'+it.ja+'</span>'+(lang!=='ja'?'<span style="font-size:10px;opacity:.8">'+langTxt+'</span>':'');
+        ai.appendChild(chip);
+      });
+    }
+  }
+
+  /* 本日のご希望 */
+  var mi=document.getElementById('confirm-menu-item');
+  if(mi){
+    if(menuSel===null){
+      mi.innerHTML='<span style="font-size:12px;color:#8E8E93;font-style:italic">'+CONFIRM_LABELS.none[lang]+'</span>';
+    } else {
+      var it=MENU[menuSel];var langTxt=fl(it);
+      mi.innerHTML='<span>'+it.ja+'</span>'+(lang!=='ja'?'<span style="font-size:14px;color:#534AB7;margin-left:8px">'+langTxt+'</span>':'');
+    }
+  }
+
+  /* 美容師メモ */
+  var memo=document.getElementById('stylist-confirm-memo');
+  if(memo){
+    var histTxt=histSel.size===0?'未選択':Array.from(histSel).map(function(i){return HIST[i].ja;}).join('・');
+    var allergyTxt=allergySel.size===0?'未選択':Array.from(allergySel).map(function(i){return ALLERGY[i].ja;}).join('・');
+    var menuTxt=menuSel===null?'未選択':MENU[menuSel].ja;
+    memo.innerHTML='🗂 施術歴：<b>'+histTxt+'</b><br>⚠️ アレルギー：<b>'+allergyTxt+'</b><br>✂️ 本日のご希望：<b>'+menuTxt+'</b>';
+  }
+
+  /* YES/NOリセット */
+  var cr=document.getElementById('confirm-res');if(cr)cr.style.display='none';
+  var gb=document.getElementById('confirm-go-btn');if(gb)gb.style.display='none';
+}
+
+function confirmYes(){
+  var cr=document.getElementById('confirm-res');
+  var gb=document.getElementById('confirm-go-btn');
+  if(cr){
+    cr.style.display='block';cr.style.background='#EAF3DE';cr.style.color='#27500A';
+    cr.textContent={en:'Great! Proceeding to consultation.',zh:'好的！进入咨询环节。',ko:'확인되었습니다！상담으로 넘어갑니다。',ja:'ありがとうございます！カウンセリングに進みます。'}[lang]||'';
+  }
+  if(gb)gb.style.display='';
+}
+
+function confirmNo(){
+  /* 2-1に戻る */
+  goSub(1);
+}
+
+
+/* ────── ①来店受付 多言語データ ────── */
+var SC1_TL={
+  welcome:{
+    en:{txt:'Welcome! Do you have a reservation today?',
+        kana:'ウェルカム！ ドゥ ユー ハヴ ア レザベーション トゥデイ？'},
+    zh:{txt:'欢迎光临！请问您今天有预约吗？',
+        kana:'ファン イン グアン リン！ チン ウェン ニン ジン ティエン ヨウ ユー ユエ マ？'},
+    ko:{txt:'어서오세요! 오늘 예약이 있으신가요?',
+        kana:'オソオセヨ！ オヌル イェヤギ イッスシンガヨ？'},
+    ja:{txt:'',kana:''}
+  },
+  yes_lbl:{en:'YES ✓',zh:'✓ 是',ko:'✓ 네',ja:'✓ はい'},
+  yes_sub:{en:'I have a reservation',zh:'我有预约',ko:'예약이 있습니다',ja:'予約があります'},
+  no_lbl:{en:'NO ✗',zh:'✗ 没有',ko:'✗ 아니요',ja:'✗ いいえ'},
+  no_sub:{en:'No reservation',zh:'没有预约',ko:'예약이 없습니다',ja:'予約はありません'},
+  /* YES後 */
+  yes_q1:{
+    en:{txt:'May I have your name, please?',
+        kana:'メイ アイ ハヴ ユア ネーム、プリーズ？'},
+    zh:{txt:'请告诉我您的姓名。',
+        kana:'チン ガオ スー ウォー ニン ダ シン ミン。'},
+    ko:{txt:'성함을 알려주세요。',
+        kana:'ソンハムル アリョジュセヨ。'},
+    ja:{txt:'',kana:''}
+  },
+  yes_q2:{
+    en:{txt:'One moment, please.',
+        kana:'ワン モーメント、プリーズ。'},
+    zh:{txt:'请稍等一下。',
+        kana:'チン シャオ ドン イー シャ。'},
+    ko:{txt:'잠시만 기다려 주세요。',
+        kana:'チャムシマン キダリョ ジュセヨ。'},
+    ja:{txt:'',kana:''}
+  },
+  /* NO後A: 担当者あり */
+  no_q1:{
+    en:{txt:'We are a reservation-based salon, but we have a stylist available now. One moment, please.',
+        kana:'ウィー アー ア レザベーション ベイスド サロン、バット ウィー ハヴ ア スタイリスト アベイラブル ナウ。ワン モーメント、プリーズ。'},
+    zh:{txt:'本店为预约制，但目前有可以为您服务的发型师。请稍等一下。',
+        kana:'ベン ディエン ウェイ ユー ユエ ジー、ダン ムー チエン ヨウ クァ イー ウェイ ニン フゥ ウー ダ ファ シン シー。チン シャオ ドン イー シャ。'},
+    ko:{txt:'저희는 예약제이지만 지금 담당 스타일리스트가 있습니다。잠시만 기다려 주세요。',
+        kana:'チョヒヌン イェヤクチェイジマン チグム タムダン スタイリストゥガ イッスムニダ。チャムシマン キダリョ ジュセヨ。'},
+    ja:{txt:'',kana:''}
+  },
+  /* NO後B: 担当者なし */
+  no_q2:{
+    en:{txt:'We are a reservation-based salon and unfortunately have no availability at this time. Please make a reservation and visit us again.',
+        kana:'ウィー アー ア レザベーション ベイスド サロン アンド アンフォーチュネイトリー ハヴ ノー アベイラビリティ アット ディス タイム。プリーズ メイク ア レザベーション アンド ヴィジット アス アゲイン。'},
+    zh:{txt:'本店为预约制，目前没有可以为您服务的发型师。请预约后再来。',
+        kana:'ベン ディエン ウェイ ユー ユエ ジー、ムー チエン メイ ヨウ クァ イー ウェイ ニン フゥ ウー ダ ファ シン シー。チン ユー ユエ ホウ ザイ ライ。'},
+    ko:{txt:'저희는 예약제이며 지금은 담당자가 없습니다。예약 후 다시 방문해 주세요。',
+        kana:'チョヒヌン イェヤクチェイミョ チグムン タムダンジャガ オプスムニダ。イェヤク フ タシ バンムネ ジュセヨ。'},
+    ja:{txt:'',kana:''}
+  }
+};
+
+function updateSc1(){
+  var d;
+  /* ウェルカム文 */
+  var wm=document.getElementById('welcome-msg');
+  var wk=document.getElementById('welcome-kana');
+  d=SC1_TL.welcome[lang]||SC1_TL.welcome.en;
+  if(wm)wm.textContent=lang==='ja'?'':d.txt;
+  if(wk){wk.textContent=d.kana?'🗣 '+d.kana:'';wk.style.display=(lang!=='ja'&&d.kana)?'':'none';}
+  /* YES/NOラベル */
+  var yl=document.getElementById('sc1-yes-lbl');if(yl)yl.textContent=SC1_TL.yes_lbl[lang]||'YES ✓';
+  var ys=document.getElementById('sc1-yes-sub');if(ys)ys.textContent=SC1_TL.yes_sub[lang]||'';
+  var nl=document.getElementById('sc1-no-lbl');if(nl)nl.textContent=SC1_TL.no_lbl[lang]||'NO ✗';
+  var ns=document.getElementById('sc1-no-sub');if(ns)ns.textContent=SC1_TL.no_sub[lang]||'';
+  /* YES後 */
+  function setQ(langId, kanaId, key){
+    var el=document.getElementById(langId);
+    var ke=document.getElementById(kanaId);
+    d=SC1_TL[key]&&SC1_TL[key][lang]?SC1_TL[key][lang]:SC1_TL[key]?SC1_TL[key].en:{txt:'',kana:''};
+    if(el)el.textContent=lang==='ja'?'':d.txt;
+    if(ke){ke.textContent=d.kana?'🗣 '+d.kana:'';ke.style.display=(lang!=='ja'&&d.kana)?'':'none';}
+  }
+  setQ('sc1-yes-q1','sc1-yes-q1-kana','yes_q1');
+  setQ('sc1-yes-q2','sc1-yes-q2-kana','yes_q2');
+  setQ('sc1-no-q1','sc1-no-q1-kana','no_q1');
+  setQ('sc1-no-q2','sc1-no-q2-kana','no_q2');
+}
+
+function sc1Answer(ans){
+  document.getElementById('sc1-welcome-block').style.display='none';
+  document.getElementById('sc1-yes-block').style.display=ans==='yes'?'':'none';
+  document.getElementById('sc1-no-block').style.display=ans==='no'?'':'none';
+}
+
+function sc1Reset(){
+  document.getElementById('sc1-welcome-block').style.display='';
+  document.getElementById('sc1-yes-block').style.display='none';
+  document.getElementById('sc1-no-block').style.display='none';
+}
+
+function goSub(n){
+  currentSub=n;
+  /* 全サブパネルを非表示 */
+  [1,2,3,4].forEach(function(i){
+    var panel=document.getElementById('sub2-'+i);
+    var btn=document.getElementById('sub2'+i);
+    if(panel)panel.style.display=i===n?'':'none';
+    if(btn){
+      btn.classList.remove('s2-active');
+      if(i===n)btn.classList.add('s2-active');
+    }
+  });
+  /* ページトップにスクロール */
+  var sc2=document.getElementById('sc2');
+  if(sc2)sc2.scrollIntoView({behavior:'smooth',block:'start'});
+  updateAllSubQ();
+  /* 確認画面の場合はサマリーを構築 */
+  if(n===4)buildConfirmScreen();
+}
+
 function renderChips(){
   var hc=g('hist-chips');hc.innerHTML='';
   HIST.forEach(function(it,i){var d=document.createElement('div');d.className='bichip'+(it.red?' red':'')+(histSel.has(i)?' on':'');var hk=getKana(HIST_KANA,i);d.innerHTML='<span class="ja">'+it.ja+'</span>'+(lang!=='ja'?'<span class="fl">'+fl(it)+'</span>':'')+(hk&&lang!=='ja'?'<span class="chip-kana">🗣 '+hk+'</span>':'');d.onclick=function(){histSel.has(i)?histSel.delete(i):histSel.add(i);renderChips();updSums();};hc.appendChild(d);});
@@ -897,10 +1427,8 @@ function updSum(jid,fid,items,sel,isRed){
 
 function applyLang(){
   renderChips();updSums();
-  var wm=g('welcome-msg');if(wm)wm.textContent=gt('welcome');
-  var wk=KANA.welcome[lang];var kw=g('kana-welcome');if(kw){kw.style.display=(lang==='ja'||!wk)?'none':'';var kt=g('kana-welcome-text');if(kt)kt.textContent=wk||'';}
-  var sc=g('s2-consent');if(sc)sc.innerHTML=(gt('consent')||'').replace(/\n/g,'<br>');
-  ['en','zh','ko','ja'].forEach(function(l){var el=g('s2-chips-'+l);if(el)el.style.display=l===lang?'flex':'none';});
+  updateSc1();
+  /* s2-consent, s2-chips は updateAllSubQ() で管理 */
   var ck=KANA.consent[lang];var kc=g('kana-consent');if(kc){kc.style.display=(lang==='ja'||!ck)?'none':'';var kct=g('kana-consent-text');if(kct)kct.textContent=ck||'';}
   var yl=g('yn-lbl');if(yl)yl.textContent=gt('yn_lbl');
   var ym=g('yn-main');if(ym&&ym.childNodes[0])ym.childNodes[0].textContent=propData[lang]||propData.ja;
@@ -928,15 +1456,29 @@ function applyLang(){
   var ts=g('top-sub');if(ts)ts.textContent={en:'Multilingual Salon Counseling',zh:'多语言美容院咨询系统',ko:'다국어 미용실 카운슬링',ja:'多言語カウンセリングシステム'}[lang];
   var tk=KANA.tip[lang];var ktw=g('kana-tip');if(ktw){ktw.style.display=(lang==='ja'||!tk)?'none':'';var ktt=g('kana-tip-text');if(ktt)ktt.textContent=tk||'';}
   var pb=g('phrase-big');if(pb&&pb.getAttribute('data-key')){var k=pb.getAttribute('data-key');var ph=T.phrases[k];if(ph){pb.textContent=ph[lang]||ph.en;var pjt=g('phrase-jp-text');if(pjt)pjt.textContent=ph.ja||'';var pkw=g('phrase-kana-wrap'),pkt=g('phrase-kana-text');var kd=ph.kana&&ph.kana[lang];if(pkw)pkw.style.display=(lang==='ja'||!kd)?'none':'';if(pkt)pkt.textContent=kd||'';}}
-  updateCounselTL();buildQuickRef();buildSD(currentStep);buildFD();
+  try{updateAllSubQ();}catch(e){console.error('updateAllSubQ:',e);}
+  try{updateCounselTL();}catch(e){console.error('updateCounselTL:',e);}
+  try{buildQuickRef();}catch(e){console.error('buildQuickRef:',e);}
+  try{buildSD(currentStep);}catch(e){console.error('buildSD:',e);}
+  try{buildFD();}catch(e){console.error('buildFD:',e);}
 }
 
 function setLang(l,btn){lang=l;document.querySelectorAll('.lb').forEach(function(b){b.classList.remove('on')});btn.classList.add('on');applyLang();}
 function pickLang(el,l){document.querySelectorAll('.lcard').forEach(function(c){c.classList.remove('on')});el.classList.add('on');lang=l;document.querySelectorAll('.lb').forEach(function(b){b.classList.remove('on');if((l==='en'&&b.textContent.includes('EN'))||(l==='zh'&&b.textContent.includes('中'))||(l==='ko'&&b.textContent.includes('한')))b.classList.add('on');});applyLang();}
 function goStep(n){
   if(n>1)completedSteps.add(n-1);currentStep=n;
-  for(var i=1;i<=5;i++){var s=g('sc'+i),b=g('snb'+i);if(s)s.className='screen'+(i===n?' on':'');if(b){b.className='snb s'+i;if(i===n)b.classList.add('active');else if(completedSteps.has(i))b.classList.add('done');}}
-  buildSD(n);applyLang();
+  for(var i=1;i<=5;i++){
+    var s=g('sc'+i),b=g('snb'+i);
+    if(s)s.className='screen'+(i===n?' on':'');
+    if(b){b.className='snb s'+i;if(i===n)b.classList.add('active');else if(completedSteps.has(i))b.classList.add('done');}
+  }
+  /* サブステップをリセット */
+  if(n===2){goSub(currentSub||1);}
+  if(n===1){sc1Reset();}
+  try{buildSD(n);}catch(e){console.error('buildSD error:',e);}
+  try{applyLang();}catch(e){console.error('applyLang error:',e);}
+  /* 画面トップにスクロール */
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 function selTT(el,id){el.closest('#tech-tabs').querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});el.classList.add('on');['tcut','tcol','tper','tcar'].forEach(function(k){var d=g(k);if(d)d.style.display=k===id?'':'none';});}
 function selVC(el,ja,en,zh,ko,desc){el.closest('.vg').querySelectorAll('.vc').forEach(function(v){v.classList.remove('on')});el.classList.add('on');propData={ja:ja,en:en,zh:zh,ko:ko,desc:desc};g('prop-ja').textContent=ja;g('prop-en').textContent=en;var ym=g('yn-main');if(ym&&ym.childNodes[0])ym.childNodes[0].textContent=propData[lang]||ja;var ymj=g('yn-main-jp');if(ymj)ymj.textContent=lang==='ja'?'':('（'+ja+'）');var ys=g('yn-sub');if(ys)ys.textContent=lang==='ja'?'':en;var yd=g('yn-desc');if(yd)yd.textContent=desc;updateCounselTL();}
@@ -1167,7 +1709,7 @@ function updateCounselTL(){
   buildQuickRef();
 }
 
-renderChips();updSums();buildSD(1);buildFD();updateCounselTL();buildQuickRef();renderFeeTable();updateFeeDisplay();
+renderChips();updSums();buildSD(1);buildFD();updateSc1();updateAllSubQ();updateCounselTL();buildQuickRef();renderFeeTable();updateFeeDisplay();
 </script>
 </body>
 </html>
