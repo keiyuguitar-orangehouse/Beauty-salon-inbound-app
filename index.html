@@ -1813,47 +1813,97 @@ function buildFD(){
     sh.innerHTML='<div class="fd-dot" style="background:'+cat.color+'"></div><span style="color:'+cat.color+'">'+cat.label+'</span><span class="fd-cnt">'+items.length+'件</span>';
     area.appendChild(sh);
     items.forEach(function(it){
-      /* 表示言語選択 */
+      /* 表示言語 */
       var mainTxt,subTxt,kanaTxt;
       if(lang==='zh'){mainTxt=it.zh;subTxt=it.zhs;kanaTxt=it.zh_kana;}
       else if(lang==='ko'){mainTxt=it.ko;subTxt=it.kos;kanaTxt=it.ko_kana;}
       else{mainTxt=it.en;subTxt=it.ens;kanaTxt=it.en_kana||'';}
 
-      var wrap=document.createElement('div');wrap.className='fi-wrap';
-      var row=document.createElement('div');row.className='fi-item';
+      var row=document.createElement('div');
+      row.className='fi-item';
+      row.style.cssText='cursor:pointer;';
       row.innerHTML=
         '<div><div class="fi-jp">'+it.jp+'</div><div class="fi-read">'+it.read+'</div></div>'+
-        '<div style="display:flex;flex-direction:column;gap:2px">'+
-          '<div style="display:flex;justify-content:space-between;align-items:start">'+
-            '<div><span class="fi-badge" style="background:'+cat.color+'22;color:'+cat.color+'">'+cat.label+'</span><div class="fi-ctx">'+it.ctx+'</div>'+
-            '<div style="margin-top:3px"><div class="fi-en">'+mainTxt+'</div>'+
-            (kanaTxt?'<div class="fi-lang-kana" style="font-size:10px;margin-top:2px">🗣 '+kanaTxt+'</div>':'')+'</div></div>'+
-            '<span class="fi-chev">▼</span>'+
+        '<div style="display:flex;flex-direction:column;gap:2px;flex:1">'+
+          '<span class="fi-badge" style="background:'+cat.color+'22;color:'+cat.color+'">'+cat.label+'</span>'+
+          '<div class="fi-ctx">'+it.ctx+'</div>'+
+          '<div style="margin-top:3px"><div class="fi-en">'+mainTxt+'</div>'+
+          (kanaTxt?'<div class="fi-lang-kana" style="font-size:10px;margin-top:2px">🗣 '+kanaTxt+'</div>':'')+
           '</div>'+
-        '</div>';
-
-      /* 展開詳細 */
-      var detail=document.createElement('div');detail.className='fi-detail';
-      detail.innerHTML=
-        '<div class="fi-detail-grid">'+
-          '<div class="fi-lang-card"><div class="fi-lang-flag">🇺🇸</div><div class="fi-lang-main">'+it.en+'</div><div class="fi-lang-sub">'+it.ens+'</div>'+(it.en_kana?'<div class="fi-lang-kana">🗣 '+it.en_kana+'</div>':'')+'</div>'+
-          '<div class="fi-lang-card"><div class="fi-lang-flag">🇨🇳</div><div class="fi-lang-main">'+it.zh+'</div><div class="fi-lang-sub">'+it.zhs+'</div>'+(it.zh_kana?'<div class="fi-lang-kana">🗣 '+it.zh_kana+'</div>':'')+'</div>'+
-          '<div class="fi-lang-card"><div class="fi-lang-flag">🇰🇷</div><div class="fi-lang-main">'+it.ko+'</div><div class="fi-lang-sub">'+it.kos+'</div>'+(it.ko_kana?'<div class="fi-lang-kana">🗣 '+it.ko_kana+'</div>':'')+'</div>'+
         '</div>'+
-        '<div class="fi-note">⚠ '+it.note+'</div>';
+        '<div style="font-size:18px;color:#C0C0C0;padding-left:6px;align-self:center">›</div>';
 
-      row.onclick=function(){
-        var isOpen=detail.classList.contains('open');
-        area.querySelectorAll('.fi-detail.open').forEach(function(d){d.classList.remove('open');});
-        area.querySelectorAll('.fi-item.open').forEach(function(r){r.classList.remove('open');});
-        if(!isOpen){detail.classList.add('open');row.classList.add('open');}
-      };
-      wrap.appendChild(row);wrap.appendChild(detail);area.appendChild(wrap);
+      /* タップでモーダル */
+      row.onclick=function(){openDictModal(it,cat);};
+      area.appendChild(row);
     });
   });
   var lbl=g('fd-cnt-lbl');if(lbl)lbl.textContent=total+'件';
 }
+
 function toggleFD(){fdOpen=!fdOpen;var body=g('fd-body'),hdr=g('fd-hdr'),chev=g('fd-chev');if(body)body.classList.toggle('open',fdOpen);if(hdr)hdr.classList.toggle('open',fdOpen);if(chev)chev.style.transform=fdOpen?'rotate(180deg)':'';}
+
+/* ── 全項目辞書モーダル ── */
+function openDictModal(it, cat){
+  var modal=document.getElementById('dict-modal');
+  if(!modal)return;
+
+  /* ヘッダー色をカテゴリ色に */
+  var bar=document.getElementById('dict-modal-bar');
+  if(bar)bar.style.background=cat.color;
+
+  /* タイトル */
+  var title=document.getElementById('dict-modal-title');
+  if(title)title.textContent='📖 '+cat.label+' — '+it.jp;
+
+  /* 日本語情報 */
+  var jp=document.getElementById('dict-modal-jp');
+  var rd=document.getElementById('dict-modal-read');
+  var cx=document.getElementById('dict-modal-ctx');
+  if(jp)jp.textContent=it.jp;
+  if(rd)rd.textContent=it.read;
+  if(cx)cx.textContent=it.ctx;
+
+  /* 選択言語（メイン表示） */
+  var mainTxt,subTxt,kanaTxt;
+  if(lang==='zh'){mainTxt=it.zh;subTxt=it.zhs;kanaTxt=it.zh_kana||'';}
+  else if(lang==='ko'){mainTxt=it.ko;subTxt=it.kos;kanaTxt=it.ko_kana||'';}
+  else{mainTxt=it.en;subTxt=it.ens;kanaTxt=it.en_kana||'';}
+
+  var mn=document.getElementById('dict-modal-main');
+  var sb=document.getElementById('dict-modal-sub');
+  var kn=document.getElementById('dict-modal-kana');
+  if(mn)mn.textContent=mainTxt||'';
+  if(sb)sb.textContent=subTxt||'';
+  if(kn){kn.textContent=kanaTxt?'🗣 '+kanaTxt:'';kn.style.display=kanaTxt?'':'none';}
+
+  /* 3言語一覧 */
+  var en=document.getElementById('dict-modal-en');
+  var enk=document.getElementById('dict-modal-en-kana');
+  var zh=document.getElementById('dict-modal-zh');
+  var zhk=document.getElementById('dict-modal-zh-kana');
+  var ko=document.getElementById('dict-modal-ko');
+  var kok=document.getElementById('dict-modal-ko-kana');
+  if(en)en.textContent=it.en||'';
+  if(enk){enk.textContent=it.en_kana?'🗣 '+it.en_kana:'';enk.style.display=it.en_kana?'':'none';}
+  if(zh)zh.textContent=it.zh||'';
+  if(zhk){zhk.textContent=it.zh_kana?'🗣 '+it.zh_kana:'';zhk.style.display=it.zh_kana?'':'none';}
+  if(ko)ko.textContent=it.ko||'';
+  if(kok){kok.textContent=it.ko_kana?'🗣 '+it.ko_kana:'';kok.style.display=it.ko_kana?'':'none';}
+
+  /* 注意事項 */
+  var note=document.getElementById('dict-modal-note');
+  if(note)note.textContent=it.note?'⚠ '+it.note:'';
+
+  modal.style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closeDictModal(){
+  var modal=document.getElementById('dict-modal');
+  if(modal)modal.style.display='none';
+  document.body.style.overflow='';
+}
+
 function fdFilt(cat,btn){fdCat=cat;document.querySelectorAll('.fd-btn').forEach(function(b){b.classList.remove('on')});btn.classList.add('on');buildFD();}
 function fdSearch(q){fdQ=q;buildFD();}
 
@@ -2105,6 +2155,65 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeClientM
           <div id="mic-client-kana" style="font-size:12px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:none"></div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 全項目辞書モーダル ── -->
+<div id="dict-modal" onclick="closeDictModal()" style="
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,.65);z-index:10000;
+  justify-content:flex-end;align-items:stretch;flex-direction:column;
+">
+  <div onclick="event.stopPropagation()" style="
+    background:#fff;border-radius:20px 20px 0 0;
+    max-height:85vh;display:flex;flex-direction:column;
+    box-shadow:0 -10px 40px rgba(0,0,0,.25);overflow:hidden;
+  ">
+    <!-- ヘッダー（緑バー） -->
+    <div id="dict-modal-bar" style="background:#185FA5;padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0">
+      <div style="width:8px;height:8px;border-radius:50%;background:#fff;opacity:.7;animation:pulse 1.4s ease-in-out infinite"></div>
+      <span style="font-size:13px;color:#fff;font-weight:600;flex:1" id="dict-modal-title">辞書</span>
+      <button onclick="closeDictModal()" style="background:rgba(255,255,255,.2);border:none;color:#fff;font-size:18px;font-weight:700;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center">×</button>
+    </div>
+    <!-- コンテンツ -->
+    <div style="overflow-y:auto;flex:1;padding:16px">
+      <!-- 日本語 -->
+      <div style="margin-bottom:16px">
+        <div style="font-size:11px;color:#8E8E93;font-weight:500;margin-bottom:4px">🇯🇵 日本語</div>
+        <div id="dict-modal-jp" style="font-size:22px;font-weight:700;color:#1C1C1E"></div>
+        <div id="dict-modal-read" style="font-size:12px;color:#8E8E93;margin-top:2px"></div>
+        <div id="dict-modal-ctx" style="font-size:12px;color:#8E8E93;margin-top:4px"></div>
+      </div>
+      <hr style="border:none;border-top:0.5px solid #E5E5EA;margin-bottom:16px">
+      <!-- お客様に見せるエリア -->
+      <div style="background:#F9F9FB;border-radius:12px;padding:14px;margin-bottom:12px">
+        <div style="font-size:11px;color:#8E8E93;font-weight:500;margin-bottom:8px">📱 選択言語（お客様向け）</div>
+        <div id="dict-modal-main" style="font-size:26px;font-weight:700;color:#1C1C1E;line-height:1.4;margin-bottom:6px"></div>
+        <div id="dict-modal-sub" style="font-size:13px;color:#8E8E93;line-height:1.5;margin-bottom:8px"></div>
+        <div id="dict-modal-kana" style="font-size:12px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:inline-block"></div>
+      </div>
+      <!-- 3言語一覧 -->
+      <div style="font-size:11px;color:#8E8E93;font-weight:500;margin-bottom:8px">📖 全言語一覧</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div style="background:#fff;border:0.5px solid #E5E5EA;border-radius:8px;padding:10px">
+          <div style="font-size:12px;margin-bottom:4px">🇺🇸</div>
+          <div id="dict-modal-en" style="font-size:13px;font-weight:600;color:#1C1C1E;margin-bottom:3px"></div>
+          <div id="dict-modal-en-kana" style="font-size:10px;color:#85500B;background:#FFF8E7;border-radius:3px;padding:1px 5px;display:inline-block"></div>
+        </div>
+        <div style="background:#fff;border:0.5px solid #E5E5EA;border-radius:8px;padding:10px">
+          <div style="font-size:12px;margin-bottom:4px">🇨🇳</div>
+          <div id="dict-modal-zh" style="font-size:13px;font-weight:600;color:#1C1C1E;margin-bottom:3px"></div>
+          <div id="dict-modal-zh-kana" style="font-size:10px;color:#85500B;background:#FFF8E7;border-radius:3px;padding:1px 5px;display:inline-block"></div>
+        </div>
+        <div style="background:#fff;border:0.5px solid #E5E5EA;border-radius:8px;padding:10px">
+          <div style="font-size:12px;margin-bottom:4px">🇰🇷</div>
+          <div id="dict-modal-ko" style="font-size:13px;font-weight:600;color:#1C1C1E;margin-bottom:3px"></div>
+          <div id="dict-modal-ko-kana" style="font-size:10px;color:#85500B;background:#FFF8E7;border-radius:3px;padding:1px 5px;display:inline-block"></div>
+        </div>
+      </div>
+      <!-- 注意事項 -->
+      <div id="dict-modal-note" style="margin-top:12px;padding:8px 12px;background:#F2F2F7;border-radius:8px;font-size:11px;color:#8E8E93"></div>
     </div>
   </div>
 </div>
