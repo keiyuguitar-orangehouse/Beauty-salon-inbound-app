@@ -291,7 +291,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
 <div class="screen on" id="sc1">
 
 <!-- お客様向けメイン画面 -->
-<div class="client-screen" id="sc1-welcome-block">
+<div class="client-screen" id="sc1-welcome-block" onclick="openClientModal(this)" style="cursor:pointer">
   <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
   <div style="padding:18px">
     <!-- 日本語あいさつ（常時） -->
@@ -2006,10 +2006,7 @@ function openClientModal(el){
     var lbl=bar.querySelector('.client-bar-lbl');
     if(lbl){lbl.style.fontSize='13px';}
     /* 閉じる案内を追加 */
-    var hint=document.createElement('span');
-    hint.style.cssText='font-size:10px;color:rgba(255,255,255,.7);margin-left:8px';
-    hint.textContent='（タップで閉じる）';
-    if(lbl)lbl.appendChild(hint);
+    /* ヒントなし - ×ボタンで閉じる */
   }
   /* テキストを大きく */
   var txts=inner.querySelectorAll('[style*="font-size:1"]');
