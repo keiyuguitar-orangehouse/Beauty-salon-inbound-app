@@ -222,6 +222,41 @@ input[type=range]{width:100%;accent-color:#1D9E75}
 .substep-btn.s2-active{
   background:#534AB7;color:#fff;border-color:#534AB7;
 }
+
+/* ── client-screen ホバーエフェクト ── */
+.client-screen[onclick]{transition:transform .12s,box-shadow .12s;}
+.client-screen[onclick]:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(29,158,117,.25);}
+.client-screen[onclick]:active{transform:scale(.99);}
+
+/* ── 音声翻訳UI ── */
+.mic-bar.recording{background:#FAECE7;border-color:#D85A30;animation:mic-pulse .8s ease-in-out infinite;}
+@keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(216,90,48,.3);}50%{box-shadow:0 0 0 8px rgba(216,90,48,0);}}
+.mic-icon.recording{background:#D85A30;color:#fff;font-size:20px;}
+.mic-result-block{margin-top:8px;border-radius:8px;overflow:hidden;border:0.5px solid #E5E5EA;}
+.mic-result-original{padding:8px 12px;background:#F9F9FB;font-size:12px;color:#8E8E93;}
+.mic-result-original span{color:#1C1C1E;font-weight:500;}
+.mic-result-translated{padding:12px;background:#fff;font-size:18px;font-weight:600;color:#1C1C1E;line-height:1.5;}
+.mic-result-kana{padding:4px 12px 10px;background:#FFF8E7;font-size:11px;color:#85500B;font-weight:500;}
+.mic-result-actions{display:flex;gap:6px;padding:8px 12px;background:#F9F9FB;border-top:0.5px solid #E5E5EA;}
+.mic-result-actions button{flex:1;padding:7px;border-radius:6px;border:none;font-size:11px;font-weight:500;cursor:pointer;}
+.mic-show-btn{background:#1D9E75;color:#fff;}
+.mic-retry-btn{background:#F2F2F7;color:#8E8E93;}
+
+/* ── グローバル音声翻訳ボタン ── */
+.global-mic-btn{
+  width:100%;display:flex;align-items:center;gap:12px;
+  padding:12px 14px;margin-bottom:12px;
+  background:#fff;border:1.5px solid #D85A30;border-radius:10px;
+  cursor:pointer;box-shadow:0 2px 8px rgba(216,90,48,.15);
+  text-align:left;
+}
+.global-mic-btn:active{background:#FFF4F0;transform:scale(.99);}
+.global-mic-icon{
+  width:38px;height:38px;border-radius:50%;
+  background:#FAECE7;border:1.5px solid #D85A30;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
 </style>
 </head>
 <body>
@@ -241,6 +276,16 @@ input[type=range]{width:100%;accent-color:#1D9E75}
   <button class="snb s4" id="snb4" onclick="goStep(4)">④ 施術中</button>
   <button class="snb s5" id="snb5" onclick="goStep(5)">⑤ 会計・アフター</button>
 </div>
+
+<!-- グローバル音声翻訳ボタン -->
+<button onclick="openMicModal()" class="global-mic-btn">
+  <div class="global-mic-icon">🎤</div>
+  <div style="flex:1">
+    <div style="font-size:12px;font-weight:600;color:#1C1C1E">🎤 フリーワード音声翻訳</div>
+    <div style="font-size:10px;color:#8E8E93;margin-top:1px">日本語で話しかける → 選択言語に翻訳してお客様に見せる</div>
+  </div>
+  <div style="font-size:20px;color:#D85A30;font-weight:300">›</div>
+</button>
 
 <!-- ① -->
 <div class="screen on" id="sc1">
@@ -277,7 +322,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
 
 <!-- YES後：予約あり対応 -->
 <div id="sc1-yes-block" style="display:none">
-  <div class="client-screen" style="margin-bottom:10px">
+  <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:10px;cursor:pointer">
     <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
     <div style="padding:18px">
       <div style="font-size:13px;color:#1D9E75;font-weight:600;margin-bottom:3px">お名前をお聞かせください。</div>
@@ -303,7 +348,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
 <!-- NO後：予約なし対応 -->
 <div id="sc1-no-block" style="display:none">
   <!-- 選択肢A: 今すぐ施術できる -->
-  <div class="client-screen" style="margin-bottom:10px;border-color:#BA7517">
+  <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:10px;border-color:#BA7517;cursor:pointer">
     <div class="client-bar" style="background:#BA7517"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 担当者がいる場合</span></div>
     <div style="padding:16px">
       <div style="font-size:13px;color:#BA7517;font-weight:600;margin-bottom:3px">当店は予約制になっておりますが、今施術できる担当者がおります。少々お待ちください。</div>
@@ -312,7 +357,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
     </div>
   </div>
   <!-- 選択肢B: 今は対応できない -->
-  <div class="client-screen" style="margin-bottom:10px;border-color:#D85A30">
+  <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:10px;border-color:#D85A30;cursor:pointer">
     <div class="client-bar" style="background:#D85A30"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 担当者がいない場合</span></div>
     <div style="padding:16px">
       <div style="font-size:13px;color:#D85A30;font-weight:600;margin-bottom:3px">当店は予約制になっており、ただいま施術できる担当者がおりません。改めてご予約の上、ご来店ください。</div>
@@ -365,7 +410,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
     </div>
   </div>
   <!-- お客様に見せる画面 -->
-  <div class="client-screen" style="margin-bottom:8px">
+  <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
     <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
     <div style="padding:14px">
       <div id="hist-client-q" style="font-size:18px;font-weight:500;color:#1C1C1E;line-height:1.8">Please tell us about any hair treatments in the past 2 years.</div>
@@ -402,7 +447,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
     </div>
   </div>
   <!-- お客様に見せる画面（アレルギー確認チップ付き） -->
-  <div class="client-screen" style="margin-bottom:8px">
+  <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
     <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
     <div style="padding:14px">
       <div id="s2-consent" style="font-size:17px;font-weight:500;color:#1C1C1E;line-height:1.9">Do you have any allergies to hair dye or chemical treatments?<br>Please let us know before we begin.</div>
@@ -445,7 +490,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
     </div>
   </div>
   <!-- お客様に見せる画面 -->
-  <div class="client-screen" style="margin-bottom:8px">
+  <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
     <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
     <div style="padding:14px">
       <div id="menu-client-q" style="font-size:18px;font-weight:500;color:#1C1C1E;line-height:1.8">What services would you like today?</div>
@@ -462,7 +507,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
 <!-- 2-4 お客様確認（最終確認画面） -->
 <div id="sub2-4" style="display:none">
   <!-- お客様向け確認画面（緑枠） -->
-  <div class="client-screen" style="margin-bottom:10px">
+  <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:10px;cursor:pointer">
     <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 内容を確認してください / Please confirm your selections</span></div>
     <div style="padding:16px">
       <!-- 確認タイトル -->
@@ -567,7 +612,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
     </div>
   </div>
   <div id="mode-c" style="display:none">
-    <div class="client-screen">
+    <div class="client-screen" onclick="openClientModal(this)" style="cursor:pointer">
       <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span><button class="client-bar-back" onclick="backToStylist()">← 戻る</button></div>
       <div class="yn-wrap">
         <div class="yn-suggest-lbl"><span id="yn-lbl">Your stylist suggests:</span><span class="jp">スタイリストからの提案</span></div>
@@ -601,8 +646,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
     <div id="psh"><div class="pc" onclick="tapP(this,'itchy')"><div class="ja">お痒いところはございませんか？</div><div class="tr" id="ph-itchy">Is there anywhere that feels itchy?</div><div class="ph-kana" id="ph-kana-itchy"></div></div><div class="pc" onclick="tapP(this,'temp')"><div class="ja">お湯加減はいかがですか？</div><div class="tr" id="ph-temp">How is the water temperature?</div><div class="ph-kana" id="ph-kana-temp"></div></div><div class="pc" onclick="tapP(this,'neck')"><div class="ja">首を楽にしてください</div><div class="tr" id="ph-neck">Please relax your neck.</div><div class="ph-kana" id="ph-kana-neck"></div></div><div class="pc" onclick="tapP(this,'wait')"><div class="ja">少々お待ちください</div><div class="tr" id="ph-wait">One moment, please.</div><div class="ph-kana" id="ph-kana-wait"></div></div></div>
     <div id="pcu" style="display:none"><div class="pc" onclick="tapP(this,'thin')"><div class="ja">もう少し細かくしますか？</div><div class="tr" id="ph-thin">Shall I thin it out a bit more?</div><div class="ph-kana" id="ph-kana-thin"></div></div><div class="pc" onclick="tapP(this,'len')"><div class="ja">長さはいかがですか？</div><div class="tr" id="ph-len">How is the length so far?</div><div class="ph-kana" id="ph-kana-len"></div></div><div class="pc" onclick="tapP(this,'mir')"><div class="ja">鏡でご確認ください</div><div class="tr" id="ph-mir">Could you check in the mirror?</div><div class="ph-kana" id="ph-kana-mir"></div></div></div>
     <div id="pfi" style="display:none"><div class="pc" onclick="tapP(this,'res')"><div class="ja">仕上がりはいかがですか？</div><div class="tr" id="ph-res">How do you like the result?</div><div class="ph-kana" id="ph-kana-res"></div></div><div class="pc" onclick="tapP(this,'back')"><div class="ja">後ろもご確認ください</div><div class="tr" id="ph-back">Please check the back as well.</div><div class="ph-kana" id="ph-kana-back"></div></div><div class="pc" onclick="tapP(this,'thnk')"><div class="ja">ありがとうございました</div><div class="tr" id="ph-thnk">Thank you so much!</div><div class="ph-kana" id="ph-kana-thnk"></div></div></div>
-    <div class="mic-bar" onclick="doMic()"><div class="mic-icon">🎤</div><div><div style="font-size:12px;font-weight:500;color:#1C1C1E">フリーワード音声翻訳</div><div style="font-size:10px;color:#8E8E93">マイクをタップして話しかけてください</div></div></div>
-    <div class="mic-out" id="mic-out"></div>
+    <!-- mic-bar moved to global nav -->
   </div>
   <div class="phrase-show" id="phrase-show"><div class="phrase-show-bar"><div class="client-bar-dot"></div><span>📱 この画面をお客様に向けてください</span></div><div class="phrase-show-body"><div class="phrase-big" id="phrase-big"></div><div class="phrase-jp-gloss" id="phrase-jp-gloss"><span class="phrase-jp-label">🗣 美容師メモ（日本語の意味）</span><span id="phrase-jp-text"></span></div><div class="kana-guide" id="phrase-kana-wrap" style="margin-top:10px;text-align:left;display:none"><div class="kana-guide-label">🗣 読み方（カタカナ）</div><div class="kana-text" id="phrase-kana-text"></div></div></div></div>
   <button class="next-btn nb4" onclick="goStep(5)">施術完了 → 会計へ</button>
@@ -630,7 +674,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
     <div class="card"><div class="card-title" id="fc2-title">次回予約・ホームケア</div><div class="care-grid"><div class="ccard"><div class="ico">💊</div><div class="nm" id="care1-nm">アウトバスオイル</div><div class="ds" id="care1-ds">Apply to damp hair</div></div><div class="ccard"><div class="ico">🧴</div><div class="nm" id="care2-nm">保湿シャンプー</div><div class="ds" id="care2-ds">Daily moisturizing</div></div></div></div>
   </div>
   <!-- お客様向け表示 -->
-  <div class="client-screen">
+  <div class="client-screen" onclick="openClientModal(this)" style="cursor:pointer">
     <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
     <div style="padding:16px">
       <!-- チップ不要 -->
@@ -1489,9 +1533,245 @@ function ynAns(v){var r=g('yn-res');r.style.display='block';if(v==='y'){r.style.
 function ynChip(el,jp){document.querySelectorAll('.yn-chip').forEach(function(c){c.classList.remove('on')});el.classList.add('on');var r=g('yn-res');r.style.display='block';r.style.background='#EAF3DE';r.style.color='#27500A';r.textContent='→ 美容師メモ：「'+jp+'」をご希望です。';}
 function selPT(el,id){el.closest('#ph-tabs').querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});el.classList.add('on');['psh','pcu','pfi'].forEach(function(k){var d=g(k);if(d)d.style.display=k===id?'':'none';});}
 function tapP(el,key){el.classList.add('flashed');setTimeout(function(){el.classList.remove('flashed')},500);var ph=T.phrases[key];if(!ph)return;var ps=g('phrase-show'),pb=g('phrase-big');pb.textContent=ph[lang]||ph.en;pb.setAttribute('data-key',key);ps.style.display='block';var pjt=g('phrase-jp-text');if(pjt)pjt.textContent=ph.ja||'';var pkw=g('phrase-kana-wrap'),pkt=g('phrase-kana-text');var kd=ph.kana&&ph.kana[lang];if(pkw)pkw.style.display=(lang==='ja'||!kd)?'none':'';if(pkt)pkt.textContent=kd||'';}
-function doMic(){var out=g('mic-out');out.style.display='block';out.textContent='🎤 '+{en:'Listening...',zh:'正在聆听...',ko:'듣는 중...',ja:'聞いています...'}[lang];var s={en:['How is the water temperature?','One moment, please.','Thank you so much!'],zh:['水温合适吗？','请稍等一下。','非常感谢！'],ko:['물 온도는 어떠세요?','잠시만 기다려 주세요。','감사합니다!'],ja:['お湯加減はいかがですか？','少々お待ちください。','ありがとうございました！']};var arr=s[lang]||s.en;setTimeout(function(){out.textContent='✓ '+arr[Math.floor(Math.random()*arr.length)];},1000);}
 
-/* 場面別辞書 */
+/* ────── フリーワード音声翻訳（Web Speech API） ────── */
+var micRecognition=null;
+var micIsRecording=false;
+
+/* 簡易翻訳辞書（よく使う美容室フレーズ） */
+var MIC_DICT=[
+  {ja:['かゆい','痒い'],en:'Is there anywhere that feels itchy?',zh:'有没有感觉痒的地方？',ko:'가려운 곳은 없으신가요?',
+   en_k:'イズ ゼア エニィウェア ザット フィールズ イッチー？',zh_k:'ヨウ メイ ヨウ ヤン ダ ディ ファン？',ko_k:'カリョウン コスン オブスシンガヨ？'},
+  {ja:['お湯','湯加減','温度','ぬるい','熱い'],en:'How is the water temperature?',zh:'水温合适吗？',ko:'물 온도는 어떠세요?',
+   en_k:'ハウ イズ ザ ウォーター テンペラチャー？',zh_k:'シュイ ウェン ハァ シー マ？',ko_k:'ムル オンドヌン オットセヨ？'},
+  {ja:['少し','少々','お待ち','待って'],en:'One moment, please.',zh:'请稍等一下。',ko:'잠시만 기다려 주세요。',
+   en_k:'ワン モーメント、プリーズ。',zh_k:'チン シャオ ドン イー シャ。',ko_k:'チャムシマン キダリョ ジュセヨ。'},
+  {ja:['鏡','確認','ご確認'],en:'Could you check in the mirror?',zh:'请在镜子里确认一下。',ko:'거울에서 확인해 주세요。',
+   en_k:'クッド ユー チェック イン ザ ミラー？',zh_k:'チン ザイ ジン ズ リー チュエ レン。',ko_k:'コウレソ ファギンヘ ジュセヨ。'},
+  {ja:['首','楽に','リラックス'],en:'Please relax your neck.',zh:'请放松您的脖子。',ko:'목에 힘을 빼주세요。',
+   en_k:'プリーズ リラックス ユア ネック。',zh_k:'チン ファン ソン ニン ダ ボーズ。',ko_k:'モゲ ヒムル ペジュセヨ。'},
+  {ja:['長さ','いかが'],en:'How is the length so far?',zh:'长度合适吗？',ko:'길이는 어떠세요?',
+   en_k:'ハウ イズ ザ レングス ソー ファー？',zh_k:'チャン ドゥー ハァ シー マ？',ko_k:'キリヌン オットセヨ？'},
+  {ja:['仕上がり','いかが','どうですか'],en:'How do you like the result?',zh:'您对造型满意吗？',ko:'마무리는 어떠세요?',
+   en_k:'ハウ ドゥ ユー ライク ザ リザルト？',zh_k:'ニン ドゥイ ザオ シン マン イー マ？',ko_k:'マムリヌン オットセヨ？'},
+  {ja:['後ろ','うしろ'],en:'Please check the back as well.',zh:'请也看一下后面。',ko:'뒤도 확인해 주세요。',
+   en_k:'プリーズ チェック ザ バック アズ ウェル。',zh_k:'チン イェ カン イー シャ ホウ ミェン。',ko_k:'ドゥィド ファギンヘ ジュセヨ。'},
+  {ja:['ありがとう'],en:'Thank you so much!',zh:'非常感谢！',ko:'감사합니다!',
+   en_k:'サンキュー ソー マッチ！',zh_k:'フェイ チャン ガン シェ！',ko_k:'カムサハムニダ！'},
+  {ja:['すく','梳く','量'],en:'Shall I thin it out a bit more?',zh:'需要打薄一点吗？',ko:'좀 더 숱을 칠까요?',
+   en_k:'シャル アイ シン イット アウト ア ビット モア？',zh_k:'シュー ヤオ ダー バォ イー ディェン マ？',ko_k:'チョム ド スルル チルカヨ？'},
+  {ja:['いらっしゃい','ようこそ'],en:'Welcome!',zh:'欢迎光临！',ko:'어서오세요！',
+   en_k:'ウェルカム！',zh_k:'ファン イン グアン リン！',ko_k:'オソオセヨ！'},
+  {ja:['チップ','tip','不要'],en:'No tip is necessary in Japan.',zh:'日本不需要给小费。',ko:'일본에서는 팁이 필요하지 않습니다。',
+   en_k:'ノー チップ イズ ネセサリー イン ジャパン。',zh_k:'リー ベン ブー シュー ヤオ ゲイ シャオ フェイ。',ko_k:'イルボネソヌン チップイ ピリョハジ アンスムニダ。'}
+];
+
+function micTranslate(text){
+  /* 辞書から一致するものを探す */
+  var result=null;
+  for(var i=0;i<MIC_DICT.length;i++){
+    var d=MIC_DICT[i];
+    for(var j=0;j<d.ja.length;j++){
+      if(text.indexOf(d.ja[j])>=0){result=d;break;}
+    }
+    if(result)break;
+  }
+  return result;
+}
+
+function micGetKana(d){
+  return lang==='zh'?d.zh_k:(lang==='ko'?d.ko_k:d.en_k);
+}
+function micGetTxt(d){
+  return lang==='zh'?d.zh:(lang==='ko'?d.ko:d.en);
+}
+
+
+/* ── Claude APIによるフリーワード翻訳 ── */
+async function apiTranslate(originalText){
+  var out=g('mic-out');
+  if(out){
+    out.style.display='block';
+    out.innerHTML='<div style="padding:8px 12px;font-size:12px;color:#534AB7;background:#EEEDFE;border-radius:8px">⏳ 翻訳中…</div>';
+  }
+  var targetLangName={en:'English',zh:'Chinese (Simplified)',ko:'Korean',ja:'Japanese'}[lang]||'English';
+  var prompt='You are a translator for a Japanese hair salon. Translate the following Japanese text into '+targetLangName+'. Reply with ONLY the translated text on the first line, then on the second line write KANA: followed by a katakana reading guide for Japanese staff. Japanese text: '+originalText;
+  try{
+    var response=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:300,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    var data=await response.json();
+    var raw=(data.content&&data.content[0])?data.content[0].text:'';
+    var lines=raw.split('\n');
+    var translated='';
+    var kana='';
+    lines.forEach(function(line){
+      if(line.startsWith('KANA:')){kana=line.replace('KANA:','').trim();}
+      else if(line.trim()){translated+=line.trim()+' ';}
+    });
+    translated=translated.trim();
+    if(translated){
+      window._micStored={txt:translated,original:originalText,kana:kana||''};
+      if(out){
+        out.innerHTML=
+          '<div class="mic-result-block">'+
+          '<div class="mic-result-original">🎤 認識テキスト：<span>'+originalText+'</span></div>'+
+          '<div class="mic-result-translated">'+translated+'</div>'+
+          (kana?'<div class="mic-result-kana">🗣 '+kana+'</div>':'')+
+          '<div style="padding:4px 12px 2px;font-size:9px;color:#8E8E93;background:#F9F9FB">✨ Claude AI 翻訳</div>'+
+          '<div class="mic-result-actions">'+
+          '<button class="mic-show-btn" onclick="micShowStored()">📱 お客様に見せる</button>'+
+          '<button class="mic-retry-btn" onclick="doMic()">🔄 もう一度</button>'+
+          '</div></div>';
+      }
+    } else {throw new Error('empty');}
+  }catch(e){
+    console.error('API error:',e);
+    if(out){out.innerHTML='<div style="padding:10px;background:#FAECE7;border-radius:8px;font-size:12px;color:#993C1D;">⚠️ 翻訳できませんでした。もう一度お試しください。<br><button onclick="doMic()" style="margin-top:6px;padding:4px 12px;border-radius:6px;border:none;background:#D85A30;color:#fff;cursor:pointer;font-size:11px">🔄 もう一度</button></div>';}
+  }
+}
+
+function micShowStored(){
+  if(window._micStored){
+    micShowToClient(window._micStored.txt,window._micStored.original,window._micStored.kana);
+  }
+}
+
+
+function micShowToClient(txt, original, kana){
+  /* モーダル内のお客様向けエリアに表示 */
+  var cs=document.getElementById('mic-client-show');
+  var ct=document.getElementById('mic-client-txt');
+  var cj=document.getElementById('mic-client-jp');
+  var ck=document.getElementById('mic-client-kana');
+  if(ct)ct.textContent=txt;
+  if(cj){cj.textContent='🗣 美容師メモ：'+original;cj.style.display='';}
+  if(ck){
+    if(kana){ck.textContent='🗣 '+kana;ck.style.display='';}
+    else{ck.style.display='none';}
+  }
+  if(cs)cs.style.display='block';
+}
+
+
+/* ── 音声翻訳モーダル制御 ── */
+function openMicModal(){
+  var modal=document.getElementById('mic-modal');
+  if(!modal)return;
+  /* リセット */
+  var out=document.getElementById('mic-out');
+  var cs=document.getElementById('mic-client-show');
+  if(out)out.innerHTML='';
+  if(cs)cs.style.display='none';
+  micSetUI(false);
+  modal.style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closeMicModal(){
+  var modal=document.getElementById('mic-modal');
+  if(modal)modal.style.display='none';
+  document.body.style.overflow='';
+  /* 録音中なら停止 */
+  if(micIsRecording&&micRecognition)micRecognition.stop();
+  micSetUI(false);
+}
+
+function micSetUI(recording){
+  var btn=document.getElementById('mic-modal-btn');
+  var label=document.getElementById('mic-label');
+  var hint=document.getElementById('mic-hint');
+  var status=document.getElementById('mic-status');
+  micIsRecording=recording;
+  if(recording){
+    if(btn){btn.style.background='#D85A30';btn.style.borderColor='#D85A30';btn.textContent='🔴';}
+    if(label)label.textContent='録音中…日本語で話しかけてください';
+    if(hint)hint.textContent='タップして停止';
+    if(status){status.style.display='block';status.textContent='● REC';}
+  } else {
+    if(btn){btn.style.background='#FAECE7';btn.style.borderColor='#D85A30';btn.textContent='🎤';}
+    if(label)label.textContent='マイクをタップして話しかけてください';
+    if(hint)hint.textContent='日本語で話すと選択言語に翻訳されます';
+    if(status)status.style.display='none';
+  }
+}
+
+function doMic(){
+  /* 録音中なら停止 */
+  if(micIsRecording){
+    if(micRecognition)micRecognition.stop();
+    micSetUI(false);
+    return;
+  }
+
+  /* Web Speech API 対応確認 */
+  var SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SpeechRecognition){
+    var out=g('mic-out');
+    if(out){
+      out.style.display='block';
+      out.innerHTML='<div style="padding:10px;background:#FAECE7;border-radius:8px;font-size:12px;color:#993C1D;">⚠️ このブラウザは音声認識に対応していません。<br>Chromeをご使用ください。</div>';
+    }
+    return;
+  }
+
+  var out=g('mic-out');
+  if(out){out.style.display='block';out.innerHTML='<div style="padding:8px 12px;font-size:12px;color:#D85A30;background:#FAECE7;border-radius:8px">🎤 マイクに向かって日本語で話してください…</div>';}
+
+  micRecognition=new SpeechRecognition();
+  micRecognition.lang='ja-JP';  /* 美容師は日本語で話す */
+  micRecognition.interimResults=true;
+  micRecognition.maxAlternatives=1;
+  micRecognition.continuous=false;
+
+  micRecognition.onstart=function(){micSetUI(true);};
+
+  micRecognition.onresult=function(event){
+    var interim='';
+    var final='';
+    for(var i=event.resultIndex;i<event.results.length;i++){
+      if(event.results[i].isFinal){
+        final+=event.results[i][0].transcript;
+      } else {
+        interim+=event.results[i][0].transcript;
+      }
+    }
+    /* 中間結果をリアルタイム表示 */
+    if(out&&interim){
+      out.innerHTML='<div style="padding:8px 12px;font-size:12px;color:#8E8E93;background:#F9F9FB;border-radius:8px">🎤 '+interim+'<span style="animation:pulse 1s infinite;display:inline-block">…</span></div>';
+    }
+    if(final){
+      micSetUI(false);
+      var dictResult=micTranslate(final);
+      micShowResult(final,dictResult);
+    }
+  };
+
+  micRecognition.onerror=function(event){
+    micSetUI(false);
+    var msg={
+      'not-allowed':'マイクの使用が許可されていません。ブラウザの設定でマイクを許可してください。',
+      'no-speech':'音声が検出されませんでした。もう一度お試しください。',
+      'network':'ネットワークエラーが発生しました。',
+      'aborted':'録音がキャンセルされました。'
+    }[event.error]||'エラーが発生しました：'+event.error;
+    if(out){out.style.display='block';out.innerHTML='<div style="padding:10px;background:#FAECE7;border-radius:8px;font-size:12px;color:#993C1D;">⚠️ '+msg+'</div>';}
+  };
+
+  micRecognition.onend=function(){micSetUI(false);};
+
+  try{micRecognition.start();}
+  catch(e){
+    micSetUI(false);
+    if(out){out.style.display='block';out.innerHTML='<div style="padding:10px;background:#FAECE7;border-radius:8px;font-size:12px;color:#993C1D;">⚠️ マイクを起動できませんでした。</div>';}
+  }
+}
+
 function buildSD(step){
   var items=STEP_DICT[step]||[];
   var stepColors={1:'#1D9E75',2:'#534AB7',3:'#BA7517',4:'#D85A30',5:'#3B6D11'};
@@ -1710,6 +1990,126 @@ function updateCounselTL(){
 }
 
 renderChips();updSums();buildSD(1);buildFD();updateSc1();updateAllSubQ();updateCounselTL();buildQuickRef();renderFeeTable();updateFeeDisplay();
+
+/* ── フルスクリーンモーダル ── */
+function openClientModal(el){
+  var modal=document.getElementById('client-modal');
+  var inner=document.getElementById('client-modal-content');
+  if(!modal||!inner)return;
+  /* クリックされた client-screen の内容をコピー */
+  inner.innerHTML=el.innerHTML;
+  /* モーダル内のボタン(回答ボタン等)は動作させる */
+  /* モーダルのclient-barスタイルを大きく */
+  var bar=inner.querySelector('.client-bar');
+  if(bar){
+    bar.style.padding='12px 16px';
+    var lbl=bar.querySelector('.client-bar-lbl');
+    if(lbl){lbl.style.fontSize='13px';}
+    /* 閉じる案内を追加 */
+    var hint=document.createElement('span');
+    hint.style.cssText='font-size:10px;color:rgba(255,255,255,.7);margin-left:8px';
+    hint.textContent='（タップで閉じる）';
+    if(lbl)lbl.appendChild(hint);
+  }
+  /* テキストを大きく */
+  var txts=inner.querySelectorAll('[style*="font-size:1"]');
+  /* モーダル表示 */
+  modal.style.display='flex';
+  document.body.style.overflow='hidden';
+  /* 閉じるボタンのbackground色をclient-barと合わせる */
+  var closebtn=document.getElementById('client-modal').querySelector('button');
+  if(closebtn&&bar){
+    var bg=window.getComputedStyle(bar).backgroundColor;
+    closebtn.style.background=bg||'rgba(0,0,0,.3)';
+  }
+}
+function closeClientModal(){
+  var modal=document.getElementById('client-modal');
+  if(modal)modal.style.display='none';
+  document.body.style.overflow='';
+}
+/* ESCキーで閉じる */
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeClientModal();});
+
 </script>
+
+<!-- ── フルスクリーンモーダル ── -->
+<div id="client-modal" onclick="closeClientModal()" style="
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,.6);z-index:9999;
+  justify-content:center;align-items:flex-start;
+  overflow-y:auto;padding:16px;box-sizing:border-box;
+">
+  <div id="client-modal-inner" onclick="event.stopPropagation()" style="
+    background:#fff;border-radius:16px;overflow:hidden;
+    width:100%;max-width:680px;margin:auto;
+    box-shadow:0 20px 60px rgba(0,0,0,.3);
+    position:relative;
+  ">
+    <!-- 閉じるボタン -->
+    <button onclick="closeClientModal()" style="
+      position:absolute;top:10px;right:12px;
+      background:rgba(255,255,255,.25);border:none;
+      color:#fff;font-size:22px;font-weight:700;
+      cursor:pointer;width:36px;height:36px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      z-index:10;line-height:1;
+    ">×</button>
+    <!-- コンテンツがここに挿入される -->
+    <div id="client-modal-content"></div>
+  </div>
+</div>
+
+<!-- ── 音声翻訳モーダル ── -->
+<div id="mic-modal" style="
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,.65);z-index:10000;
+  justify-content:flex-end;align-items:stretch;
+  flex-direction:column;
+" onclick="closeMicModal()">
+  <div onclick="event.stopPropagation()" style="
+    background:#fff;border-radius:20px 20px 0 0;
+    padding:0;overflow:hidden;
+    max-height:90vh;display:flex;flex-direction:column;
+    box-shadow:0 -10px 40px rgba(0,0,0,.2);
+  ">
+    <!-- ヘッダー（お客様に見せるバー風） -->
+    <div style="background:#D85A30;padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0">
+      <div style="width:8px;height:8px;border-radius:50%;background:#fff;opacity:.7;animation:pulse 1.4s ease-in-out infinite"></div>
+      <span style="font-size:13px;color:#fff;font-weight:600;flex:1">🎤 フリーワード音声翻訳</span>
+      <button onclick="closeMicModal()" style="background:rgba(255,255,255,.2);border:none;color:#fff;font-size:18px;font-weight:700;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center">×</button>
+    </div>
+    <!-- コンテンツエリア -->
+    <div style="padding:16px;overflow-y:auto;flex:1">
+      <!-- 操作エリア -->
+      <div style="text-align:center;margin-bottom:16px">
+        <button id="mic-modal-btn" onclick="doMic()" style="
+          width:80px;height:80px;border-radius:50%;border:none;
+          background:#FAECE7;border:2px solid #D85A30;
+          font-size:32px;cursor:pointer;transition:all .15s;
+          display:flex;align-items:center;justify-content:center;
+          margin:0 auto 10px;
+        ">🎤</button>
+        <div id="mic-label" style="font-size:13px;font-weight:600;color:#1C1C1E;margin-bottom:3px">マイクをタップして話しかけてください</div>
+        <div id="mic-hint" style="font-size:11px;color:#8E8E93">日本語で話すと選択言語に翻訳されます</div>
+        <div id="mic-status" style="display:none;font-size:11px;color:#D85A30;font-weight:600;margin-top:4px">● REC</div>
+      </div>
+      <!-- 結果エリア -->
+      <div id="mic-out"></div>
+      <!-- お客様向け翻訳結果（拡大表示） -->
+      <div id="mic-client-show" style="display:none;margin-top:12px">
+        <div style="background:#1D9E75;padding:8px 12px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:8px">
+          <div style="width:8px;height:8px;border-radius:50%;background:#fff;opacity:.7;animation:pulse 1.4s ease-in-out infinite"></div>
+          <span style="font-size:11px;color:#fff;font-weight:500">📱 この画面をお客様に向けてください</span>
+        </div>
+        <div style="background:#fff;border:2px solid #1D9E75;border-top:none;border-radius:0 0 10px 10px;padding:20px 16px;text-align:center">
+          <div id="mic-client-txt" style="font-size:28px;font-weight:600;color:#1C1C1E;line-height:1.5;margin-bottom:8px"></div>
+          <div id="mic-client-jp" style="font-size:12px;color:#633806;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:inline-block;margin-bottom:6px"></div>
+          <div id="mic-client-kana" style="font-size:12px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
