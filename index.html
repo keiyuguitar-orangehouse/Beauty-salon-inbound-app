@@ -257,6 +257,10 @@ input[type=range]{width:100%;accent-color:#1D9E75}
   display:flex;align-items:center;justify-content:center;
   font-size:20px;flex-shrink:0;
 }
+
+.ccard[onclick]{transition:transform .12s,box-shadow .12s;}
+.ccard[onclick]:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(59,109,17,.2);}
+.ccard[onclick]:active{transform:scale(.98);}
 </style>
 </head>
 <body>
@@ -387,19 +391,21 @@ input[type=range]{width:100%;accent-color:#1D9E75}
 
 <!-- ══ 2-1 施術歴 ══ -->
 <div id="sub2-1">
+  <!-- お客様に見せる -->
+  <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
+    <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
+    <div style="padding:14px">
+      <div id="hist-client-q" style="font-size:18px;font-weight:500;color:#1C1C1E;line-height:1.8">Please tell us about any hair treatments in the past 2 years.</div>
+      <div class="jp-gloss" style="margin-top:5px"><span class="jp-gloss-label">🗣 美容師メモ：</span>過去2年の施術歴を教えてください。</div>
+      <div id="hist-client-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;margin-top:5px;display:none"></div>
+    </div>
+  </div>
+  <!-- 美容師側カード -->
   <div class="card">
     <div class="card-title" style="display:flex;align-items:center;gap:8px">
       <span style="background:#534AB7;color:#fff;font-size:10px;padding:2px 8px;border-radius:999px">2-1</span>
       施術歴（過去2年）
     </div>
-    <!-- 案内文3段 -->
-    <div style="background:#F9F9FB;border-radius:8px;padding:10px 13px;margin-bottom:10px;border-left:3px solid #534AB7">
-      <div style="font-size:11px;color:#8E8E93;margin-bottom:5px;font-weight:500">📋 お客様に見せる / 美容師が読み上げる</div>
-      <div style="font-size:12px;color:#534AB7;font-weight:500;margin-bottom:3px">過去2年の施術歴を教えてください。</div>
-      <div id="hist-q-lang" style="font-size:15px;font-weight:500;color:#1C1C1E;margin-bottom:3px;line-height:1.6"></div>
-      <div id="hist-q-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none"></div>
-    </div>
-    <!-- 美容師側チップ -->
     <div class="chips-wrap" style="margin-bottom:0">
       <div class="bichips" id="hist-chips"></div>
       <div class="selection-summary" style="margin-top:8px">
@@ -409,57 +415,35 @@ input[type=range]{width:100%;accent-color:#1D9E75}
       </div>
     </div>
   </div>
-  <!-- お客様に見せる画面 -->
-  <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
-    <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
-    <div style="padding:14px">
-      <div id="hist-client-q" style="font-size:18px;font-weight:500;color:#1C1C1E;line-height:1.8">Please tell us about any hair treatments in the past 2 years.</div>
-      <div class="jp-gloss" style="margin-top:5px"><span class="jp-gloss-label">🗣 美容師メモ：</span>過去2年の施術歴を教えてください。</div>
-      <div id="hist-client-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;margin-top:5px;display:none"></div>
-    </div>
-  </div>
-  <button class="next-btn nb2" onclick="goSub(2)" style="margin-top:0">次へ：アレルギー確認 →</button>
+  <button class="next-btn nb2" onclick="goSub(2)" style="margin-top:4px">次へ：アレルギー確認 →</button>
 </div>
 
 <!-- ══ 2-2 アレルギー ══ -->
 <div id="sub2-2" style="display:none">
-  <div class="card">
-    <div class="card-title" style="display:flex;align-items:center;gap:8px">
-      <span style="background:#D85A30;color:#fff;font-size:10px;padding:2px 8px;border-radius:999px">2-2</span>
-      アレルギー確認
-    </div>
-    <!-- 案内文3段 -->
-    <div style="background:#FFF4F0;border-radius:8px;padding:10px 13px;margin-bottom:10px;border-left:3px solid #D85A30">
-      <div style="font-size:11px;color:#8E8E93;margin-bottom:5px;font-weight:500">📋 お客様に見せる / 美容師が読み上げる</div>
-      <div style="font-size:12px;color:#D85A30;font-weight:500;margin-bottom:3px">ヘアカラーや薬剤にアレルギーはありますか？</div>
-      <div id="allergy-q-lang" style="font-size:15px;font-weight:500;color:#1C1C1E;margin-bottom:3px;line-height:1.6"></div>
-      <div id="allergy-q-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none"></div>
-    </div>
-    <!-- 美容師側チップ -->
-    <div class="chips-wrap" style="margin-bottom:10px">
-      <div class="bilabel" style="font-size:11px;color:#8E8E93;margin-bottom:6px">⚠️ 美容師側チェック</div>
-      <div class="bichips" id="allergy-chips"></div>
-      <div class="selection-summary" style="margin-top:8px">
-        <div class="ss-label">📋 選択中のアレルギー</div>
-        <div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="allergy-ja-out"><span class="ss-empty">未選択</span></div></div>
-        <div class="ss-row"><span class="ss-flag" id="lang-flag-allergy">🇺🇸</span><div class="ss-chips" id="allergy-fl-out"><span class="ss-empty">—</span></div></div>
-      </div>
-    </div>
-  </div>
-  <!-- お客様に見せる画面（アレルギー確認チップ付き） -->
+  <!-- お客様に見せる -->
   <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
     <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
     <div style="padding:14px">
       <div id="s2-consent" style="font-size:17px;font-weight:500;color:#1C1C1E;line-height:1.9">Do you have any allergies to hair dye or chemical treatments?<br>Please let us know before we begin.</div>
       <div class="jp-gloss" style="margin-top:6px"><span class="jp-gloss-label">🗣 美容師メモ：</span>ヘアカラーや薬剤にアレルギーはありますか？</div>
-      <div id="s2-chips-en" class="chips" style="margin-top:10px;margin-bottom:0;gap:6px"><div class="consent-chip" onclick="tog(this)">No allergies<span class="cjp">アレルギーなし</span><span class="ck">🗣 ノー アレルジーズ</span></div><div class="consent-chip red" onclick="tog(this)">Dye allergy<span class="cjp">染料アレルギー</span><span class="ck">🗣 ダイ アレルジー</span></div><div class="consent-chip red" onclick="tog(this)">Sensitive scalp<span class="cjp">頭皮が敏感</span><span class="ck">🗣 センシティヴ スカルプ</span></div></div>
-      <div id="s2-chips-zh" class="chips" style="display:none;margin-top:10px;margin-bottom:0;gap:6px"><div class="consent-chip" onclick="tog(this)">没有过敏<span class="cjp">アレルギーなし</span><span class="ck">🗣 メイ ヨウ グオ ミン</span></div><div class="consent-chip red" onclick="tog(this)">染料过敏<span class="cjp">染料アレルギー</span><span class="ck">🗣 ラン リャオ グオ ミン</span></div><div class="consent-chip red" onclick="tog(this)">头皮敏感<span class="cjp">頭皮が敏感</span><span class="ck">🗣 トウ ピー ミン ガン</span></div></div>
-      <div id="s2-chips-ko" class="chips" style="display:none;margin-top:10px;margin-bottom:0;gap:6px"><div class="consent-chip" onclick="tog(this)">알레르기 없음<span class="cjp">アレルギーなし</span><span class="ck">🗣 アルレルギ オプスム</span></div><div class="consent-chip red" onclick="tog(this)">염료 알레르기<span class="cjp">染料アレルギー</span><span class="ck">🗣 ヨムニョ アルレルギ</span></div><div class="consent-chip red" onclick="tog(this)">두피 민감<span class="cjp">頭皮が敏感</span><span class="ck">🗣 トゥピ ミンガム</span></div></div>
-      <div id="s2-chips-ja" class="chips" style="display:none;margin-top:10px;margin-bottom:0"><div class="consent-chip" onclick="tog(this)">アレルギーなし</div><div class="consent-chip red" onclick="tog(this)">染料アレルギー</div><div class="consent-chip red" onclick="tog(this)">頭皮が敏感</div></div>
-      <div class="kana-guide" id="kana-consent" style="margin-top:10px;display:none"><div class="kana-guide-label">🗣 読み方（カタカナ）</div><div class="kana-text" id="kana-consent-text"></div></div>
+      
     </div>
   </div>
-  <div style="display:flex;gap:8px;margin-top:0">
+  <!-- 美容師側カード -->
+  <div class="card">
+    <div class="card-title" style="display:flex;align-items:center;gap:8px">
+      <span style="background:#D85A30;color:#fff;font-size:10px;padding:2px 8px;border-radius:999px">2-2</span>
+      アレルギー確認
+    </div>
+    <div class="bilabel" style="font-size:11px;color:#8E8E93;margin-bottom:6px">⚠️ 美容師側チェック</div>
+    <div class="bichips" id="allergy-chips"></div>
+    <div class="selection-summary" style="margin-top:8px">
+      <div class="ss-label">📋 選択中のアレルギー</div>
+      <div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="allergy-ja-out"><span class="ss-empty">未選択</span></div></div>
+      <div class="ss-row"><span class="ss-flag" id="lang-flag-allergy">🇺🇸</span><div class="ss-chips" id="allergy-fl-out"><span class="ss-empty">—</span></div></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:4px">
     <button onclick="goSub(1)" style="flex:1;padding:11px;border:0.5px solid #E5E5EA;border-radius:8px;background:#fff;color:#8E8E93;font-size:12px;cursor:pointer">← 施術歴に戻る</button>
     <button onclick="goSub(3)" style="flex:2;padding:11px;border:none;border-radius:8px;background:#534AB7;color:#fff;font-size:12px;font-weight:600;cursor:pointer">次へ：本日のご希望 →</button>
   </div>
@@ -467,29 +451,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
 
 <!-- ══ 2-3 本日のご希望 ══ -->
 <div id="sub2-3" style="display:none">
-  <div class="card">
-    <div class="card-title" style="display:flex;align-items:center;gap:8px">
-      <span style="background:#3B6D11;color:#fff;font-size:10px;padding:2px 8px;border-radius:999px">2-3</span>
-      本日のご希望
-    </div>
-    <!-- 案内文3段 -->
-    <div style="background:#F0FAF0;border-radius:8px;padding:10px 13px;margin-bottom:10px;border-left:3px solid #3B6D11">
-      <div style="font-size:11px;color:#8E8E93;margin-bottom:5px;font-weight:500">📋 お客様に見せる / 美容師が読み上げる</div>
-      <div style="font-size:12px;color:#3B6D11;font-weight:500;margin-bottom:3px">本日はどのようなメニューをご希望ですか？</div>
-      <div id="menu-q-lang" style="font-size:15px;font-weight:500;color:#1C1C1E;margin-bottom:3px;line-height:1.6"></div>
-      <div id="menu-q-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none"></div>
-    </div>
-    <!-- 美容師側チップ -->
-    <div class="chips-wrap" style="margin-bottom:0">
-      <div class="birgroup" id="menu-chips"></div>
-      <div class="selection-summary" style="margin-top:8px">
-        <div class="ss-label">📋 選択中のメニュー</div>
-        <div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="menu-ja-out"><span class="ss-empty">未選択</span></div></div>
-        <div class="ss-row"><span class="ss-flag" id="lang-flag-menu">🇺🇸</span><div class="ss-chips" id="menu-fl-out"><span class="ss-empty">—</span></div></div>
-      </div>
-    </div>
-  </div>
-  <!-- お客様に見せる画面 -->
+  <!-- お客様に見せる -->
   <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
     <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
     <div style="padding:14px">
@@ -498,13 +460,25 @@ input[type=range]{width:100%;accent-color:#1D9E75}
       <div id="menu-client-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;margin-top:5px;display:none"></div>
     </div>
   </div>
-  <div style="display:flex;gap:8px;margin-top:0">
+  <!-- 美容師側カード -->
+  <div class="card">
+    <div class="card-title" style="display:flex;align-items:center;gap:8px">
+      <span style="background:#3B6D11;color:#fff;font-size:10px;padding:2px 8px;border-radius:999px">2-3</span>
+      本日のご希望
+    </div>
+    <div class="birgroup" id="menu-chips"></div>
+    <div class="selection-summary" style="margin-top:8px">
+      <div class="ss-label">📋 選択中のメニュー</div>
+      <div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="menu-ja-out"><span class="ss-empty">未選択</span></div></div>
+      <div class="ss-row"><span class="ss-flag" id="lang-flag-menu">🇺🇸</span><div class="ss-chips" id="menu-fl-out"><span class="ss-empty">—</span></div></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:4px">
     <button onclick="goSub(2)" style="flex:1;padding:11px;border:0.5px solid #E5E5EA;border-radius:8px;background:#fff;color:#8E8E93;font-size:12px;cursor:pointer">← アレルギーに戻る</button>
-    <button class="next-btn nb2" onclick="goSub(4)" style="flex:2;margin-top:0">確認画面へ →</button>
+    <button onclick="goSub(4)" style="flex:2;padding:11px;border:none;border-radius:8px;background:#3B6D11;color:#fff;font-size:12px;font-weight:600;cursor:pointer">確認画面へ →</button>
   </div>
 </div>
 
-<!-- 2-4 お客様確認（最終確認画面） -->
 <div id="sub2-4" style="display:none">
   <!-- お客様向け確認画面（緑枠） -->
   <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:10px;cursor:pointer">
@@ -671,7 +645,29 @@ input[type=range]{width:100%;accent-color:#1D9E75}
       </div>
     </div>
     <!-- ホームケア -->
-    <div class="card"><div class="card-title" id="fc2-title">次回予約・ホームケア</div><div class="care-grid"><div class="ccard"><div class="ico">💊</div><div class="nm" id="care1-nm">アウトバスオイル</div><div class="ds" id="care1-ds">Apply to damp hair</div></div><div class="ccard"><div class="ico">🧴</div><div class="nm" id="care2-nm">保湿シャンプー</div><div class="ds" id="care2-ds">Daily moisturizing</div></div></div></div>
+    <div class="card">
+  <div class="card-title" style="display:flex;align-items:center;gap:8px;margin-bottom:8px" id="fc2-title">次回予約・ホームケア</div>
+  <!-- 3段案内文 -->
+  <div style="background:#EAF3DE;border-radius:8px;padding:10px 13px;margin-bottom:10px;border-left:3px solid #3B6D11">
+    <div style="font-size:11px;color:#8E8E93;margin-bottom:4px;font-weight:500">📋 次回予約のご提案</div>
+    <div style="font-size:12px;color:#3B6D11;font-weight:500;margin-bottom:3px">次回のご予約はいかがですか？</div>
+    <div id="care-q-lang" style="font-size:15px;font-weight:500;color:#1C1C1E;margin-bottom:3px;line-height:1.6"></div>
+    <div id="care-q-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none"></div>
+  </div>
+  <div class="care-grid"><div class="ccard" onclick="openCareModal(1)" style="cursor:pointer">
+  <div class="ico">💊</div>
+  <div class="nm" id="care1-nm">アウトバスオイル</div>
+  <div id="care1-lang" style="font-size:12px;font-weight:500;color:#1D9E75;margin-top:3px;display:none"></div>
+  <div class="ds" id="care1-ds">Apply to damp hair</div>
+  <div id="care1-kana" style="font-size:10px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:3px;padding:1px 5px;margin-top:3px;display:none"></div>
+</div>
+<div class="ccard" onclick="openCareModal(2)" style="cursor:pointer">
+  <div class="ico">🧴</div>
+  <div class="nm" id="care2-nm">保湿シャンプー</div>
+  <div id="care2-lang" style="font-size:12px;font-weight:500;color:#1D9E75;margin-top:3px;display:none"></div>
+  <div class="ds" id="care2-ds">Daily moisturizing</div>
+  <div id="care2-kana" style="font-size:10px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:3px;padding:1px 5px;margin-top:3px;display:none"></div>
+</div></div></div>
   </div>
   <!-- お客様向け表示 -->
   <div class="client-screen" onclick="openClientModal(this)" style="cursor:pointer">
@@ -1175,16 +1171,16 @@ var MENU_Q={
 };
 
 function updateSubQ(elLangId, elKanaId, dataObj){
+  /* HTML要素がある場合のみ更新（削除済みの案内文ブロックは無視） */
   var ql=document.getElementById(elLangId);
   var qk=document.getElementById(elKanaId);
-  if(!ql||!qk)return;
   var d=dataObj[lang]||dataObj.en;
-  if(lang==='ja'){
-    ql.textContent=''; qk.style.display='none'; qk.textContent='';
-  } else {
-    ql.textContent=d.txt||'';
-    if(d.kana){qk.style.display='';qk.textContent='🗣 '+d.kana;}
-    else{qk.style.display='none';}
+  if(ql){
+    ql.textContent=lang==='ja'?'':d.txt||'';
+  }
+  if(qk){
+    if(lang==='ja'||!d.kana){qk.style.display='none';qk.textContent='';}
+    else{qk.style.display='';qk.textContent='🗣 '+d.kana;}
   }
 }
 function updateAllSubQ(){
@@ -1496,6 +1492,47 @@ function applyLang(){
   updateFeeDisplay();
   var tm=g('tip-msg');if(tm)tm.textContent=gt('tip');var ds=g('done-s');if(ds)ds.textContent=gt('done_after');var qn=g('qr-next-lbl');if(qn)qn.textContent=gt('qr_next');var fc=g('fc2-title');if(fc)fc.textContent=gt('next_appt');
   g('care1-nm').textContent=gt('care1_nm');g('care1-ds').textContent=gt('care1_ds');g('care2-nm').textContent=gt('care2_nm');g('care2-ds').textContent=gt('care2_ds');
+  /* ホームケアカード言語更新 */
+  var CARE_ITEMS=[
+    {nm_en:'Leave-in hair oil',   nm_en_k:'リーブイン ヘア オイル',
+     nm_zh:'免洗护发油',            nm_zh_k:'ミエン シー フー ファ ヨウ',
+     nm_ko:'아웃바스 오일',          nm_ko_k:'アウトバス オイル',
+     ds_en:'Apply to damp hair',  ds_en_k:'アプライ トゥ ダンプ ヘア',
+     ds_zh:'湿发时使用，提升光泽',    ds_zh_k:'シー ファ シー シー ヨン',
+     ds_ko:'젖은 머리에 발라 윤기 연출', ds_ko_k:'チョジュン モリエ バルラ'},
+    {nm_en:'Moisturizing shampoo', nm_en_k:'モイスチャライジング シャンプー',
+     nm_zh:'保湿洗发水',             nm_zh_k:'バオ シー シー ファ シュイ',
+     nm_ko:'보습 샴푸',              nm_ko_k:'ボスプ シャンプ',
+     ds_en:'Daily use for hydration', ds_en_k:'デイリー ユース フォー ハイドレーション',
+     ds_zh:'日常使用，保持滋润',       ds_zh_k:'リー チャン シー ヨン',
+     ds_ko:'매일 사용으로 촉촉한 모발', ds_ko_k:'メイル サヨンウロ チョクチョカン'}
+  ];
+  [1,2].forEach(function(n){
+    var it=CARE_ITEMS[n-1];
+    var nm_lang=lang==='zh'?it.nm_zh:(lang==='ko'?it.nm_ko:it.nm_en);
+    var nm_kana=lang==='zh'?it.nm_zh_k:(lang==='ko'?it.nm_ko_k:it.nm_en_k);
+    var langEl=document.getElementById('care'+n+'-lang');
+    var kanaEl=document.getElementById('care'+n+'-kana');
+    if(langEl){langEl.textContent=nm_lang;langEl.style.display=lang!=='ja'?'':'none';}
+    if(kanaEl){kanaEl.textContent='🗣 '+nm_kana;kanaEl.style.display=lang!=='ja'?'':'none';}
+  });
+  /* ホームケア次回予約案内文 */
+  var CARE_Q={
+    en:{txt:'Would you like to make your next appointment?',
+        kana:'ウッド ユー ライク トゥ メイク ユア ネクスト アポイントメント？'},
+    zh:{txt:'您想预约下次的时间吗？',
+        kana:'ニン シャン ユー ユエ シャ ツー ダ シー ジェン マ？'},
+    ko:{txt:'다음 예약을 잡으시겠어요?',
+        kana:'タウム イェヤグル チャブシゲッソヨ？'},
+    ja:{txt:'',kana:''}
+  };
+  var cql=document.getElementById('care-q-lang');
+  var cqk=document.getElementById('care-q-kana');
+  if(cql){
+    var cqd=CARE_Q[lang]||CARE_Q.en;
+    cql.textContent=lang==='ja'?'':cqd.txt;
+    if(cqk){cqk.textContent=cqd.kana?'🗣 '+cqd.kana:'';cqk.style.display=(lang!=='ja'&&cqd.kana)?'':'none';}
+  }
   var dt=g('done-t');if(dt)dt.textContent=gt('done_t');var ds2=g('done-s2');if(ds2)ds2.textContent=gt('done_after');
   var ts=g('top-sub');if(ts)ts.textContent={en:'Multilingual Salon Counseling',zh:'多语言美容院咨询系统',ko:'다국어 미용실 카운슬링',ja:'多言語カウンセリングシステム'}[lang];
   var tk=KANA.tip[lang];var ktw=g('kana-tip');if(ktw){ktw.style.display=(lang==='ja'||!tk)?'none':'';var ktt=g('kana-tip-text');if(ktt)ktt.textContent=tk||'';}
@@ -1789,7 +1826,9 @@ function buildSD(step){
     if(jpTxt)th+='<div class="sd-trans-jp">日本語：'+jpTxt+'</div>';
     if(kanaTxt)th+='<div class="sd-trans-kana">🗣 '+kanaTxt+'</div>';
     var tr=document.createElement('div');tr.className='sd-item';
-    tr.innerHTML='<div><div class="sd-jp">'+it.jp+'</div></div><div><span class="sd-badge" style="background:'+it.bc+'22;color:'+it.bc+'">'+it.badge+'</span><div class="sd-ctx">'+it.ctx+'</div></div><div>'+th+'</div>';
+    tr.style.cursor='pointer';
+    tr.innerHTML='<div><div class="sd-jp">'+it.jp+'</div></div><div><span class="sd-badge" style="background:'+it.bc+'22;color:'+it.bc+'">'+it.badge+'</span><div class="sd-ctx">'+it.ctx+'</div></div><div>'+th+'</div><div style="font-size:18px;color:#C0C0C0;align-self:center">›</div>';
+    tr.onclick=(function(item,badgeColor){return function(){openSdModal(item,badgeColor);};})(it,it.bc);
     body.appendChild(tr);
   });
   if(sdOpen)body.classList.add('open');
@@ -1844,6 +1883,102 @@ function buildFD(){
 function toggleFD(){fdOpen=!fdOpen;var body=g('fd-body'),hdr=g('fd-hdr'),chev=g('fd-chev');if(body)body.classList.toggle('open',fdOpen);if(hdr)hdr.classList.toggle('open',fdOpen);if(chev)chev.style.transform=fdOpen?'rotate(180deg)':'';}
 
 /* ── 全項目辞書モーダル ── */
+
+/* ── 場面別辞書モーダル ── */
+
+/* ── ホームケアカードモーダル ── */
+var CARE_MODAL_DATA=[
+  {jp_nm:'アウトバスオイル', jp_ds:'濡れた髪に使用・艶と潤いをプラス',
+   en_nm:'Leave-in hair oil',      en_nm_k:'リーブイン ヘア オイル',
+   en_ds:'Apply to damp hair',     en_ds_k:'アプライ トゥ ダンプ ヘア',
+   zh_nm:'免洗护发油',               zh_nm_k:'ミエン シー フー ファ ヨウ',
+   zh_ds:'湿发时使用，提升光泽',      zh_ds_k:'シー ファ シー シー ヨン チー シェン グアン ズェ',
+   ko_nm:'아웃바스 오일',             ko_nm_k:'アウトバス オイル',
+   ko_ds:'젖은 머리에 발라 윤기 연출', ko_ds_k:'チョジュン モリエ バルラ ユンギ ヨンチュル'},
+  {jp_nm:'保湿シャンプー', jp_ds:'毎日使いでしっとり髪質をキープ',
+   en_nm:'Moisturizing shampoo',   en_nm_k:'モイスチャライジング シャンプー',
+   en_ds:'Daily use for hydration',en_ds_k:'デイリー ユース フォー ハイドレーション',
+   zh_nm:'保湿洗发水',               zh_nm_k:'バオ シー シー ファ シュイ',
+   zh_ds:'日常使用，保持发丝滋润',    zh_ds_k:'リー チャン シー ヨン バオ チー ファ スー ズー ルン',
+   ko_nm:'보습 샴푸',                ko_nm_k:'ボスプ シャンプ',
+   ko_ds:'매일 사용으로 촉촉한 모발', ko_ds_k:'メイル サヨンウロ チョクチョカン モバル'}
+];
+
+function openCareModal(n){
+  var modal=document.getElementById('care-modal');
+  if(!modal)return;
+  var it=CARE_MODAL_DATA[n-1];if(!it)return;
+  var title=document.getElementById('care-modal-title');
+  if(title)title.textContent=(n===1?'💊 ':'🧴 ')+it.jp_nm;
+  /* 日本語 */
+  var jn=document.getElementById('care-modal-jp-nm');
+  var jd=document.getElementById('care-modal-jp-ds');
+  if(jn)jn.textContent=it.jp_nm;
+  if(jd)jd.textContent=it.jp_ds;
+  /* 選択言語 */
+  var langNm=lang==='zh'?it.zh_nm:(lang==='ko'?it.ko_nm:it.en_nm);
+  var langDs=lang==='zh'?it.zh_ds:(lang==='ko'?it.ko_ds:it.en_ds);
+  var kNm=lang==='zh'?it.zh_nm_k:(lang==='ko'?it.ko_nm_k:it.en_nm_k);
+  var kDs=lang==='zh'?it.zh_ds_k:(lang==='ko'?it.ko_ds_k:it.en_ds_k);
+  var ln=document.getElementById('care-modal-lang-nm');
+  var ld=document.getElementById('care-modal-lang-ds');
+  var kn=document.getElementById('care-modal-kana-nm');
+  var kd=document.getElementById('care-modal-kana-ds');
+  if(ln)ln.textContent=langNm;
+  if(ld)ld.textContent=langDs;
+  if(kn){kn.textContent=kNm?'🗣 '+kNm:'';kn.style.display=kNm?'':'none';}
+  if(kd){kd.textContent=kDs?'🗣 '+kDs:'';kd.style.display=kDs?'':'none';}
+  /* 3言語 */
+  function setLang(idNm,idK,nm,k){
+    var el=document.getElementById(idNm);var ek=document.getElementById(idK);
+    if(el)el.textContent=nm;
+    if(ek){ek.textContent=k?'🗣 '+k:'';ek.style.display=k?'':'none';}
+  }
+  setLang('care-modal-en','care-modal-en-kana',it.en_nm,it.en_nm_k);
+  setLang('care-modal-zh','care-modal-zh-kana',it.zh_nm,it.zh_nm_k);
+  setLang('care-modal-ko','care-modal-ko-kana',it.ko_nm,it.ko_nm_k);
+  modal.style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closeCareModal(){
+  var modal=document.getElementById('care-modal');
+  if(modal)modal.style.display='none';
+  document.body.style.overflow='';
+}
+
+function openSdModal(it, badgeColor){
+  var modal=document.getElementById('sd-modal');
+  if(!modal)return;
+  var bar=document.getElementById('sd-modal-bar');
+  if(bar)bar.style.background=badgeColor||'#1D9E75';
+  var title=document.getElementById('sd-modal-title');
+  if(title)title.textContent='📋 '+it.badge+' — '+it.jp;
+  var jp=document.getElementById('sd-modal-jp');
+  var cx=document.getElementById('sd-modal-ctx');
+  if(jp)jp.textContent=it.jp;
+  if(cx)cx.textContent=it.ctx;
+  /* 選択言語テキスト */
+  var mainTxt,jpSub,kanaTxt;
+  if(lang==='zh'){mainTxt=it.zh;jpSub=it.zh_jp;kanaTxt=it.zh_kana;}
+  else if(lang==='ko'){mainTxt=it.ko;jpSub=it.ko_jp;kanaTxt=it.ko_kana;}
+  else{mainTxt=it.en;jpSub='';kanaTxt=it.en_kana||'';}
+  var mn=document.getElementById('sd-modal-main');
+  var js2=document.getElementById('sd-modal-jp-sub');
+  var kn=document.getElementById('sd-modal-kana');
+  if(mn)mn.textContent=mainTxt||'';
+  if(js2){js2.textContent=jpSub?'日本語：'+jpSub:'';js2.style.display=jpSub?'':'none';}
+  if(kn){kn.textContent=kanaTxt?'🗣 '+kanaTxt:'';kn.style.display=kanaTxt?'':'none';}
+  var note=document.getElementById('sd-modal-note');
+  if(note)note.textContent=it.note?'⚠ '+it.note:'';
+  modal.style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closeSdModal(){
+  var modal=document.getElementById('sd-modal');
+  if(modal)modal.style.display='none';
+  document.body.style.overflow='';
+}
+
 function openDictModal(it, cat){
   var modal=document.getElementById('dict-modal');
   if(!modal)return;
@@ -2214,6 +2349,96 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeClientM
       </div>
       <!-- 注意事項 -->
       <div id="dict-modal-note" style="margin-top:12px;padding:8px 12px;background:#F2F2F7;border-radius:8px;font-size:11px;color:#8E8E93"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 場面別辞書モーダル ── -->
+<div id="sd-modal" onclick="closeSdModal()" style="
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,.65);z-index:10000;
+  justify-content:flex-end;align-items:stretch;flex-direction:column;
+">
+  <div onclick="event.stopPropagation()" style="
+    background:#fff;border-radius:20px 20px 0 0;
+    max-height:85vh;display:flex;flex-direction:column;
+    box-shadow:0 -10px 40px rgba(0,0,0,.25);overflow:hidden;
+  ">
+    <div id="sd-modal-bar" style="background:#1D9E75;padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0">
+      <div style="width:8px;height:8px;border-radius:50%;background:#fff;opacity:.7;animation:pulse 1.4s ease-in-out infinite"></div>
+      <span style="font-size:13px;color:#fff;font-weight:600;flex:1" id="sd-modal-title">用語</span>
+      <button onclick="closeSdModal()" style="background:rgba(255,255,255,.2);border:none;color:#fff;font-size:18px;font-weight:700;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center">×</button>
+    </div>
+    <div style="overflow-y:auto;flex:1;padding:16px">
+      <!-- 日本語 -->
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;color:#8E8E93;font-weight:500;margin-bottom:4px">🇯🇵 日本語</div>
+        <div id="sd-modal-jp" style="font-size:22px;font-weight:700;color:#1C1C1E;margin-bottom:4px"></div>
+        <div id="sd-modal-ctx" style="font-size:12px;color:#8E8E93"></div>
+      </div>
+      <hr style="border:none;border-top:0.5px solid #E5E5EA;margin-bottom:14px">
+      <!-- お客様向け -->
+      <div style="background:#F9F9FB;border-radius:12px;padding:14px;margin-bottom:12px">
+        <div style="font-size:11px;color:#8E8E93;font-weight:500;margin-bottom:8px">📱 選択言語（お客様向け）</div>
+        <div id="sd-modal-main" style="font-size:26px;font-weight:700;color:#1C1C1E;line-height:1.4;margin-bottom:6px"></div>
+        <div id="sd-modal-jp-sub" style="font-size:12px;color:#633806;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none;margin-bottom:6px"></div>
+        <div id="sd-modal-kana" style="font-size:12px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:none"></div>
+      </div>
+      <!-- 注意 -->
+      <div id="sd-modal-note" style="padding:8px 12px;background:#F2F2F7;border-radius:8px;font-size:11px;color:#8E8E93"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ホームケアモーダル ── -->
+<div id="care-modal" onclick="closeCareModal()" style="
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,.65);z-index:10000;
+  justify-content:flex-end;align-items:stretch;flex-direction:column;">
+  <div onclick="event.stopPropagation()" style="
+    background:#fff;border-radius:20px 20px 0 0;
+    max-height:80vh;display:flex;flex-direction:column;
+    box-shadow:0 -10px 40px rgba(0,0,0,.25);overflow:hidden;">
+    <div style="background:#3B6D11;padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0">
+      <div style="width:8px;height:8px;border-radius:50%;background:#fff;opacity:.7;animation:pulse 1.4s ease-in-out infinite"></div>
+      <span style="font-size:13px;color:#fff;font-weight:600;flex:1" id="care-modal-title">ホームケア</span>
+      <button onclick="closeCareModal()" style="background:rgba(255,255,255,.2);border:none;color:#fff;font-size:18px;font-weight:700;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center">×</button>
+    </div>
+    <div style="overflow-y:auto;flex:1;padding:16px">
+      <!-- 日本語 -->
+      <div style="margin-bottom:12px">
+        <div style="font-size:11px;color:#8E8E93;font-weight:500;margin-bottom:4px">🇯🇵 日本語</div>
+        <div id="care-modal-jp-nm" style="font-size:20px;font-weight:700;color:#1C1C1E;margin-bottom:3px"></div>
+        <div id="care-modal-jp-ds" style="font-size:13px;color:#8E8E93"></div>
+      </div>
+      <hr style="border:none;border-top:0.5px solid #E5E5EA;margin-bottom:12px">
+      <!-- お客様向け -->
+      <div style="background:#F9F9FB;border-radius:12px;padding:14px;margin-bottom:12px">
+        <div style="font-size:11px;color:#8E8E93;font-weight:500;margin-bottom:8px">📱 選択言語（お客様向け）</div>
+        <div id="care-modal-lang-nm" style="font-size:24px;font-weight:700;color:#1C1C1E;margin-bottom:4px;line-height:1.4"></div>
+        <div id="care-modal-lang-ds" style="font-size:13px;color:#8E8E93;margin-bottom:8px"></div>
+        <div id="care-modal-kana-nm" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:none;margin-bottom:4px"></div>
+        <div id="care-modal-kana-ds" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:none"></div>
+      </div>
+      <!-- 3言語 -->
+      <div style="font-size:11px;color:#8E8E93;font-weight:500;margin-bottom:8px">📖 全言語</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div style="background:#fff;border:0.5px solid #E5E5EA;border-radius:8px;padding:10px">
+          <div style="font-size:12px;margin-bottom:4px">🇺🇸</div>
+          <div id="care-modal-en" style="font-size:12px;font-weight:600;color:#1C1C1E;margin-bottom:3px"></div>
+          <div id="care-modal-en-kana" style="font-size:9px;color:#85500B;background:#FFF8E7;border-radius:3px;padding:1px 4px;display:none"></div>
+        </div>
+        <div style="background:#fff;border:0.5px solid #E5E5EA;border-radius:8px;padding:10px">
+          <div style="font-size:12px;margin-bottom:4px">🇨🇳</div>
+          <div id="care-modal-zh" style="font-size:12px;font-weight:600;color:#1C1C1E;margin-bottom:3px"></div>
+          <div id="care-modal-zh-kana" style="font-size:9px;color:#85500B;background:#FFF8E7;border-radius:3px;padding:1px 4px;display:none"></div>
+        </div>
+        <div style="background:#fff;border:0.5px solid #E5E5EA;border-radius:8px;padding:10px">
+          <div style="font-size:12px;margin-bottom:4px">🇰🇷</div>
+          <div id="care-modal-ko" style="font-size:12px;font-weight:600;color:#1C1C1E;margin-bottom:3px"></div>
+          <div id="care-modal-ko-kana" style="font-size:9px;color:#85500B;background:#FFF8E7;border-radius:3px;padding:1px 4px;display:none"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
