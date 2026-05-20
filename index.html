@@ -118,9 +118,9 @@ body{font-family:system-ui,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif
 
 /* ── スライダー ── */
 .slrow{margin-bottom:10px}
-.slabel{display:flex;justify-content:space-between;font-size:12px;color:#8E8E93;margin-bottom:4px}
-.sl-lbl-wrap{display:flex;flex-direction:column;gap:1px}
-.sl-tl-fixed{font-size:10px;color:#1D9E75;font-weight:500;line-height:1.5;white-space:normal;word-break:keep-all}
+.slabel{display:flex;justify-content:space-between;font-size:13px;color:#1C1C1E;margin-bottom:4px;font-weight:600}
+.sl-lbl-wrap{display:flex;flex-direction:column;gap:2px}
+.sl-tl-fixed{font-size:11px;color:#1D9E75;font-weight:500;line-height:1.5;white-space:normal;word-break:keep-all}
 input[type=range]{width:100%;accent-color:#1D9E75;height:6px}
 
 /* ── 提案ボタン ── */
@@ -1393,7 +1393,6 @@ function applyLang(){
   var yns=g('yn-no-sub');if(yns)yns.textContent=gt('yn_no_sub');
   var yor=g('yn-or');if(yor)yor.textContent=gt('yn_or');
   ['en','zh','ko','ja'].forEach(function(l){var el=g('yn-chips-'+l);if(el)el.style.display=l===lang?'flex':'none';});
-  g('sl1a').textContent=gt('sl1a');g('sl1b').textContent=gt('sl1b');g('sl2a').textContent=gt('sl2a');g('sl2b').textContent=gt('sl2b');
   Object.keys(T.phrases).forEach(function(k){
     var el=g('ph-'+k);if(el)el.textContent=T.phrases[k][lang]||T.phrases[k].en;
     var ke=g('ph-kana-'+k);if(ke){
@@ -2089,7 +2088,7 @@ function updateCounselTL(){
     var d=SL_TL[sid];
     var txt=lang==='zh'?d.zh:(lang==='ko'?d.ko:d.en);
     var kana=lang==='zh'?d.zh_k:(lang==='ko'?d.ko_k:d.en_k);
-    el.innerHTML='<span style="display:block;color:#1D9E75;font-size:9px;font-weight:500">'+txt+'</span>'+(kana?'<span style="display:block;color:#85500B;font-size:9px;font-weight:500;background:#FFF8E7;border-radius:3px;padding:0 2px">🗣 '+kana+'</span>':'');
+    el.innerHTML='<span style="display:block;color:#1D9E75;font-size:11px;font-weight:600">'+txt+'</span>'+(kana?'<span style="display:block;color:#85500B;font-size:10px;font-weight:500;background:#FFF8E7;border-radius:3px;padding:1px 3px">🗣 '+kana+'</span>':'');
   });
   /* 仕上がりイメージチップ翻訳（言語＋カタカナ別行） */
   FINISH_TL_DATA.forEach(function(d,i){
