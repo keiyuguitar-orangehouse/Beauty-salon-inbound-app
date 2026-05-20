@@ -6,217 +6,277 @@
 <title>美容室インバウンド接客アプリ v8</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:#F2F2F7;color:#1C1C1E}
-#app{max-width:980px;margin:0 auto;padding:14px}
-.top-bar{background:#fff;border:0.5px solid #E5E5EA;border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.top-bar-title{font-size:14px;font-weight:600;color:#1C1C1E;flex:1}
+body{font-family:system-ui,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:#F2F2F7;color:#1C1C1E;font-size:16px}
+#app{max-width:600px;margin:0 auto;padding:10px}
+
+/* ── トップバー ── */
+.top-bar{background:#fff;border:0.5px solid #E5E5EA;border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:8px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.top-bar-title{font-size:15px;font-weight:700;color:#1C1C1E;flex:1}
 .lang-row{display:flex;gap:4px;flex-shrink:0}
-.lb{font-size:11px;padding:5px 10px;border:0.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#F2F2F7;color:#8E8E93;transition:all .12s}
+.lb{font-size:13px;padding:7px 11px;border:1.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#F2F2F7;color:#8E8E93;transition:all .12s;font-weight:600}
 .lb.on{background:#1D9E75;color:#fff;border-color:#1D9E75}
-.step-nav{display:flex;gap:5px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
-.snb{flex:0 0 auto;font-size:11px;padding:6px 11px;border:0.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#fff;color:#8E8E93;white-space:nowrap;transition:all .2s}
+
+/* ── ステップナビ ── */
+.step-nav{display:flex;gap:5px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px}
+.snb{flex:0 0 auto;font-size:13px;padding:8px 13px;border:1.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#fff;color:#8E8E93;white-space:nowrap;transition:all .2s;font-weight:600}
 .snb.active{color:#fff;border-color:transparent}
 .snb.s1.active{background:#1D9E75}.snb.s2.active{background:#534AB7}.snb.s3.active{background:#BA7517}.snb.s4.active{background:#D85A30}.snb.s5.active{background:#3B6D11}
 .snb.done{border-color:transparent;color:#fff;opacity:.75}
 .snb.s1.done{background:#1D9E75}.snb.s2.done{background:#534AB7}.snb.s3.done{background:#BA7517}.snb.s4.done{background:#D85A30}.snb.s5.done{background:#3B6D11}
-.snb.done::after{content:'✓';margin-left:4px;font-size:10px}
+.snb.done::after{content:'✓';margin-left:4px;font-size:11px}
+
+/* ── 画面切替 ── */
 .screen{display:none}.screen.on{display:block}
-.card{background:#fff;border:0.5px solid #E5E5EA;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-.card-title{font-size:12px;color:#8E8E93;margin-bottom:10px;font-weight:500}
+
+/* ── カード ── */
+.card{background:#fff;border:0.5px solid #E5E5EA;border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.card-title{font-size:14px;color:#8E8E93;margin-bottom:10px;font-weight:600}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
-.chip{font-size:12px;padding:5px 12px;border:0.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#F2F2F7;color:#8E8E93;transition:all .12s}
+
+/* ── チップ（選択タグ） ── */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.chip{font-size:14px;padding:7px 14px;border:1.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#F2F2F7;color:#8E8E93;transition:all .12s;font-weight:500}
 .chip.on{background:#E1F5EE;color:#085041;border-color:#1D9E75}
-.chip.red.on{background:#FAECE7;color:#993C1D;border-color:#D85A30}.chip-tl{font-size:9px;color:#1D9E75;display:block;line-height:1.4;font-weight:500}.chip-kana{font-size:9px;color:#85500B;background:#FFF8E7;display:block;line-height:1.3;padding:1px 3px;border-radius:3px;margin-top:1px}
+.chip.red.on{background:#FAECE7;color:#993C1D;border-color:#D85A30}
+.chip-tl{font-size:11px;color:#1D9E75;display:block;line-height:1.4;font-weight:500}
+.chip-kana{font-size:10px;color:#85500B;background:#FFF8E7;display:block;line-height:1.3;padding:1px 4px;border-radius:3px;margin-top:1px}
+
+/* ── 言語カード ── */
 .lang-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
-.lcard{background:#F2F2F7;border:0.5px solid #E5E5EA;border-radius:12px;padding:16px 8px;text-align:center;cursor:pointer;transition:all .12s}
-.lcard.on{border:1.5px solid #1D9E75;background:#E1F5EE}
-.lcard .flag{font-size:26px;margin-bottom:5px}
-.lcard .lng{font-size:13px;font-weight:600;color:#1C1C1E}
-.lcard .sub{font-size:10px;color:#8E8E93;margin-top:2px}
-.client-screen{background:#fff;border:2px solid #1D9E75;border-radius:12px;overflow:hidden}
-.client-bar{background:#1D9E75;padding:8px 14px;display:flex;align-items:center;gap:8px}
-.client-bar-dot{width:8px;height:8px;border-radius:50%;background:#fff;opacity:.7;animation:pulse 1.4s ease-in-out infinite}
+.lcard{background:#F2F2F7;border:1.5px solid #E5E5EA;border-radius:12px;padding:14px 6px;text-align:center;cursor:pointer;transition:all .12s}
+.lcard.on{border:2px solid #1D9E75;background:#E1F5EE}
+.lcard .flag{font-size:28px;margin-bottom:5px}
+.lcard .lng{font-size:14px;font-weight:700;color:#1C1C1E}
+.lcard .sub{font-size:11px;color:#8E8E93;margin-top:2px}
+
+/* ── お客様向け画面 ── */
+.client-screen{background:#fff;border:2.5px solid #1D9E75;border-radius:14px;overflow:hidden}
+.client-bar{background:#1D9E75;padding:9px 14px;display:flex;align-items:center;gap:8px}
+.client-bar-dot{width:9px;height:9px;border-radius:50%;background:#fff;opacity:.7;animation:pulse 1.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
-.client-bar-lbl{font-size:11px;color:#fff;font-weight:500;flex:1}
-.client-bar-back{font-size:11px;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;cursor:pointer}
-.jp-gloss{font-size:11px;color:#633806;background:#FFF8E7;border:0.5px solid #FAC775;border-radius:4px;padding:3px 8px;margin-top:5px;display:inline-block;line-height:1.5}
-.jp-gloss-label{font-size:9px;color:#85500B;font-weight:500;margin-right:4px}
-.kana-guide{margin-top:8px;padding:7px 11px;background:#FFF8E7;border:0.5px solid #FAC775;border-radius:8px}
-.kana-guide-label{font-size:9px;color:#633806;margin-bottom:2px;font-weight:500}
-.kana-text{font-size:12px;color:#412402;line-height:1.8;font-weight:500}
-.bilabel{font-size:11px;color:#8E8E93;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.client-bar-lbl{font-size:13px;color:#fff;font-weight:600;flex:1}
+.client-bar-back{font-size:12px;padding:5px 12px;border-radius:999px;border:1.5px solid rgba(255,255,255,.6);background:transparent;color:#fff;cursor:pointer;font-weight:500}
+
+/* ── 注釈・読み方 ── */
+.jp-gloss{font-size:12px;color:#633806;background:#FFF8E7;border:0.5px solid #FAC775;border-radius:6px;padding:4px 10px;margin-top:6px;display:inline-block;line-height:1.6}
+.jp-gloss-label{font-size:10px;color:#85500B;font-weight:600;margin-right:4px}
+.kana-guide{margin-top:8px;padding:8px 12px;background:#FFF8E7;border:0.5px solid #FAC775;border-radius:8px}
+.kana-guide-label{font-size:10px;color:#633806;margin-bottom:2px;font-weight:600}
+.kana-text{font-size:14px;color:#412402;line-height:1.8;font-weight:500}
+.bilabel{font-size:13px;color:#8E8E93;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+/* ── 双語チップ（bichip） ── */
 .chips-wrap{margin-bottom:12px}
-.bichips{display:flex;flex-wrap:wrap;gap:6px}
-.bichip{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border:0.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#F2F2F7;transition:all .12s}
-.bichip .ja{font-size:12px;color:#1C1C1E;font-weight:500}
-.bichip .fl{font-size:11px;color:#8E8E93}
+.bichips{display:flex;flex-wrap:wrap;gap:7px}
+.bichip{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;border:1.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#F2F2F7;transition:all .12s}
+.bichip .ja{font-size:15px;color:#1C1C1E;font-weight:600}
+.bichip .fl{font-size:13px;color:#8E8E93}
 .bichip.on{background:#E1F5EE;border-color:#1D9E75}.bichip.on .ja{color:#085041}.bichip.on .fl{color:#1D9E75}
 .bichip.red.on{background:#FAECE7;border-color:#D85A30}.bichip.red.on .ja{color:#993C1D}.bichip.red.on .fl{color:#D85A30}
-.selection-summary{background:#F2F2F7;border:0.5px solid #E5E5EA;border-radius:8px;padding:10px 12px;margin-top:6px}
-.ss-label{font-size:10px;color:#8E8E93;margin-bottom:6px;font-weight:500}
+
+/* ── 選択サマリー ── */
+.selection-summary{background:#F2F2F7;border:0.5px solid #E5E5EA;border-radius:10px;padding:10px 12px;margin-top:8px}
+.ss-label{font-size:11px;color:#8E8E93;margin-bottom:6px;font-weight:600}
 .ss-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:5px}
 .ss-row:last-child{margin-bottom:0}
-.ss-flag{font-size:14px;flex-shrink:0;margin-top:1px}
+.ss-flag{font-size:16px;flex-shrink:0;margin-top:1px}
 .ss-chips{display:flex;flex-wrap:wrap;gap:4px}
-.ss-chip{font-size:11px;padding:3px 9px;border-radius:999px;background:#fff;border:0.5px solid #E5E5EA;color:#1C1C1E}
+.ss-chip{font-size:12px;padding:4px 10px;border-radius:999px;background:#fff;border:0.5px solid #E5E5EA;color:#1C1C1E;font-weight:500}
 .ss-chip.sel{background:#E1F5EE;border-color:#1D9E75;color:#085041}
 .ss-chip.sel-red{background:#FAECE7;border-color:#D85A30;color:#993C1D}
-.ss-empty{font-size:11px;color:#8E8E93;font-style:italic}
-.birgroup{display:flex;flex-wrap:wrap;gap:6px}
-.birbtn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 14px;border:0.5px solid #E5E5EA;border-radius:8px;cursor:pointer;background:#F2F2F7;transition:all .12s}
-.birbtn .ja{font-size:12px;color:#1C1C1E;font-weight:500}.birbtn .fl{font-size:11px;color:#8E8E93}
+.ss-empty{font-size:13px;color:#8E8E93;font-style:italic}
+
+/* ── メニューボタン ── */
+.birgroup{display:flex;flex-wrap:wrap;gap:7px}
+.birbtn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 16px;border:1.5px solid #E5E5EA;border-radius:10px;cursor:pointer;background:#F2F2F7;transition:all .12s}
+.birbtn .ja{font-size:15px;color:#1C1C1E;font-weight:600}
+.birbtn .fl{font-size:13px;color:#8E8E93}
 .birbtn.on{background:#EEEDFE;border-color:#534AB7}.birbtn.on .ja{color:#534AB7}.birbtn.on .fl{color:#6b4c9a}
-.mode-toggle{display:flex;background:#F2F2F7;border-radius:999px;padding:2px;border:0.5px solid #E5E5EA}
-.mtb{font-size:11px;padding:5px 14px;border-radius:999px;cursor:pointer;background:transparent;border:none;color:#8E8E93;transition:all .12s}
-.mtb.on{background:#fff;color:#1C1C1E;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+
+/* ── モード切替 ── */
+.mode-toggle{display:flex;background:#F2F2F7;border-radius:999px;padding:3px;border:0.5px solid #E5E5EA}
+.mtb{font-size:13px;padding:7px 16px;border-radius:999px;cursor:pointer;background:transparent;border:none;color:#8E8E93;transition:all .12s;font-weight:500}
+.mtb.on{background:#fff;color:#1C1C1E;box-shadow:0 1px 4px rgba(0,0,0,.1);font-weight:700}
+
+/* ── タブ ── */
 .tabs{display:flex;border-bottom:0.5px solid #E5E5EA;margin-bottom:12px}
-.tab{font-size:12px;padding:7px 13px;cursor:pointer;color:#8E8E93;border-bottom:2px solid transparent;margin-bottom:-0.5px;transition:all .12s;white-space:nowrap}
-.tab.on{font-weight:500}
+.tab{font-size:14px;padding:8px 14px;cursor:pointer;color:#8E8E93;border-bottom:2.5px solid transparent;margin-bottom:-0.5px;transition:all .12s;white-space:nowrap;font-weight:500}
+.tab.on{font-weight:700}
 .amber.on{color:#BA7517;border-color:#BA7517}.coral.on{color:#D85A30;border-color:#D85A30}
+
+/* ── ビジュアルグリッド（カット選択） ── */
 .vg{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:12px}
-.vc{border:0.5px solid #E5E5EA;border-radius:8px;cursor:pointer;text-align:center;transition:all .12s;overflow:hidden}
-.vc.on{border:1.5px solid #BA7517;background:#FAEEDA}
-.vi{height:52px;background:#F2F2F7;display:flex;align-items:center;justify-content:center}
+.vc{border:1.5px solid #E5E5EA;border-radius:10px;cursor:pointer;text-align:center;transition:all .12s;overflow:hidden}
+.vc.on{border:2px solid #BA7517;background:#FAEEDA}
+.vi{height:56px;background:#F2F2F7;display:flex;align-items:center;justify-content:center}
 .vc.on .vi{background:#FAEEDA}
-.vl .ja{font-size:10px;font-weight:500;color:#1C1C1E;padding:4px 3px 2px}
-.vl .en{font-size:9px;color:#8E8E93;padding:0 3px 1px}.vc-tl{font-size:9px;color:#1D9E75;display:block;padding:0 3px 1px;font-weight:500;min-height:1px}.vc-kana{font-size:9px;color:#85500B;background:#FFF8E7;display:block;padding:0 3px 4px;font-weight:500;border-radius:0 0 3px 3px}.vc-en{font-size:9px;color:#8E8E93;padding:0 3px 1px}
-.slrow{margin-bottom:9px}
-.slabel{display:flex;justify-content:space-between;font-size:10px;color:#8E8E93;margin-bottom:3px}.sl-lbl-wrap{display:flex;flex-direction:column;gap:1px}.sl-tl-fixed{font-size:9px;color:#1D9E75;font-weight:500;line-height:1.5;white-space:normal;word-break:keep-all}
-input[type=range]{width:100%;accent-color:#1D9E75}
-.prop-btn{width:100%;padding:11px;border:none;border-radius:8px;background:#BA7517;color:#fff;font-size:12px;font-weight:600;cursor:pointer}
-.yn-wrap{padding:18px}
-.yn-suggest-lbl{font-size:13px;color:#8E8E93;text-align:center;margin-bottom:8px}
-.yn-suggest-lbl .jp{font-size:10px;color:#633806;background:#FFF8E7;padding:1px 6px;border-radius:3px;margin-left:5px}
+.vl .ja{font-size:11px;font-weight:600;color:#1C1C1E;padding:4px 3px 2px}
+.vl .en{font-size:9px;color:#8E8E93;padding:0 3px 1px}
+.vc-tl{font-size:10px;color:#1D9E75;display:block;padding:0 3px 1px;font-weight:500;min-height:1px}
+.vc-kana{font-size:9px;color:#85500B;background:#FFF8E7;display:block;padding:0 3px 4px;font-weight:500;border-radius:0 0 3px 3px}
+.vc-en{font-size:9px;color:#8E8E93;padding:0 3px 1px}
+
+/* ── スライダー ── */
+.slrow{margin-bottom:10px}
+.slabel{display:flex;justify-content:space-between;font-size:12px;color:#8E8E93;margin-bottom:4px}
+.sl-lbl-wrap{display:flex;flex-direction:column;gap:1px}
+.sl-tl-fixed{font-size:10px;color:#1D9E75;font-weight:500;line-height:1.5;white-space:normal;word-break:keep-all}
+input[type=range]{width:100%;accent-color:#1D9E75;height:6px}
+
+/* ── 提案ボタン ── */
+.prop-btn{width:100%;padding:13px;border:none;border-radius:10px;background:#BA7517;color:#fff;font-size:15px;font-weight:700;cursor:pointer}
+
+/* ── YES/NOカード（お客様向け） ── */
+.yn-wrap{padding:16px}
+.yn-suggest-lbl{font-size:14px;color:#8E8E93;text-align:center;margin-bottom:8px;font-weight:500}
+.yn-suggest-lbl .jp{font-size:11px;color:#633806;background:#FFF8E7;padding:2px 7px;border-radius:3px;margin-left:5px}
 .yn-card{background:#F2F2F7;border-radius:12px;padding:14px;text-align:center;margin-bottom:14px}
-.yn-main{font-size:24px;font-weight:600;color:#1C1C1E;line-height:1.3;margin-bottom:4px}
-.yn-main .jp-small{font-size:12px;font-weight:400;color:#8E8E93;display:block;margin-top:2px}
-.yn-sub{font-size:13px;color:#8E8E93;margin-bottom:5px}
-.yn-desc{font-size:12px;color:#8E8E93;line-height:1.6}
+.yn-main{font-size:26px;font-weight:700;color:#1C1C1E;line-height:1.3;margin-bottom:4px}
+.yn-main .jp-small{font-size:13px;font-weight:400;color:#8E8E93;display:block;margin-top:2px}
+.yn-sub{font-size:14px;color:#8E8E93;margin-bottom:5px}
+.yn-desc{font-size:14px;color:#8E8E93;line-height:1.6}
 .yn-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.yn-btn{padding:0;border:none;border-radius:12px;cursor:pointer;overflow:hidden}
-.yn-client-area{padding:18px 12px 12px;display:block}
-.yn-client-lbl{font-size:30px;font-weight:700;display:block;margin-bottom:5px}
-.yn-client-sub{font-size:12px;display:block;opacity:.85}
-.yn-stylist-area{display:block;padding:6px 10px;border-top:1px solid rgba(0,0,0,.08);font-size:10px;font-weight:500;text-align:center}
+.yn-btn{padding:0;border:none;border-radius:14px;cursor:pointer;overflow:hidden}
+.yn-client-area{padding:20px 12px 14px;display:block}
+.yn-client-lbl{font-size:34px;font-weight:800;display:block;margin-bottom:5px}
+.yn-client-sub{font-size:14px;display:block;opacity:.85;font-weight:500}
+.yn-stylist-area{display:block;padding:7px 10px;border-top:1px solid rgba(0,0,0,.08);font-size:11px;font-weight:600;text-align:center}
 .y .yn-client-area{background:#C0DD97;color:#27500A}.y .yn-stylist-area{background:#a8cc7a;color:#1a4a08}
 .n .yn-client-area{background:#F7C1C1;color:#791F1F}.n .yn-stylist-area{background:#f0a0a0;color:#5a1515}
-.yn-or{font-size:12px;color:#8E8E93;text-align:center;margin-bottom:8px}
-.yn-or .jp{font-size:10px;color:#633806;background:#FFF8E7;padding:1px 5px;border-radius:3px;margin-left:4px}
-.yn-chips-wrap{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px}
-.yn-chip{font-size:12px;padding:7px 13px;border:0.5px solid #639922;border-radius:999px;background:#fff;color:#3B6D11;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
-.yn-chip.on{background:#C0DD97;font-weight:500}
-.yn-chip .cjp{font-size:9px;color:#85500B;background:#FFF8E7;padding:1px 5px;border-radius:3px}
-.yn-res{display:none;margin-top:10px;padding:12px;border-radius:8px;font-size:13px;text-align:center}
-.consent-chip{font-size:13px;padding:7px 14px;border:0.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#F2F2F7;color:#8E8E93;transition:all .12s;display:flex;flex-direction:column;align-items:center;gap:2px}
+.yn-or{font-size:14px;color:#8E8E93;text-align:center;margin-bottom:8px;font-weight:500}
+.yn-or .jp{font-size:11px;color:#633806;background:#FFF8E7;padding:2px 6px;border-radius:3px;margin-left:4px}
+.yn-chips-wrap{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:10px}
+.yn-chip{font-size:14px;padding:9px 15px;border:1.5px solid #639922;border-radius:999px;background:#fff;color:#3B6D11;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:500}
+.yn-chip.on{background:#C0DD97;font-weight:700}
+.yn-chip .cjp{font-size:10px;color:#85500B;background:#FFF8E7;padding:1px 6px;border-radius:3px}
+.yn-res{display:none;margin-top:10px;padding:12px;border-radius:10px;font-size:15px;text-align:center}
+.consent-chip{font-size:15px;padding:9px 16px;border:1.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#F2F2F7;color:#8E8E93;transition:all .12s;display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:500}
 .consent-chip.on{background:#E1F5EE;color:#085041;border-color:#1D9E75}
 .consent-chip.red.on{background:#FAECE7;color:#993C1D;border-color:#D85A30}
-.consent-chip .cjp{font-size:9px;color:#85500B;background:#FFF8E7;padding:1px 5px;border-radius:3px}.ck{font-size:9px;color:#412402;font-weight:500;display:block;line-height:1.3;padding:1px 0}
-.pc{background:#F2F2F7;border:0.5px solid #E5E5EA;border-radius:8px;padding:10px 13px;cursor:pointer;transition:all .12s;margin-bottom:5px}
+.consent-chip .cjp{font-size:10px;color:#85500B;background:#FFF8E7;padding:1px 6px;border-radius:3px}
+.ck{font-size:10px;color:#412402;font-weight:500;display:block;line-height:1.3;padding:1px 0}
+
+/* ── フレーズカード（施術中） ── */
+.pc{background:#F2F2F7;border:1.5px solid #E5E5EA;border-radius:12px;padding:13px 15px;cursor:pointer;transition:all .12s;margin-bottom:7px}
 .pc:hover{background:#FAECE7;border-color:#D85A30}
-.pc .ja{font-size:13px;color:#1C1C1E;font-weight:500}
-.pc .tr{font-size:12px;color:#8E8E93;margin-top:3px}
-.pc.flashed{background:#FAECE7;border-color:#D85A30}.ph-kana{font-size:10px;color:#1D9E75;font-weight:500;margin-top:2px;line-height:1.4}
-.mic-bar{display:flex;align-items:center;gap:10px;padding:10px;background:#F2F2F7;border:0.5px solid #E5E5EA;border-radius:8px;margin-top:8px;cursor:pointer}
-.mic-icon{width:38px;height:38px;border-radius:50%;background:#FAECE7;border:0.5px solid #D85A30;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.mic-out{display:none;margin-top:6px;padding:8px 12px;background:#FAECE7;border-radius:8px;font-size:12px;color:#993C1D}
-.phrase-show{background:#fff;border:2px solid #D85A30;border-radius:12px;overflow:hidden;margin-top:10px;display:none}
-.phrase-show-bar{background:#D85A30;padding:7px 14px;display:flex;align-items:center;gap:8px}
-.phrase-show-bar span{font-size:11px;color:#fff;font-weight:500}
-.phrase-show-body{padding:18px;text-align:center}
-.phrase-big{font-size:28px;font-weight:600;color:#1C1C1E;line-height:1.5;margin-bottom:6px}
-.phrase-jp-gloss{font-size:12px;color:#633806;background:#FFF8E7;border:0.5px solid #FAC775;border-radius:8px;padding:6px 12px;display:inline-block;margin-top:6px}
-.phrase-jp-label{font-size:9px;color:#85500B;display:block;margin-bottom:2px}
+.pc .ja{font-size:16px;color:#1C1C1E;font-weight:600}
+.pc .tr{font-size:14px;color:#8E8E93;margin-top:4px}
+.pc.flashed{background:#FAECE7;border-color:#D85A30}
+.ph-kana{font-size:11px;color:#1D9E75;font-weight:500;margin-top:3px;line-height:1.4}
+
+/* ── マイクバー ── */
+.mic-bar{display:flex;align-items:center;gap:10px;padding:12px;background:#F2F2F7;border:1.5px solid #E5E5EA;border-radius:10px;margin-top:8px;cursor:pointer}
+.mic-icon{width:42px;height:42px;border-radius:50%;background:#FAECE7;border:1.5px solid #D85A30;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.mic-out{display:none;margin-top:6px;padding:10px 14px;background:#FAECE7;border-radius:10px;font-size:14px;color:#993C1D}
+
+/* ── フレーズ大表示 ── */
+.phrase-show{background:#fff;border:2.5px solid #D85A30;border-radius:14px;overflow:hidden;margin-top:10px;display:none}
+.phrase-show-bar{background:#D85A30;padding:8px 14px;display:flex;align-items:center;gap:8px}
+.phrase-show-bar span{font-size:13px;color:#fff;font-weight:600}
+.phrase-show-body{padding:20px;text-align:center}
+.phrase-big{font-size:34px;font-weight:700;color:#1C1C1E;line-height:1.5;margin-bottom:6px}
+.phrase-jp-gloss{font-size:13px;color:#633806;background:#FFF8E7;border:0.5px solid #FAC775;border-radius:8px;padding:7px 14px;display:inline-block;margin-top:6px}
+.phrase-jp-label{font-size:10px;color:#85500B;display:block;margin-bottom:2px}
+
+/* ── 料金テーブル ── */
 .fee-table{width:100%;border-collapse:collapse}
-.fee-table th{font-size:11px;color:#8E8E93;text-align:left;padding:5px 8px;border-bottom:0.5px solid #E5E5EA}
-.fee-table td{font-size:13px;padding:8px;border-bottom:0.5px solid #E5E5EA;color:#1C1C1E}
-.fee-table td:last-child{text-align:right;font-weight:500}
-.fee-total{font-size:15px;font-weight:600;text-align:right;padding:10px 8px}
-.care-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
-.ccard{background:#F2F2F7;border-radius:8px;padding:10px;border:0.5px solid #E5E5EA}
-.ccard .ico{font-size:18px;margin-bottom:4px}
-.ccard .nm{font-size:12px;font-weight:500;color:#1C1C1E}
-.ccard .ds{font-size:11px;color:#8E8E93;margin-top:2px}
-.done-banner{background:#EAF3DE;border:1.5px solid #639922;border-radius:12px;padding:20px;text-align:center;margin-top:10px}
-.done-banner .ico{font-size:32px;margin-bottom:8px}
-.done-banner .t{font-size:15px;font-weight:600;color:#27500A;margin-bottom:4px}
-.done-banner .s{font-size:12px;color:#3B6D11}
-.next-btn{width:100%;padding:12px;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:#fff;margin-top:8px}
+.fee-table th{font-size:13px;color:#8E8E93;text-align:left;padding:7px 8px;border-bottom:0.5px solid #E5E5EA;font-weight:600}
+.fee-table td{font-size:15px;padding:9px 8px;border-bottom:0.5px solid #E5E5EA;color:#1C1C1E}
+.fee-table td:last-child{text-align:right;font-weight:600}
+.fee-total{font-size:16px;font-weight:700;text-align:right;padding:10px 8px}
+
+/* ── ケアカード ── */
+.care-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.ccard{background:#F2F2F7;border-radius:10px;padding:12px;border:1px solid #E5E5EA}
+.ccard .ico{font-size:22px;margin-bottom:5px}
+.ccard .nm{font-size:14px;font-weight:600;color:#1C1C1E}
+.ccard .ds{font-size:12px;color:#8E8E93;margin-top:3px}
+
+/* ── 完了バナー ── */
+.done-banner{background:#EAF3DE;border:2px solid #639922;border-radius:14px;padding:22px;text-align:center;margin-top:10px}
+.done-banner .ico{font-size:36px;margin-bottom:8px}
+.done-banner .t{font-size:17px;font-weight:700;color:#27500A;margin-bottom:4px}
+.done-banner .s{font-size:14px;color:#3B6D11}
+
+/* ── 次へボタン ── */
+.next-btn{width:100%;padding:15px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;color:#fff;margin-top:10px}
 .nb1{background:#1D9E75}.nb2{background:#534AB7}.nb3{background:#3B6D11}.nb4{background:#D85A30}.nb5{background:#3B6D11}
 
 /* ══ 辞書2列 ══ */
 .dict-zone{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
 .dict-panel{background:#fff;border:0.5px solid #E5E5EA;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-.dict-panel-hdr{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:pointer;background:#F2F2F7;user-select:none;border-left:3px solid #ccc}
-.dict-panel-hdr .ttl{font-size:12px;font-weight:600;color:#1C1C1E;flex:1}
-.dict-panel-hdr .cnt{font-size:10px;color:#8E8E93;margin-right:4px}
-.dict-panel-hdr .chev{font-size:12px;color:#8E8E93;transition:transform .2s;display:inline-block}
+.dict-panel-hdr{display:flex;align-items:center;gap:8px;padding:12px 14px;cursor:pointer;background:#F2F2F7;user-select:none;border-left:3px solid #ccc}
+.dict-panel-hdr .ttl{font-size:14px;font-weight:700;color:#1C1C1E;flex:1}
+.dict-panel-hdr .cnt{font-size:11px;color:#8E8E93;margin-right:4px}
+.dict-panel-hdr .chev{font-size:14px;color:#8E8E93;transition:transform .2s;display:inline-block}
 .dict-panel-hdr.open .chev{transform:rotate(180deg)}
 .dict-panel-body{display:none;overflow-y:auto;max-height:420px}
 .dict-panel-body.open{display:block}
 
 /* 場面別辞書アイテム */
-.sd-item{padding:8px 10px;border-bottom:0.5px solid #F2F2F7;display:grid;grid-template-columns:90px 1fr 1fr;gap:6px;align-items:start}
+.sd-item{padding:10px 12px;border-bottom:0.5px solid #F2F2F7;display:grid;grid-template-columns:90px 1fr 1fr;gap:6px;align-items:start}
 .sd-item:last-child{border-bottom:none}
-.sd-jp{font-size:13px;font-weight:600;color:#1C1C1E}
-.sd-badge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;margin-bottom:2px}
-.sd-ctx{font-size:9px;color:#8E8E93;line-height:1.4}
-.sd-trans-main{font-size:12px;font-weight:500;color:#1C1C1E;margin-bottom:1px}
-.sd-trans-jp{font-size:9px;color:#633806;background:#FFF8E7;border:0.5px solid #FAC775;border-radius:3px;padding:1px 5px;display:inline-block;margin-bottom:2px}
-.sd-trans-kana{font-size:10px;color:#412402;font-weight:500;line-height:1.5;margin-top:1px}
+.sd-jp{font-size:14px;font-weight:700;color:#1C1C1E}
+.sd-badge{display:inline-block;font-size:10px;padding:2px 6px;border-radius:3px;margin-bottom:2px}
+.sd-ctx{font-size:10px;color:#8E8E93;line-height:1.4}
+.sd-trans-main{font-size:13px;font-weight:600;color:#1C1C1E;margin-bottom:1px}
+.sd-trans-jp{font-size:10px;color:#633806;background:#FFF8E7;border:0.5px solid #FAC775;border-radius:3px;padding:1px 5px;display:inline-block;margin-bottom:2px}
+.sd-trans-kana{font-size:11px;color:#412402;font-weight:500;line-height:1.5;margin-top:1px}
 
 /* 全項目辞書 */
-.fd-controls{padding:8px 8px 4px;display:flex;gap:5px;flex-wrap:wrap;align-items:center;border-bottom:0.5px solid #E5E5EA}
-.fd-btn{font-size:10px;padding:4px 10px;border-radius:999px;border:0.5px solid #E5E5EA;cursor:pointer;background:#F2F2F7;color:#8E8E93;transition:all .12s;white-space:nowrap}
+.fd-controls{padding:10px 10px 6px;display:flex;gap:5px;flex-wrap:wrap;align-items:center;border-bottom:0.5px solid #E5E5EA}
+.fd-btn{font-size:12px;padding:5px 11px;border-radius:999px;border:1px solid #E5E5EA;cursor:pointer;background:#F2F2F7;color:#8E8E93;transition:all .12s;white-space:nowrap;font-weight:500}
 .fd-btn.on{color:#fff;border-color:transparent}
 .fd-all.on{background:#1C1C1E}.fd-tech.on{background:#BA7517}.fd-feel.on{background:#3B6D11}.fd-serv.on{background:#185FA5}
 .fd-search{position:relative;margin-left:auto}
-.fd-search input{font-size:11px;padding:4px 8px 4px 24px;border-radius:999px;border:0.5px solid #E5E5EA;background:#F2F2F7;color:#1C1C1E;width:130px;outline:none}
-.fd-search .si{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:11px;color:#8E8E93}
-.fd-section-head{display:flex;align-items:center;gap:6px;padding:7px 10px 3px;font-size:11px;font-weight:600;background:#F9F9FB;border-bottom:0.5px solid #F2F2F7}
-.fd-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.fd-cnt{font-size:10px;color:#8E8E93;margin-left:auto}
+.fd-search input{font-size:13px;padding:5px 10px 5px 26px;border-radius:999px;border:1px solid #E5E5EA;background:#F2F2F7;color:#1C1C1E;width:130px;outline:none}
+.fd-search .si{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:12px;color:#8E8E93}
+.fd-section-head{display:flex;align-items:center;gap:6px;padding:8px 12px 4px;font-size:13px;font-weight:700;background:#F9F9FB;border-bottom:0.5px solid #F2F2F7}
+.fd-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.fd-cnt{font-size:11px;color:#8E8E93;margin-left:auto}
 .fi-wrap{border-bottom:0.5px solid #F2F2F7}
-.fi-item{display:grid;grid-template-columns:90px 1fr;gap:6px;padding:8px 10px;cursor:pointer;transition:background .1s;align-items:start}
+.fi-item{display:grid;grid-template-columns:90px 1fr;gap:6px;padding:10px 12px;cursor:pointer;transition:background .1s;align-items:start}
 .fi-item:hover{background:#F9F9FB}
-.fi-jp{font-size:13px;font-weight:600;color:#1C1C1E}
-.fi-read{font-size:9px;color:#8E8E93;margin-top:1px}
-.fi-badge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;margin-bottom:2px}
-.fi-ctx{font-size:9px;color:#8E8E93;line-height:1.4}
-.fi-detail{display:none;padding:0 10px 10px;background:#FAFAFA}
+.fi-jp{font-size:14px;font-weight:700;color:#1C1C1E}
+.fi-read{font-size:10px;color:#8E8E93;margin-top:1px}
+.fi-badge{display:inline-block;font-size:10px;padding:2px 6px;border-radius:3px;margin-bottom:2px}
+.fi-ctx{font-size:10px;color:#8E8E93;line-height:1.4}
+.fi-detail{display:none;padding:0 12px 12px;background:#FAFAFA}
 .fi-detail.open{display:block}
 .fi-detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px}
-.fi-lang-card{background:#fff;border-radius:8px;padding:7px 9px;border:0.5px solid #E5E5EA}
-.fi-lang-flag{font-size:13px;margin-bottom:3px}
-.fi-lang-main{font-size:12px;font-weight:500;color:#1C1C1E}
-.fi-lang-sub{font-size:9px;color:#8E8E93;margin-top:1px}
-.fi-lang-kana{font-size:10px;color:#412402;background:#FFF8E7;border-radius:3px;padding:2px 5px;margin-top:3px;display:inline-block;font-weight:500}
-.fi-note{margin-top:6px;padding:5px 9px;background:#F2F2F7;border-radius:6px;font-size:10px;color:#8E8E93}
-.fi-chev{font-size:11px;color:#8E8E93;margin-left:auto;transition:transform .15s;align-self:center}
+.fi-lang-card{background:#fff;border-radius:8px;padding:8px 10px;border:0.5px solid #E5E5EA}
+.fi-lang-flag{font-size:14px;margin-bottom:3px}
+.fi-lang-main{font-size:13px;font-weight:600;color:#1C1C1E}
+.fi-lang-sub{font-size:10px;color:#8E8E93;margin-top:1px}
+.fi-lang-kana{font-size:11px;color:#412402;background:#FFF8E7;border-radius:3px;padding:2px 5px;margin-top:3px;display:inline-block;font-weight:500}
+.fi-note{margin-top:6px;padding:6px 10px;background:#F2F2F7;border-radius:6px;font-size:11px;color:#8E8E93}
+.fi-chev{font-size:13px;color:#8E8E93;margin-left:auto;transition:transform .15s;align-self:center}
 .fi-item.open .fi-chev{transform:rotate(180deg)}
 
 @media(max-width:680px){
   .two{grid-template-columns:1fr}.vg{grid-template-columns:repeat(2,1fr)}
-  .lang-grid{grid-template-columns:repeat(2,1fr)}.yn-client-lbl{font-size:24px}.yn-main{font-size:18px}
+  .lang-grid{grid-template-columns:repeat(2,1fr)}.yn-client-lbl{font-size:30px}.yn-main{font-size:22px}
   .dict-zone{grid-template-columns:1fr}.sd-item{grid-template-columns:80px 1fr}
   .fi-detail-grid{grid-template-columns:1fr}
 }
 
 /* ── 料金明細（編集可能版） ── */
-.fee-row-input{font-size:13px;border:none;background:transparent;color:#1C1C1E;width:100%;outline:none;padding:2px 0}
-.fee-row-input:focus{background:#F0FDF4;border-radius:4px;padding:2px 4px}
-.fee-price-input{font-size:13px;border:none;background:transparent;color:#1C1C1E;text-align:right;width:90px;outline:none;padding:2px 0}
-.fee-price-input:focus{background:#F0FDF4;border-radius:4px;padding:2px 4px}
-.fee-del-btn{width:24px;height:24px;border-radius:50%;border:none;background:#FFEBE8;color:#D85A30;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
-.fee-del-btn:hover{background:#D85A30;color:#fff}.fee-lang-input{font-size:10px;border:none;background:transparent;color:#8E8E93;width:100%;outline:none;padding:1px 0}.fee-lang-input:focus{background:#F0FDF4;border-radius:3px;padding:1px 4px;color:#085041}
+.fee-row-input{font-size:15px;border:none;background:transparent;color:#1C1C1E;width:100%;outline:none;padding:2px 0}
+.fee-row-input:focus{background:#F0FDF4;border-radius:4px;padding:2px 6px}
+.fee-price-input{font-size:15px;border:none;background:transparent;color:#1C1C1E;text-align:right;width:90px;outline:none;padding:2px 0}
+.fee-price-input:focus{background:#F0FDF4;border-radius:4px;padding:2px 6px}
+.fee-del-btn{width:28px;height:28px;border-radius:50%;border:none;background:#FFEBE8;color:#D85A30;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.fee-del-btn:hover{background:#D85A30;color:#fff}
+.fee-lang-input{font-size:11px;border:none;background:transparent;color:#8E8E93;width:100%;outline:none;padding:1px 0}
+.fee-lang-input:focus{background:#F0FDF4;border-radius:3px;padding:1px 4px;color:#085041}
 .fee-table tbody tr td{vertical-align:middle}
-.fee-client-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:0.5px solid #E5E5EA;font-size:13px;gap:8px}
+.fee-client-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:0.5px solid #E5E5EA;font-size:15px;gap:8px}
 .fee-client-row:last-child{border-bottom:none}
 
 /* ── サブステップタブ ── */
 .substep-btn{
-  flex:1;padding:8px 6px;border:0.5px solid #E5E5EA;border-radius:8px;
-  background:#fff;color:#8E8E93;font-size:11px;font-weight:500;cursor:pointer;
+  flex:1;padding:10px 6px;border:1.5px solid #E5E5EA;border-radius:10px;
+  background:#fff;color:#8E8E93;font-size:13px;font-weight:600;cursor:pointer;
   transition:all .15s;text-align:center;
 }
 .substep-btn.s2-active{
@@ -231,31 +291,31 @@ input[type=range]{width:100%;accent-color:#1D9E75}
 /* ── 音声翻訳UI ── */
 .mic-bar.recording{background:#FAECE7;border-color:#D85A30;animation:mic-pulse .8s ease-in-out infinite;}
 @keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(216,90,48,.3);}50%{box-shadow:0 0 0 8px rgba(216,90,48,0);}}
-.mic-icon.recording{background:#D85A30;color:#fff;font-size:20px;}
-.mic-result-block{margin-top:8px;border-radius:8px;overflow:hidden;border:0.5px solid #E5E5EA;}
-.mic-result-original{padding:8px 12px;background:#F9F9FB;font-size:12px;color:#8E8E93;}
-.mic-result-original span{color:#1C1C1E;font-weight:500;}
-.mic-result-translated{padding:12px;background:#fff;font-size:18px;font-weight:600;color:#1C1C1E;line-height:1.5;}
-.mic-result-kana{padding:4px 12px 10px;background:#FFF8E7;font-size:11px;color:#85500B;font-weight:500;}
-.mic-result-actions{display:flex;gap:6px;padding:8px 12px;background:#F9F9FB;border-top:0.5px solid #E5E5EA;}
-.mic-result-actions button{flex:1;padding:7px;border-radius:6px;border:none;font-size:11px;font-weight:500;cursor:pointer;}
+.mic-icon.recording{background:#D85A30;color:#fff;font-size:22px;}
+.mic-result-block{margin-top:8px;border-radius:10px;overflow:hidden;border:0.5px solid #E5E5EA;}
+.mic-result-original{padding:10px 14px;background:#F9F9FB;font-size:13px;color:#8E8E93;}
+.mic-result-original span{color:#1C1C1E;font-weight:600;}
+.mic-result-translated{padding:14px;background:#fff;font-size:22px;font-weight:700;color:#1C1C1E;line-height:1.5;}
+.mic-result-kana{padding:5px 14px 12px;background:#FFF8E7;font-size:13px;color:#85500B;font-weight:500;}
+.mic-result-actions{display:flex;gap:8px;padding:10px 14px;background:#F9F9FB;border-top:0.5px solid #E5E5EA;}
+.mic-result-actions button{flex:1;padding:9px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;}
 .mic-show-btn{background:#1D9E75;color:#fff;}
 .mic-retry-btn{background:#F2F2F7;color:#8E8E93;}
 
 /* ── グローバル音声翻訳ボタン ── */
 .global-mic-btn{
   width:100%;display:flex;align-items:center;gap:12px;
-  padding:12px 14px;margin-bottom:12px;
-  background:#fff;border:1.5px solid #D85A30;border-radius:10px;
+  padding:14px 16px;margin-bottom:10px;
+  background:#fff;border:2px solid #D85A30;border-radius:12px;
   cursor:pointer;box-shadow:0 2px 8px rgba(216,90,48,.15);
   text-align:left;
 }
 .global-mic-btn:active{background:#FFF4F0;transform:scale(.99);}
 .global-mic-icon{
-  width:38px;height:38px;border-radius:50%;
-  background:#FAECE7;border:1.5px solid #D85A30;
+  width:44px;height:44px;border-radius:50%;
+  background:#FAECE7;border:2px solid #D85A30;
   display:flex;align-items:center;justify-content:center;
-  font-size:20px;flex-shrink:0;
+  font-size:22px;flex-shrink:0;
 }
 
 .ccard[onclick]{transition:transform .12s,box-shadow .12s;}
@@ -269,7 +329,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
 <body>
 <div id="app">
 <div class="top-bar">
-  <div style="flex:1"><div class="top-bar-title">✂️ 美容室インバウンド接客アプリ <span style="font-size:10px;color:#8E8E93;font-weight:400">v8</span></div><div style="font-size:11px;color:#8E8E93" id="top-sub">Multilingual Salon Counseling</div></div>
+  <div style="flex:1"><div class="top-bar-title">✂️ 美容室インバウンドアプリ <span style="font-size:12px;color:#8E8E93;font-weight:400">v11</span></div><div style="font-size:13px;color:#8E8E93" id="top-sub">Multilingual Salon Counseling</div></div>
   <div class="lang-row">
     <button class="lb on" onclick="setLang('en',this)">🇺🇸 EN</button>
     <button class="lb" onclick="setLang('zh',this)">🇨🇳 中文</button>
@@ -288,8 +348,8 @@ input[type=range]{width:100%;accent-color:#1D9E75}
 <button onclick="openMicModal()" class="global-mic-btn">
   <div class="global-mic-icon">🎤</div>
   <div style="flex:1">
-    <div style="font-size:12px;font-weight:600;color:#1C1C1E">🎤 フリーワード音声翻訳</div>
-    <div style="font-size:10px;color:#8E8E93;margin-top:1px">日本語で話しかける → 選択言語に翻訳してお客様に見せる</div>
+    <div style="font-size:15px;font-weight:700;color:#1C1C1E">🎤 フリーワード音声翻訳</div>
+    <div style="font-size:12px;color:#8E8E93;margin-top:2px">日本語で話す → 選択言語に翻訳してお客様に見せる</div>
   </div>
   <div style="font-size:20px;color:#D85A30;font-weight:300">›</div>
 </button>
@@ -301,25 +361,25 @@ input[type=range]{width:100%;accent-color:#1D9E75}
 <div class="client-screen" id="sc1-welcome-block" onclick="openClientModal(this)" style="cursor:pointer">
   <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
   <div style="padding:18px">
-    <!-- 日本語あいさつ（常時） -->
-    <div style="font-size:13px;color:#534AB7;font-weight:600;margin-bottom:4px">いらっしゃいませ。本日のご予約はありますか？</div>
+    <!-- 美容師メモ（日本語）→ 先頭 -->
+    <div class="jp-gloss" style="margin-bottom:12px"><span class="jp-gloss-label">🗣 美容師メモ：</span>いらっしゃいませ。本日のご予約はありますか？</div>
     <!-- 選択言語 -->
-    <div id="welcome-msg" style="font-size:20px;font-weight:600;color:#1C1C1E;line-height:1.7;margin-bottom:4px"></div>
+    <div id="welcome-msg" style="font-size:24px;font-weight:700;color:#1C1C1E;line-height:1.7;margin-bottom:4px">Hi! Do you have a reservation today?</div>
     <!-- カタカナ読み -->
-    <div id="welcome-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none;margin-bottom:14px"></div>
+    <div id="welcome-kana" style="font-size:13px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:none;margin-bottom:14px"></div>
     <!-- YES / NO ボタン -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px" id="sc1-yn-btns">
       <button class="yn-btn y" onclick="sc1Answer('yes')" style="border:none;border-radius:12px;cursor:pointer;overflow:hidden;padding:0">
         <span class="yn-client-area" style="padding:18px 12px 12px;display:block">
-          <span id="sc1-yes-lbl" style="font-size:28px;font-weight:700;display:block;margin-bottom:4px">YES ✓</span>
-          <span id="sc1-yes-sub" style="font-size:12px;display:block;opacity:.85">I have a reservation</span>
+          <span id="sc1-yes-lbl" style="font-size:34px;font-weight:800;display:block;margin-bottom:4px">YES ✓</span>
+          <span id="sc1-yes-sub" style="font-size:14px;display:block;opacity:.85">I have a reservation</span>
         </span>
         <span class="yn-stylist-area">→ 美容師メモ：「予約あり」</span>
       </button>
       <button class="yn-btn n" onclick="sc1Answer('no')" style="border:none;border-radius:12px;cursor:pointer;overflow:hidden;padding:0">
         <span class="yn-client-area" style="padding:18px 12px 12px;display:block">
-          <span id="sc1-no-lbl" style="font-size:28px;font-weight:700;display:block;margin-bottom:4px">NO ✗</span>
-          <span id="sc1-no-sub" style="font-size:12px;display:block;opacity:.85">No reservation</span>
+          <span id="sc1-no-lbl" style="font-size:34px;font-weight:800;display:block;margin-bottom:4px">NO ✗</span>
+          <span id="sc1-no-sub" style="font-size:14px;display:block;opacity:.85">No reservation</span>
         </span>
         <span class="yn-stylist-area">→ 美容師メモ：「予約なし」</span>
       </button>
@@ -332,13 +392,13 @@ input[type=range]{width:100%;accent-color:#1D9E75}
   <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:10px;cursor:pointer">
     <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
     <div style="padding:18px">
-      <div style="font-size:13px;color:#1D9E75;font-weight:600;margin-bottom:3px">お名前をお聞かせください。</div>
-      <div id="sc1-yes-q1" style="font-size:18px;font-weight:500;color:#1C1C1E;line-height:1.7;margin-bottom:3px"></div>
-      <div id="sc1-yes-q1-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none;margin-bottom:14px"></div>
-      <div style="border-top:0.5px solid #E5E5EA;padding-top:12px;margin-top:4px">
-        <div style="font-size:13px;color:#1D9E75;font-weight:600;margin-bottom:3px">少々お待ちください。</div>
+      <div class="jp-gloss" style="margin-bottom:10px"><span class="jp-gloss-label">🗣 美容師メモ：</span>お名前をお聞かせください。</div>
+      <div id="sc1-yes-q1" style="font-size:22px;font-weight:600;color:#1C1C1E;line-height:1.7;margin-bottom:3px"></div>
+      <div id="sc1-yes-q1-kana" style="font-size:13px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:none;margin-bottom:14px"></div>
+      <div style="border-top:0.5px solid #E5E5EA;padding-top:12px;margin-top:10px">
+        <div class="jp-gloss" style="margin-bottom:10px"><span class="jp-gloss-label">🗣 美容師メモ：</span>少々お待ちください。</div>
         <div id="sc1-yes-q2" style="font-size:18px;font-weight:500;color:#1C1C1E;line-height:1.7;margin-bottom:3px"></div>
-        <div id="sc1-yes-q2-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none"></div>
+        <div id="sc1-yes-q2-kana" style="font-size:13px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:none"></div>
       </div>
     </div>
   </div>
@@ -347,7 +407,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
     <div style="font-size:12px;color:#1C1C1E">✅ 予約あり → お名前確認 → 少々お待ちいただく</div>
   </div>
   <div style="display:flex;gap:8px">
-    <button onclick="sc1Reset()" style="flex:1;padding:11px;border:0.5px solid #E5E5EA;border-radius:8px;background:#fff;color:#8E8E93;font-size:12px;cursor:pointer">← 最初に戻る</button>
+    <button onclick="sc1Reset()" style="flex:1;padding:13px;border:1.5px solid #E5E5EA;border-radius:10px;background:#fff;color:#8E8E93;font-size:14px;cursor:pointer;font-weight:500">← 最初に戻る</button>
     <button class="next-btn nb1" onclick="goStep(2)" style="flex:2;margin-top:0">次へ：事前問診 →</button>
   </div>
 </div>
@@ -358,26 +418,26 @@ input[type=range]{width:100%;accent-color:#1D9E75}
   <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:10px;border-color:#BA7517;cursor:pointer">
     <div class="client-bar" style="background:#BA7517"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 担当者がいる場合</span></div>
     <div style="padding:16px">
-      <div style="font-size:13px;color:#BA7517;font-weight:600;margin-bottom:3px">当店は予約制になっておりますが、今施術できる担当者がおります。少々お待ちください。</div>
-      <div id="sc1-no-q1" style="font-size:16px;font-weight:500;color:#1C1C1E;line-height:1.7;margin-bottom:3px"></div>
-      <div id="sc1-no-q1-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none"></div>
+      <div class="jp-gloss" style="margin-bottom:10px;border-color:#f0c060"><span class="jp-gloss-label">🗣 美容師メモ：</span>当店は予約制ですが、今施術できる担当者がおります。少々お待ちください。</div>
+      <div id="sc1-no-q1" style="font-size:20px;font-weight:600;color:#1C1C1E;line-height:1.7;margin-bottom:3px"></div>
+      <div id="sc1-no-q1-kana" style="font-size:13px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:none"></div>
     </div>
   </div>
   <!-- 選択肢B: 今は対応できない -->
   <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:10px;border-color:#D85A30;cursor:pointer">
     <div class="client-bar" style="background:#D85A30"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 担当者がいない場合</span></div>
     <div style="padding:16px">
-      <div style="font-size:13px;color:#D85A30;font-weight:600;margin-bottom:3px">当店は予約制になっており、ただいま施術できる担当者がおりません。改めてご予約の上、ご来店ください。</div>
-      <div id="sc1-no-q2" style="font-size:16px;font-weight:500;color:#1C1C1E;line-height:1.7;margin-bottom:3px"></div>
-      <div id="sc1-no-q2-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none"></div>
+      <div class="jp-gloss" style="margin-bottom:10px;border-color:#f0c060"><span class="jp-gloss-label">🗣 美容師メモ：</span>当店は予約制で、ただいま対応できる担当者がおりません。ご予約の上、またお越しください。</div>
+      <div id="sc1-no-q2" style="font-size:20px;font-weight:600;color:#1C1C1E;line-height:1.7;margin-bottom:3px"></div>
+      <div id="sc1-no-q2-kana" style="font-size:13px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:none"></div>
     </div>
   </div>
-  <div class="card" style="padding:10px;background:#F9F9FB;margin-bottom:8px">
-    <div style="font-size:11px;color:#8E8E93;font-weight:500;margin-bottom:4px">📋 美容師メモ</div>
-    <div style="font-size:12px;color:#1C1C1E">⚠️ 予約なし → 上の2つから状況に合わせて見せてください</div>
+  <div class="card" style="padding:12px;background:#F9F9FB;margin-bottom:8px">
+    <div style="font-size:13px;color:#8E8E93;font-weight:600;margin-bottom:4px">📋 美容師メモ</div>
+    <div style="font-size:14px;color:#1C1C1E">⚠️ 予約なし → 上の2つから状況に合わせて見せてください</div>
   </div>
   <div style="display:flex;gap:8px">
-    <button onclick="sc1Reset()" style="flex:1;padding:11px;border:0.5px solid #E5E5EA;border-radius:8px;background:#fff;color:#8E8E93;font-size:12px;cursor:pointer">← 最初に戻る</button>
+    <button onclick="sc1Reset()" style="flex:1;padding:13px;border:1.5px solid #E5E5EA;border-radius:10px;background:#fff;color:#8E8E93;font-size:14px;cursor:pointer;font-weight:500">← 最初に戻る</button>
     <button class="next-btn nb1" onclick="goStep(2)" style="flex:2;margin-top:0">次へ：事前問診 →</button>
   </div>
 </div>
@@ -398,9 +458,9 @@ input[type=range]{width:100%;accent-color:#1D9E75}
   <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
     <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
     <div style="padding:14px">
-      <div id="hist-client-q" style="font-size:18px;font-weight:500;color:#1C1C1E;line-height:1.8">Please tell us about any hair treatments in the past 2 years.</div>
-      <div class="jp-gloss" style="margin-top:5px"><span class="jp-gloss-label">🗣 美容師メモ：</span>過去2年の施術歴を教えてください。</div>
-      <div id="hist-client-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;margin-top:5px;display:none"></div>
+      <div class="jp-gloss" style="margin-bottom:10px"><span class="jp-gloss-label">🗣 美容師メモ：</span>過去2年の施術歴を教えてください。</div>
+      <div id="hist-client-q" style="font-size:20px;font-weight:600;color:#1C1C1E;line-height:1.8">Have you had any hair treatments in the past 2 years?</div>
+      <div id="hist-client-kana" style="font-size:13px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;margin-top:6px;display:none"></div>
     </div>
   </div>
   <!-- 美容師側カード -->
@@ -418,7 +478,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
       </div>
     </div>
   </div>
-  <button class="next-btn nb2" onclick="goSub(2)" style="margin-top:4px">次へ：アレルギー確認 →</button>
+  <button class="next-btn nb2" onclick="goSub(2)" style="margin-top:6px">次へ：アレルギー確認 →</button>
 </div>
 
 <!-- ══ 2-2 アレルギー ══ -->
@@ -427,9 +487,9 @@ input[type=range]{width:100%;accent-color:#1D9E75}
   <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
     <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
     <div style="padding:14px">
-      <div id="s2-consent" style="font-size:17px;font-weight:500;color:#1C1C1E;line-height:1.9">Do you have any allergies to hair dye or chemical treatments?<br>Please let us know before we begin.</div>
-      <div class="jp-gloss" style="margin-top:6px"><span class="jp-gloss-label">🗣 美容師メモ：</span>ヘアカラーや薬剤にアレルギーはありますか？</div>
-      
+      <div class="jp-gloss" style="margin-bottom:10px"><span class="jp-gloss-label">🗣 美容師メモ：</span>ヘアカラーや薬剤にアレルギーはありますか？</div>
+      <div id="s2-consent" style="font-size:20px;font-weight:600;color:#1C1C1E;line-height:1.9">Any allergies to hair dye or chemical products?<br>Just let us know before we start!</div>
+      <div id="allergy-q-kana" style="font-size:13px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;margin-top:6px;display:none"></div>
     </div>
   </div>
   <!-- 美容師側カード -->
@@ -447,8 +507,8 @@ input[type=range]{width:100%;accent-color:#1D9E75}
     </div>
   </div>
   <div style="display:flex;gap:8px;margin-top:4px">
-    <button onclick="goSub(1)" style="flex:1;padding:11px;border:0.5px solid #E5E5EA;border-radius:8px;background:#fff;color:#8E8E93;font-size:12px;cursor:pointer">← 施術歴に戻る</button>
-    <button onclick="goSub(3)" style="flex:2;padding:11px;border:none;border-radius:8px;background:#534AB7;color:#fff;font-size:12px;font-weight:600;cursor:pointer">次へ：本日のご希望 →</button>
+    <button onclick="goSub(1)" style="flex:1;padding:13px;border:1.5px solid #E5E5EA;border-radius:10px;background:#fff;color:#8E8E93;font-size:14px;cursor:pointer;font-weight:500">← 施術歴に戻る</button>
+    <button onclick="goSub(3)" style="flex:2;padding:13px;border:none;border-radius:10px;background:#534AB7;color:#fff;font-size:14px;font-weight:700;cursor:pointer">次へ：本日のご希望 →</button>
   </div>
 </div>
 
@@ -458,9 +518,9 @@ input[type=range]{width:100%;accent-color:#1D9E75}
   <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
     <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
     <div style="padding:14px">
-      <div id="menu-client-q" style="font-size:18px;font-weight:500;color:#1C1C1E;line-height:1.8">What services would you like today?</div>
-      <div class="jp-gloss" style="margin-top:5px"><span class="jp-gloss-label">🗣 美容師メモ：</span>本日はどのようなメニューをご希望ですか？</div>
-      <div id="menu-client-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;margin-top:5px;display:none"></div>
+      <div class="jp-gloss" style="margin-bottom:10px"><span class="jp-gloss-label">🗣 美容師メモ：</span>本日はどのようなメニューをご希望ですか？</div>
+      <div id="menu-client-q" style="font-size:20px;font-weight:600;color:#1C1C1E;line-height:1.8">What would you like to do today?</div>
+      <div id="menu-client-kana" style="font-size:13px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;margin-top:6px;display:none"></div>
     </div>
   </div>
   <!-- 美容師側カード -->
@@ -477,8 +537,8 @@ input[type=range]{width:100%;accent-color:#1D9E75}
     </div>
   </div>
   <div style="display:flex;gap:8px;margin-top:4px">
-    <button onclick="goSub(2)" style="flex:1;padding:11px;border:0.5px solid #E5E5EA;border-radius:8px;background:#fff;color:#8E8E93;font-size:12px;cursor:pointer">← アレルギーに戻る</button>
-    <button onclick="openConfirmModal()" style="flex:2;padding:11px;border:none;border-radius:8px;background:#3B6D11;color:#fff;font-size:12px;font-weight:600;cursor:pointer">確認画面へ →</button>
+    <button onclick="goSub(2)" style="flex:1;padding:13px;border:1.5px solid #E5E5EA;border-radius:10px;background:#fff;color:#8E8E93;font-size:14px;cursor:pointer;font-weight:500">← アレルギーに戻る</button>
+    <button onclick="openConfirmModal()" style="flex:2;padding:13px;border:none;border-radius:10px;background:#3B6D11;color:#fff;font-size:14px;font-weight:700;cursor:pointer">確認画面へ →</button>
   </div>
 </div>
 
@@ -525,8 +585,8 @@ input[type=range]{width:100%;accent-color:#1D9E75}
       <div>
         <div class="card" style="padding:12px">
           <div style="font-size:11px;color:#8E8E93;margin-bottom:6px">現在の提案</div>
-          <div id="prop-ja" style="font-size:15px;font-weight:600;color:#1C1C1E;margin-bottom:3px">レイヤーカット</div>
-          <div id="prop-en" style="font-size:11px;color:#8E8E93;margin-bottom:2px">Light, airy layers for volume and movement</div><div id="prop-tl" style="font-size:12px;color:#1D9E75;font-weight:500;margin-bottom:10px;display:none"></div>
+          <div id="prop-ja" style="font-size:18px;font-weight:700;color:#1C1C1E;margin-bottom:3px">レイヤーカット</div>
+          <div id="prop-en" style="font-size:13px;color:#8E8E93;margin-bottom:2px">Light, airy layers for volume and movement</div><div id="prop-tl" style="font-size:12px;color:#1D9E75;font-weight:500;margin-bottom:10px;display:none"></div>
           <div style="font-size:11px;color:#8E8E93;margin-bottom:5px">仕上がりイメージ</div>
           <div class="chips" style="margin-bottom:10px"><div class="chip on" onclick="tog(this)">さらさら<span class="chip-tl" id="ftl-0"></span></div><div class="chip" onclick="tog(this)">ふわっと<span class="chip-tl" id="ftl-1"></span></div><div class="chip" onclick="tog(this)">ナチュラル<span class="chip-tl" id="ftl-2"></span></div><div class="chip" onclick="tog(this)">ツヤサラ<span class="chip-tl" id="ftl-3"></span></div><div class="chip" onclick="tog(this)">まとまり感<span class="chip-tl" id="ftl-4"></span></div></div>
           <button class="prop-btn" onclick="sendProp()">📱 お客様に見せる →</button>
@@ -575,7 +635,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
     <div id="pfi" style="display:none"><div class="pc" onclick="tapP(this,'res')"><div class="ja">仕上がりはいかがですか？</div><div class="tr" id="ph-res">How do you like the result?</div><div class="ph-kana" id="ph-kana-res"></div></div><div class="pc" onclick="tapP(this,'back')"><div class="ja">後ろもご確認ください</div><div class="tr" id="ph-back">Please check the back as well.</div><div class="ph-kana" id="ph-kana-back"></div></div><div class="pc" onclick="tapP(this,'thnk')"><div class="ja">ありがとうございました</div><div class="tr" id="ph-thnk">Thank you so much!</div><div class="ph-kana" id="ph-kana-thnk"></div></div></div>
     <!-- mic-bar moved to global nav -->
   </div>
-  <div class="phrase-show" id="phrase-show"><div class="phrase-show-bar"><div class="client-bar-dot"></div><span>📱 この画面をお客様に向けてください</span></div><div class="phrase-show-body"><div class="phrase-big" id="phrase-big"></div><div class="phrase-jp-gloss" id="phrase-jp-gloss"><span class="phrase-jp-label">🗣 美容師メモ（日本語の意味）</span><span id="phrase-jp-text"></span></div><div class="kana-guide" id="phrase-kana-wrap" style="margin-top:10px;text-align:left;display:none"><div class="kana-guide-label">🗣 読み方（カタカナ）</div><div class="kana-text" id="phrase-kana-text"></div></div></div></div>
+  <div class="phrase-show" id="phrase-show"><div class="phrase-show-bar"><div class="client-bar-dot"></div><span>📱 この画面をお客様に向けてください</span></div><div class="phrase-show-body"><div class="phrase-jp-gloss" id="phrase-jp-gloss" style="margin-bottom:10px"><span class="phrase-jp-label">🗣 美容師メモ（日本語）</span><span id="phrase-jp-text"></span></div><div class="phrase-big" id="phrase-big"></div><div class="kana-guide" id="phrase-kana-wrap" style="margin-top:10px;text-align:left;display:none"><div class="kana-guide-label">🗣 読み方（カタカナ）</div><div class="kana-text" id="phrase-kana-text"></div></div></div></div>
   <button class="next-btn nb4" onclick="goStep(5)">施術完了 → 会計へ</button>
 </div>
 
@@ -593,8 +653,8 @@ input[type=range]{width:100%;accent-color:#1D9E75}
         <tbody id="fee-rows"></tbody>
       </table>
       <div style="text-align:right;padding:10px 8px;border-top:1px solid #E5E5EA;margin-top:4px">
-        <span style="font-size:12px;color:#8E8E93" id="fee-total-label">合計</span>
-        <span style="font-size:18px;font-weight:700;color:#1C1C1E;margin-left:8px" id="fee-total-display">¥0</span>
+        <span style="font-size:14px;color:#8E8E93" id="fee-total-label">合計</span>
+        <span style="font-size:22px;font-weight:800;color:#1C1C1E;margin-left:8px" id="fee-total-display">¥0</span>
       </div>
     </div>
     <!-- ホームケア -->
@@ -604,7 +664,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
   <div style="background:#EAF3DE;border-radius:8px;padding:10px 13px;margin-bottom:10px;border-left:3px solid #3B6D11">
     <div style="font-size:11px;color:#8E8E93;margin-bottom:4px;font-weight:500">📋 次回予約のご提案</div>
     <div style="font-size:12px;color:#3B6D11;font-weight:500;margin-bottom:3px">次回のご予約はいかがですか？</div>
-    <div id="care-q-lang" style="font-size:15px;font-weight:500;color:#1C1C1E;margin-bottom:3px;line-height:1.6"></div>
+    <div id="care-q-lang" style="font-size:18px;font-weight:600;color:#1C1C1E;margin-bottom:3px;line-height:1.6"></div>
     <div id="care-q-kana" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;display:none"></div>
   </div>
   <div class="care-grid"><div class="ccard" onclick="openCareModal(1)" style="cursor:pointer">
@@ -626,27 +686,27 @@ input[type=range]{width:100%;accent-color:#1D9E75}
   <div class="client-screen" onclick="openClientModal(this)" style="cursor:pointer">
     <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
     <div style="padding:16px">
-      <!-- チップ不要 -->
-      <div id="tip-msg" style="font-size:16px;font-weight:500;color:#1C1C1E;margin-bottom:4px;line-height:1.8">ℹ️ No tip is necessary in Japan. Thank you!</div>
-      <div class="jp-gloss"><span class="jp-gloss-label">🗣 美容師メモ：</span>日本ではチップは不要です。ありがとうございました！</div>
-      <div id="tip-kana-line" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;margin-top:4px;display:none"></div>
+      <!-- チップ不要：美容師メモ → 外国語 → カタカナ -->
+      <div class="jp-gloss" style="margin-bottom:10px"><span class="jp-gloss-label">🗣 美容師メモ：</span>日本ではチップは不要です。ありがとうございました！</div>
+      <div id="tip-msg" style="font-size:18px;font-weight:600;color:#1C1C1E;margin-bottom:4px;line-height:1.8">ℹ️ No tip needed in Japan — just your smile! 😊</div>
+      <div id="tip-kana-line" style="font-size:13px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;margin-top:4px;display:none"></div>
       <!-- 料金明細（お客様向け） -->
       <div id="fee-client-block" style="margin-top:12px;background:#F9F9FB;border-radius:8px;padding:10px 12px">
         <div style="font-size:11px;color:#8E8E93;margin-bottom:6px;font-weight:500" id="fee-client-title">料金明細</div>
         <div id="fee-client-rows"></div>
         <div style="display:flex;justify-content:space-between;align-items:center;border-top:0.5px solid #E5E5EA;padding-top:6px;margin-top:4px">
-          <span style="font-size:12px;font-weight:600;color:#1C1C1E" id="fee-client-total-label">合計</span>
-          <span style="font-size:16px;font-weight:700;color:#1C1C1E" id="fee-client-total">¥0</span>
+          <span style="font-size:14px;font-weight:700;color:#1C1C1E" id="fee-client-total-label">合計</span>
+          <span style="font-size:20px;font-weight:800;color:#1C1C1E" id="fee-client-total">¥0</span>
         </div>
       </div>
-      <div id="done-s" style="font-size:14px;color:#8E8E93;margin-top:10px">We look forward to seeing you again.</div>
+      <div id="done-s" style="font-size:16px;color:#8E8E93;margin-top:10px">Hope to see you again soon!</div>
       <div id="done-kana-line" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;margin-top:4px;display:none"></div>
       <div style="font-size:13px;color:#8E8E93;margin-top:8px;margin-bottom:6px" id="qr-next-lbl">Next visit — scan to book:</div>
       <div style="width:64px;height:64px;background:#F2F2F7;border:0.5px solid #E5E5EA;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:28px">⊞</div>
       <div class="kana-guide" id="kana-tip" style="margin-top:10px;display:none"><div class="kana-guide-label">🗣 読み方（カタカナ）</div><div class="kana-text" id="kana-tip-text"></div></div>
     </div>
   </div>
-  <div class="done-banner"><div class="ico">🎉</div><div class="t" id="done-t">施術完了！ありがとうございました！</div><div class="s" id="done-s2">Thank you for visiting!</div></div>
+  <div class="done-banner"><div class="ico">🎉</div><div class="t" id="done-t">施術完了！ありがとうございました！</div><div class="s" id="done-s2">All done — you look amazing!</div></div>
 </div>
 
 <!-- 辞書2列 -->
@@ -694,15 +754,15 @@ function fl(it){return lang==='ja'?it.ja:(it[lang]||it.en);}
 /* 場面別辞書データ */
 var STEP_DICT={
   1:[{jp:'いらっしゃいませ',badge:'おもてなし',bc:'#185FA5',ctx:'来店時の第一声',
-      en:'Welcome!',en_kana:'ウェルカム！',
-      zh:'欢迎光临！',zh_jp:'ようこそ！',zh_kana:'ファン イン グアン リン！',
-      ko:'어서오세요！',ko_jp:'いらっしゃいませ！',ko_kana:'オソオセヨ！',note:'笑顔で迎える'},
+      en:'Hi, welcome!',en_kana:'ハイ、ウェルカム！',
+      zh:'欢迎！',zh_jp:'いらっしゃいませ！',zh_kana:'ファン イン！',
+      ko:'어서오세요!',ko_jp:'いらっしゃいませ！',ko_kana:'オソオセヨ！',note:'笑顔で迎える'},
      {jp:'言語を選んでください',badge:'受付',bc:'#1D9E75',ctx:'操作の案内',
-      en:'Please select your language.',en_kana:'プリーズ セレクト ユア ランゲージ。',
+      en:'Which language works for you?',en_kana:'ウィッチ ランゲージ ワークス フォー ユー？',
       zh:'请选择您的语言。',zh_jp:'言語を選んでください。',zh_kana:'チン シュワン ズェ ニン ダ ユー イェン。',
-      ko:'언어를 선택해 주세요。',ko_jp:'言語を選択してください。',ko_kana:'オノルル ソンテケ ジュセヨ。',note:'指差しで示す'},
+      ko:'편한 언어를 골라주세요。',ko_jp:'言語を選択してください。',ko_kana:'ピョナン オノルル コルラジュセヨ。',note:'指差しで示す'},
      {jp:'ご予約はありますか？',badge:'受付',bc:'#1D9E75',ctx:'予約有無の確認',
-      en:'Do you have a reservation?',en_kana:'ドゥ ユー ハヴ ア レザベーション？',
+      en:'Did you make a reservation?',en_kana:'ディッド ユー メイク ア レザベーション？',
       zh:'您有预约吗？',zh_jp:'ご予約はありますか？',zh_kana:'ニン ヨウ ユー ユエ マ？',
       ko:'예약하셨나요?',ko_jp:'予約はされていますか？',ko_kana:'イェヤカションナヨ？',note:'笑顔で確認'}],
   2:[{jp:'アレルギー',badge:'問診',bc:'#534AB7',ctx:'薬剤反応の有無確認',
@@ -711,8 +771,8 @@ var STEP_DICT={
       ko:'알레르기',ko_jp:'アレルギー',ko_kana:'アルレルギ',note:'同意書と併用'},
      {jp:'ブリーチ',badge:'技術',bc:'#BA7517',ctx:'過去のブリーチ確認',
       en:'Bleach',en_kana:'ブリーチ',
-      zh:'漂发',zh_jp:'ブリーチ・脱色',zh_kana:'ピャオ ファ',
-      ko:'블리치',ko_jp:'ブリーチ',ko_kana:'ブルリチ',note:'ダメージ確認必須'},
+      zh:'漂发 / 脱色',zh_jp:'ブリーチ・脱色',zh_kana:'ピャオ ファ',
+      ko:'블리치 (탈색)',ko_jp:'ブリーチ',ko_kana:'ブルリチ',note:'ダメージ確認必須'},
      {jp:'縮毛矯正',badge:'技術',bc:'#BA7517',ctx:'過去の縮毛矯正確認',
       en:'Straightening',en_kana:'ストレイトゥニング',
       zh:'拉直烫',zh_jp:'ストレートパーマ',zh_kana:'ラー ジー タン',
@@ -722,53 +782,53 @@ var STEP_DICT={
       zh:'头皮敏感',zh_jp:'頭皮が敏感',zh_kana:'トウ ピー ミン ガン',
       ko:'두피 민감',ko_jp:'頭皮が敏感',ko_kana:'トゥピ ミンガム',note:'マイルドな薬剤を選択'}],
   3:[{jp:'レイヤー',badge:'技術',bc:'#BA7517',ctx:'段カット',
-      en:'Layer',en_kana:'レイヤー',
+      en:'Layers',en_kana:'レイヤーズ',
       zh:'分层',zh_jp:'レイヤー（段カット）',zh_kana:'フェン ツォン',
       ko:'레이어',ko_jp:'レイヤーカット',ko_kana:'レイオ',note:'長さ・位置を確認'},
      {jp:'さらさら',badge:'感性',bc:'#3B6D11',ctx:'滑らかな手触り',
-      en:'Silky smooth',en_kana:'シルキー スムース',
-      zh:'顺滑',zh_jp:'サラサラ',zh_kana:'シュン ホア',
-      ko:'매끄럽게',ko_jp:'サラサラ',ko_kana:'メックルプゲ',note:'縮毛矯正・ブロー'},
+      en:'Sleek & smooth',en_kana:'スリーク アンド スムース',
+      zh:'顺滑丝滑',zh_jp:'サラサラ',zh_kana:'シュン ホア スー ホア',
+      ko:'매끄럽고 윤기나게',ko_jp:'サラサラ',ko_kana:'メックルプコ ユンギナゲ',note:'縮毛矯正・ブロー'},
      {jp:'すく',badge:'技術',bc:'#BA7517',ctx:'毛量を減らして軽くする',
-      en:'Thin out',en_kana:'シン アウト',
-      zh:'打薄',zh_jp:'すく・量を減らす',zh_kana:'ダー バォ',
-      ko:'숱 치기',ko_jp:'すく',ko_kana:'スル チギ',note:'量・割合を確認'},
+      en:'Thin it out',en_kana:'シン イット アウト',
+      zh:'打薄一些',zh_jp:'すく・量を減らす',zh_kana:'ダー バォ イー シェ',
+      ko:'좀 더 가볍게',ko_jp:'すく',ko_kana:'チョム ド カビョプケ',note:'量・割合を確認'},
      {jp:'ふわっと',badge:'感性',bc:'#3B6D11',ctx:'空気感あるボリューム',
-      en:'Airy / Fluffy',en_kana:'エアリー / フラッフィー',
-      zh:'蓬松',zh_jp:'ふわっと',zh_kana:'ポン ソン',
-      ko:'폭신한 볼륨',ko_jp:'ふわっと',ko_kana:'ポクシナン ボルリュム',note:'パーマ・ブロー'},
+      en:'Fluffy & airy',en_kana:'フラッフィー アンド エアリー',
+      zh:'蓬松有空气感',zh_jp:'ふわっと',zh_kana:'ポン ソン ヨウ コン チー ガン',
+      ko:'폭신하고 가볍게',ko_jp:'ふわっと',ko_kana:'ポクシナゴ カビョプケ',note:'パーマ・ブロー'},
      {jp:'ハイライト',badge:'技術',bc:'#BA7517',ctx:'部分的に明るくする',
       en:'Highlights',en_kana:'ハイライツ',
       zh:'挑染',zh_jp:'ハイライト',zh_kana:'ティアオ ラン',
       ko:'하이라이트',ko_jp:'ハイライト',ko_kana:'ハイライトゥ',note:'ダメージ同意を得る'}],
   4:[{jp:'お痒いところはございませんか？',badge:'施術中',bc:'#D85A30',ctx:'シャンプー中の確認',
-      en:'Is there anywhere itchy?',en_kana:'イズ ゼア エニィウェア イッチー？',
-      zh:'有没有痒的地方？',zh_jp:'かゆいところはありますか？',zh_kana:'ヨウ メイ ヨウ ヤン ダ ディ ファン？',
-      ko:'가려운 곳은요?',ko_jp:'かゆいところは？',ko_kana:'カリョウン コスン ヨ？',note:'必ず声かけ'},
+      en:'Does it feel itchy anywhere?',en_kana:'ダズ イット フィール イッチー エニィウェア？',
+      zh:'有哪里感觉痒吗？',zh_jp:'かゆいところはありますか？',zh_kana:'ヨウ ナァ リー ガン ジュエ ヤン マ？',
+      ko:'가려운 곳은 없으세요?',ko_jp:'かゆいところは？',ko_kana:'カリョウン コスン オプセヨ？',note:'必ず声かけ'},
      {jp:'お湯加減はいかがですか？',badge:'施術中',bc:'#D85A30',ctx:'温度確認',
-      en:'How is the temperature?',en_kana:'ハウ イズ ザ テンペラチャー？',
+      en:'Is the water temperature okay?',en_kana:'イズ ザ ウォーター テンペラチャー オーケー？',
       zh:'水温合适吗？',zh_jp:'お湯の温度はどうですか？',zh_kana:'シュイ ウェン ハァ シー マ？',
-      ko:'온도는 어때요?',ko_jp:'温度はどうですか？',ko_kana:'オンドヌン オッテヨ？',note:'外国人は温度感覚差に注意'},
+      ko:'물 온도는 괜찮으세요?',ko_jp:'温度はどうですか？',ko_kana:'ムル オンドヌン クェンチャヌセヨ？',note:'外国人は温度感覚差に注意'},
      {jp:'少々お待ちください',badge:'施術中',bc:'#D85A30',ctx:'薬剤放置中・準備中',
-      en:'One moment, please.',en_kana:'ワン モーメント、プリーズ。',
-      zh:'请稍等一下。',zh_jp:'少々お待ちください。',zh_kana:'チン シャオ ドン イー シャ。',
-      ko:'잠시만요。',ko_jp:'少々お待ちください。',ko_kana:'チャムシマンヨ。',note:'目安時間も伝える'},
+      en:'Just a moment!',en_kana:'ジャスト ア モーメント！',
+      zh:'请稍等一下～',zh_jp:'少々お待ちください。',zh_kana:'チン シャオ ドン イー シャ！',
+      ko:'잠깐만요!',ko_jp:'少々お待ちください。',ko_kana:'チャムカンマニョ！',note:'目安時間も伝える'},
      {jp:'仕上がりはいかがですか？',badge:'仕上げ',bc:'#B54B00',ctx:'施術完了後の確認',
-      en:'How do you like the result?',en_kana:'ハウ ドゥ ユー ライク ザ リザルト？',
+      en:'How do you like it?',en_kana:'ハウ ドゥ ユー ライク イット？',
       zh:'满意吗？',zh_jp:'仕上がりはいかがですか？',zh_kana:'マン イー マ？',
       ko:'마음에 드세요?',ko_jp:'お気に召しましたか？',ko_kana:'マウメ ドゥセヨ？',note:'手鏡で後ろも必ず'}],
   5:[{jp:'チップは不要です',badge:'会計',bc:'#3B6D11',ctx:'日本はチップ文化なし',
-      en:'No tip is necessary.',en_kana:'ノー チップ イズ ネセサリー。',
-      zh:'不需要小费。',zh_jp:'チップは要りません。',zh_kana:'ブー シュー ヤオ シャオ フェイ。',
-      ko:'팁은 필요 없어요。',ko_jp:'チップは不要です。',ko_kana:'ティブン ピリョ オプソヨ。',note:'文化の違いを丁寧に'},
+      en:'No tip needed here in Japan!',en_kana:'ノー チップ ニーデッド ヒア イン ジャパン！',
+      zh:'日本不需要给小费哦！',zh_jp:'チップは要りません。',zh_kana:'リー ベン ブー シュー ヤオ ゲイ シャオ フェイ オ！',
+      ko:'일본에서는 팁 안 주셔도 돼요!',ko_jp:'チップは不要です。',ko_kana:'イルボネソヌン ティブ アン ジュショド ドゥェヨ！',note:'文化の違いを丁寧に'},
      {jp:'次回のご予約はいかがですか？',badge:'アフター',bc:'#3B6D11',ctx:'リピート促進',
-      en:'Would you like to book next time?',en_kana:'ウッド ユー ライク トゥ ブック ネクスト タイム？',
-      zh:'下次预约吗？',zh_jp:'次回のご予約はいかがですか？',zh_kana:'シャ ツー ユー ユエ マ？',
-      ko:'다음 예약할까요?',ko_jp:'次回の予約はどうですか？',ko_kana:'タウム イェヤッカルカヨ？',note:'1〜3ヶ月後を提案'},
+      en:'Want to book your next visit?',en_kana:'ウォント トゥ ブック ユア ネクスト ヴィジット？',
+      zh:'要预约下次时间吗？',zh_jp:'次回のご予約はいかがですか？',zh_kana:'ヤオ ユー ユエ シャ ツー シー ジェン マ？',
+      ko:'다음에 또 오실래요?',ko_jp:'次回の予約はどうですか？',ko_kana:'タウメ ット オシルレヨ？',note:'1〜3ヶ月後を提案'},
      {jp:'ありがとうございました',badge:'お見送り',bc:'#1D9E75',ctx:'施術完了のお礼',
-      en:'Thank you so much!',en_kana:'サンキュー ソー マッチ！',
-      zh:'非常感谢！',zh_jp:'ありがとうございました！',zh_kana:'フェイ チャン ガン シェ！',
-      ko:'감사합니다！',ko_jp:'ありがとうございました！',ko_kana:'カムサハムニダ！',note:'笑顔でお見送り'}]
+      en:'Thank you so much — see you next time!',en_kana:'サンキュー ソー マッチ！シー ユー ネクスト タイム！',
+      zh:'非常感谢！下次见！',zh_jp:'ありがとうございました！',zh_kana:'フェイ チャン ガン シェ！シャ ツー ジェン！',
+      ko:'감사합니다! 또 오세요!',ko_jp:'ありがとうございました！',ko_kana:'カムサハムニダ！ット オセヨ！',note:'笑顔でお見送り'}]
 };
 
 /* 全項目辞書データ（カタカナ読み追加） */
@@ -859,83 +919,83 @@ var FULL_DICT={
   ]},
   serv:{label:'おもてなしフレーズ',color:'#185FA5',items:[
     {jp:'お痒いところはございませんか？',read:'かゆいところ確認',ctx:'シャンプー中にかゆみや不快感がないか確認',
-     en:'Is there anywhere that feels itchy?',ens:'Check for discomfort during shampoo',en_kana:'イズ ゼア エニィウェア ザット フィールズ イッチー？',
-     zh:'有没有感觉痒的地方？',zhs:'洗头时询问是否有不适',zh_kana:'ヨウ メイ ヨウ ガンジュエ ヤン ダ ディ ファン？',
-     ko:'가려운 곳은 없으신가요?',kos:'샴푸 중 두피 불편 여부 확인',ko_kana:'カリョウン コスン オブスシンガヨ？',note:'施術中 必須確認'},
+     en:'Does it feel itchy anywhere?',ens:'Check for any scalp discomfort during shampoo',en_kana:'ダズ イット フィール イッチー エニィウェア？',
+     zh:'有哪里感觉痒吗？',zhs:'洗头时确认是否有不适感',zh_kana:'ヨウ ナァ リー ガン ジュエ ヤン マ？',
+     ko:'가려운 곳은 없으세요?',kos:'샴푸 중 두피 불편 여부 확인',ko_kana:'カリョウン コスン オプセヨ？',note:'施術中 必須確認'},
     {jp:'お湯加減はいかがですか？',read:'お湯の温度確認',ctx:'シャンプー台でのお湯温度確認',
-     en:'How is the water temperature?',ens:'Too hot or cold? Adjust immediately',en_kana:'ハウ イズ ザ ウォーター テンペラチャー？',
+     en:'Is the water temperature okay?',ens:'Too hot or cold? Adjust right away',en_kana:'イズ ザ ウォーター テンペラチャー オーケー？',
      zh:'水温合适吗？',zhs:'询问洗头水温是否舒适',zh_kana:'シュイ ウェン ハァ シー マ？',
-     ko:'물 온도는 어떠세요?',kos:'샴푸 시 물 온도 확인',ko_kana:'ムル オンドヌン オットセヨ？',note:'外国人は温度差に注意'},
+     ko:'물 온도는 괜찮으세요?',kos:'샴푸 시 물 온도 확인',ko_kana:'ムル オンドヌン クェンチャヌセヨ？',note:'外国人は温度差に注意'},
     {jp:'首を楽にしてください',read:'首の力を抜いてください',ctx:'シャンプー台に横たわるとき首を脱力するよう促す',
-     en:'Please relax your neck.',ens:'Let your neck go loose',en_kana:'プリーズ リラックス ユア ネック。',
-     zh:'请放松您的脖子。',zhs:'躺上洗发台时请放松颈部',zh_kana:'チン ファン ソン ニン ダ ボーズ。',
-     ko:'목에 힘을 빼주세요。',kos:'샴푸볼에 누울 때 목을 편안하게',ko_kana:'モゲ ヒムル ペジュセヨ。',note:'体勢変更時に必ず伝える'},
+     en:'Just let your neck relax.',ens:'Keep your neck loose and comfortable',en_kana:'ジャスト レット ユア ネック リラックス。',
+     zh:'脖子放松就好。',zhs:'躺上洗发台时放松颈部',zh_kana:'ボーズ ファン ソン ジウ ハオ。',
+     ko:'목에 힘을 빼세요.',kos:'샴푸볼에 누울 때 목을 편안하게',ko_kana:'モゲ ヒムル ペセヨ。',note:'体勢変更時に必ず伝える'},
     {jp:'少々お待ちください',read:'しばらくお待ちください',ctx:'薬剤の放置時間や準備中に待ってもらう',
-     en:'One moment, please.',ens:'Brief wait for prep or processing',en_kana:'ワン モーメント、プリーズ。',
-     zh:'请稍等一下。',zhs:'准备或等待药剂作用时',zh_kana:'チン シャオ ドン イー シャ。',
-     ko:'잠시만 기다려 주세요。',kos:'약제 방치 시간이나 준비 중',ko_kana:'チャムシマン キダリョ ジュセヨ。',note:'放置時間の目安も伝える'},
+     en:'Just a moment!',ens:'Brief wait for prep or processing time',en_kana:'ジャスト ア モーメント！',
+     zh:'请稍等一下～',zhs:'准备中或等待药剂作用时',zh_kana:'チン シャオ ドン イー シャ！',
+     ko:'잠깐만요!',kos:'약제 방치 시간이나 준비 중',ko_kana:'チャムカンマニョ！',note:'放置時間の目安も伝える'},
     {jp:'こちらにどうぞ',read:'こちらへどうぞ',ctx:'お客様を席やシャンプー台に誘導する',
-     en:'Right this way, please.',ens:'Guide to seat or shampoo area',en_kana:'ライト ディス ウェイ、プリーズ。',
+     en:'Right this way!',ens:'Guide to seat or shampoo area',en_kana:'ライト ディス ウェイ！',
      zh:'请这边走。',zhs:'引导客人到座位或洗发区',zh_kana:'チン ヂェ ビェン ゾウ。',
-     ko:'이쪽으로 오세요。',kos:'고객을 좌석이나 샴푸 대로 안내',ko_kana:'イジョグロ オセヨ。',note:'ジェスチャー必ず併用'},
+     ko:'이쪽으로 오세요!',kos:'고객을 좌석이나 샴푸 대로 안내',ko_kana:'イジョグロ オセヨ！',note:'ジェスチャー必ず併用'},
     {jp:'チップは不要です',read:'チップはいりません',ctx:'日本ではチップの文化がない旨を丁寧に伝える',
-     en:'No tip is necessary in Japan.',ens:'Tipping is not customary here',en_kana:'ノー チップ イズ ネセサリー イン ジャパン。',
-     zh:'日本不需要给小费。',zhs:'礼貌说明日本不存在小费文化',zh_kana:'リー ベン ブー シュー ヤオ ゲイ シャオ フェイ。',
-     ko:'일본에서는 팁이 필요하지 않습니다。',kos:'일본은 팁 문화가 없음을 정중히 안내',ko_kana:'イルボネソヌン チップイ ピリョハジ アンスムニダ。',note:'文化の違いを説明'},
+     en:'No tip needed here in Japan!',ens:'Tipping is not customary in Japan',en_kana:'ノー チップ ニーデッド ヒア イン ジャパン！',
+     zh:'日本不需要给小费哦！',zhs:'礼貌说明日本没有小费文化',zh_kana:'リー ベン ブー シュー ヤオ ゲイ シャオ フェイ オ！',
+     ko:'일본에서는 팁 안 주셔도 돼요!',kos:'일본은 팁 문화가 없음을 친절하게 안내',ko_kana:'イルボネソヌン ティブ アン ジュショド ドゥェヨ！',note:'文化の違いを説明'},
     {jp:'どのくらいの長さにしますか？',read:'長さの確認',ctx:'具体的にどのくらい切るか確認する',
-     en:'How much length would you like off?',ens:"Show with fingers — e.g. '2cm'",en_kana:'ハウ マッチ レングス ウッド ユー ライク オフ？',
-     zh:'您想剪多少长度？',zhs:'用手指比划长度',zh_kana:'ニン シャン ジェン ドゥオ シャオ チャン ドゥー？',
-     ko:'어느 정도 길이로 자를까요?',kos:'손가락으로 길이를 표시해 달라고 요청',ko_kana:'オヌ チョンド キリロ チャルカヨ？',note:'必ずcm単位で確認'},
+     en:'How much would you like off?',ens:"Show with fingers — e.g. '2cm'",en_kana:'ハウ マッチ ウッド ユー ライク オフ？',
+     zh:'您想剪多少呢？',zhs:'用手指比划长度',zh_kana:'ニン シャン ジェン ドゥオ シャオ ネ？',
+     ko:'얼마나 자를까요?',kos:'손가락으로 길이를 표시해 달라고 요청',ko_kana:'オルマナ チャルカヨ？',note:'必ずcm単位で確認'},
     {jp:'仕上がりはいかがですか？',read:'しあがり確認',ctx:'施術完了後に満足度を確認する',
-     en:'How do you like the result?',ens:'Final check — hand mirror for back',en_kana:'ハウ ドゥ ユー ライク ザ リザルト？',
-     zh:'您对造型满意吗？',zhs:'完成后询问满意度',zh_kana:'ニン ドゥイ ザオ シン マン イー マ？',
-     ko:'마무리는 어떠세요?',kos:'시술 완료 후 만족도 확인',ko_kana:'マムリヌン オットセヨ？',note:'手鏡で後ろも必ず確認'},
+     en:'How do you like it?',ens:'Final check — use hand mirror for back',en_kana:'ハウ ドゥ ユー ライク イット？',
+     zh:'您觉得满意吗？',zhs:'完成后询问满意度',zh_kana:'ニン ジュエ ダー マン イー マ？',
+     ko:'마음에 드세요?',kos:'시술 완료 후 만족도 확인',ko_kana:'マウメ ドゥセヨ？',note:'手鏡で後ろも必ず確認'},
     {jp:'アレルギーはございますか？',read:'アレルギーの確認',ctx:'カラーやパーマの薬剤に対するアレルギー確認',
-     en:'Do you have any allergies?',ens:'Chemical allergy — check before service',en_kana:'ドゥ ユー ハヴ エニー アレルジーズ？',
-     zh:'您有过敏史吗？',zhs:'染发或烫发前确认过敏情况',zh_kana:'ニン ヨウ グオ ミン シー マ？',
-     ko:'알레르기가 있으신가요?',kos:'염색/파마 약제 알레르기 여부를 시술 전 확인',ko_kana:'アルレルギガ イッスシンガヨ？',note:'同意書と組み合わせる'},
+     en:'Any allergies to hair products?',ens:'Check for chemical allergy before service',en_kana:'エニー アレルジーズ トゥ ヘア プロダクツ？',
+     zh:'您有过敏反应吗？',zhs:'染发或烫发前确认过敏情况',zh_kana:'ニン ヨウ グオ ミン ファン イン マ？',
+     ko:'알레르기 있으세요?',kos:'염색/파마 약제 알레르기 여부를 시술 전 확인',ko_kana:'アルレルギ イッスセヨ？',note:'同意書と組み合わせる'},
     {jp:'次回のご予約はいかがですか？',read:'次回予約の提案',ctx:'アフターケアも兼ねた次回予約の提案',
-     en:'Would you like to book your next visit?',ens:'Suggest timing for maintenance',en_kana:'ウッド ユー ライク トゥ ブック ユア ネクスト ヴィジット？',
-     zh:'下次预约什么时候方便？',zhs:'推荐下次预约时间',zh_kana:'シャ ツー ユー ユエ シェン マ シー ホウ ファン ビェン？',
-     ko:'다음 예약은 어떻게 하시겠어요?',kos:'다음 방문 시기를 제안하며 재방문 유도',ko_kana:'タウム イェヤグン オットケ ハシゲッオヨ？',note:'1〜3ヶ月後を提案'}
+     en:'Want to book your next visit?',ens:'Suggest timing for next maintenance',en_kana:'ウォント トゥ ブック ユア ネクスト ヴィジット？',
+     zh:'要预约下次时间吗？',zhs:'推荐下次预约时间',zh_kana:'ヤオ ユー ユエ シャ ツー シー ジェン マ？',
+     ko:'다음에 또 오실래요?',kos:'다음 방문 시기를 제안하며 재방문 유도',ko_kana:'タウメ ット オシルレヨ？',note:'1〜3ヶ月後を提案'}
   ]}
 };
 
 var T={
-  welcome:{en:'Welcome! Please feel free to let us know your hair preferences today.',zh:'欢迎光临！请告诉我们您今天的发型需求。',ko:'어서오세요! 오늘 원하시는 헤어스타일을 알려주세요。',ja:'いらっしゃいませ！本日のご希望をお聞かせください。'},
-  consent:{en:'Do you have any allergies to hair dye or chemical treatments?\nPlease let us know before we begin.',zh:'您对染发剂或化学药品有过敏史吗？\n开始前请告知我们。',ko:'헤어 염료나 화학 제품에 알레르기가 있으신가요?\n시술 전에 알려주세요。',ja:'ヘアカラーや薬剤にアレルギーはありますか？\n施術前にお知らせください。'},
-  yn_lbl:{en:'Your stylist suggests:',zh:'您的发型师建议：',ko:'스타일리스트가 제안합니다：',ja:'担当スタイリストの提案：'},
-  yn_yes:{en:'YES ✓',zh:'✓ 好的',ko:'✓ 네',ja:'✓ はい'},yn_yes_sub:{en:'Yes, please go ahead',zh:'好的，请继续',ko:'네, 진행해 주세요',ja:'はい、お願いします'},
-  yn_no:{en:'NO ✗',zh:'✗ 不',ko:'✗ 아니요',ja:'✗ いいえ'},yn_no_sub:{en:"I'd like something different",zh:'我想要不同的效果',ko:'다른 스타일을 원해요',ja:'他のスタイルを見たい'},
-  yn_or:{en:"Or I'd like something...",zh:'或者我想要...',ko:'또는 이런 느낌으로...',ja:'またはこんな感じで...'},
-  sl1a:{en:'Thinning',zh:'打薄',ko:'숱 치기',ja:'すく'},sl1b:{en:'Keep bulk',zh:'保留发量',ko:'볼륨 유지',ja:'残す'},
-  sl2a:{en:'Silky',zh:'顺滑',ko:'매끄럽게',ja:'さらさら'},sl2b:{en:'Fluffy',zh:'蓬松',ko:'폭신하게',ja:'ふわっと'},
+  welcome:{en:'Hi there! What can we do for your hair today?',zh:'欢迎！今天想做什么发型呢？',ko:'어서오세요! 오늘 어떻게 해드릴까요?',ja:'いらっしゃいませ！本日のご希望をお聞かせください。'},
+  consent:{en:'Do you have any allergies to hair dye or chemical products?\nJust let us know before we start!',zh:'您对染发剂或烫染产品有过敏反应吗？\n请在开始前告诉我们。',ko:'혹시 헤어 염료나 약품에 알레르기가 있으신가요?\n시작 전에 알려주세요!',ja:'ヘアカラーや薬剤にアレルギーはありますか？\n施術前にお知らせください。'},
+  yn_lbl:{en:'Your stylist recommends:',zh:'发型师为您推荐：',ko:'스타일리스트 추천：',ja:'担当スタイリストの提案：'},
+  yn_yes:{en:'YES ✓',zh:'✓ 好的',ko:'✓ 네',ja:'✓ はい'},yn_yes_sub:{en:'Sounds good, let\'s go!',zh:'好！就这样吧',ko:'좋아요, 그렇게 해주세요!',ja:'はい、お願いします'},
+  yn_no:{en:'NO ✗',zh:'✗ 不太对',ko:'✗ 아니요',ja:'✗ いいえ'},yn_no_sub:{en:'Hmm, not quite…',zh:'嗯，想换个感觉',ko:'조금 다르게 해주세요',ja:'他のスタイルを見たい'},
+  yn_or:{en:'Or something like…',zh:'或者这种感觉…',ko:'아니면 이런 느낌은 어떨까요…',ja:'またはこんな感じで...'},
+  sl1a:{en:'Thinner',zh:'打薄',ko:'숱 치기',ja:'すく'},sl1b:{en:'Keep volume',zh:'保留发量',ko:'볼륨 유지',ja:'残す'},
+  sl2a:{en:'Sleek',zh:'顺滑',ko:'매끄럽게',ja:'さらさら'},sl2b:{en:'Fluffy',zh:'蓬松',ko:'폭신하게',ja:'ふわっと'},
   phrases:{
-    itchy:{en:'Is there anywhere that feels itchy?',zh:'有没有感觉痒的地方？',ko:'가려운 곳은 없으신가요?',ja:'お痒いところはございませんか？',kana:{en:'イズ ゼア エニィウェア ザット フィールズ イッチー？',zh:'ヨウ メイ ヨウ ガンジュエ ヤン ダ ディ ファン マ？',ko:'カリョウン コスン オブスシンガヨ？'}},
-    temp:{en:'How is the water temperature?',zh:'水温合适吗？',ko:'물 온도는 어떠세요?',ja:'お湯加減はいかがですか？',kana:{en:'ハウ イズ ザ ウォーター テンペラチャー？',zh:'シュイ ウェン ハァ シー マ？',ko:'ムル オンドヌン オットセヨ？'}},
-    neck:{en:'Please relax your neck.',zh:'请放松您的脖子。',ko:'목에 힘을 빼주세요。',ja:'首を楽にしてください。',kana:{en:'プリーズ リラックス ユア ネック。',zh:'チン ファン ソン ニン ダ ボーズ。',ko:'モゲ ヒムル ペジュセヨ。'}},
-    wait:{en:'One moment, please.',zh:'请稍等一下。',ko:'잠시만 기다려 주세요。',ja:'少々お待ちください。',kana:{en:'ワン モーメント、プリーズ。',zh:'チン シャオ ドン イー シャ。',ko:'チャムシマン キダリョ ジュセヨ。'}},
-    thin:{en:'Shall I thin it out a bit more?',zh:'需要打薄一点吗？',ko:'좀 더 숱을 칠까요?',ja:'もう少し細かくしますか？',kana:{en:'シャル アイ シン イット アウト ア ビット モア？',zh:'シュー ヤオ ダー バォ イー ディェン マ？',ko:'チョム ド スルル チルカヨ？'}},
-    len:{en:'How is the length so far?',zh:'长度合适吗？',ko:'길이는 어떠세요?',ja:'長さはいかがですか？',kana:{en:'ハウ イズ ザ レングス ソー ファー？',zh:'チャン ドゥー ハァ シー マ？',ko:'キリヌン オットセヨ？'}},
-    mir:{en:'Could you check in the mirror?',zh:'请在镜子里确认一下。',ko:'거울에서 확인해 주세요。',ja:'鏡でご確認ください。',kana:{en:'クッド ユー チェック イン ザ ミラー？',zh:'チン ザイ ジン ズ リー チュエ レン イー シャ。',ko:'コウレソ ファギンヘ ジュセヨ。'}},
-    res:{en:'How do you like the result?',zh:'您对造型满意吗？',ko:'마무리는 어떠세요?',ja:'仕上がりはいかがですか？',kana:{en:'ハウ ドゥ ユー ライク ザ リザルト？',zh:'ニン ドゥイ ザオ シン マン イー マ？',ko:'マムリヌン オットセヨ？'}},
-    back:{en:'Please check the back as well.',zh:'请也看一下后面的效果。',ko:'뒤도 확인해 주세요。',ja:'後ろもご確認ください。',kana:{en:'プリーズ チェック ザ バック アズ ウェル。',zh:'チン イェ カン イー シャ ホウ ミェン ダ シャオ グオ。',ko:'ドゥィド ファギンヘ ジュセヨ。'}},
-    thnk:{en:'Thank you so much!',zh:'非常感谢！',ko:'감사합니다!',ja:'ありがとうございました！',kana:{en:'サンキュー ソー マッチ！',zh:'フェイ チャン ガン シェ！',ko:'カムサハムニダ！'}}
+    itchy:{en:'Does it feel itchy anywhere?',zh:'有哪里感觉痒吗？',ko:'가려운 곳은 없으세요?',ja:'お痒いところはございませんか？',kana:{en:'ダズ イット フィール イッチー エニィウェア？',zh:'ヨウ ナァ リー ガン ジュエ ヤン マ？',ko:'カリョウン コスン オプセヨ？'}},
+    temp:{en:'Is the water temperature okay?',zh:'水温合适吗？',ko:'물 온도는 괜찮으세요?',ja:'お湯加減はいかがですか？',kana:{en:'イズ ザ ウォーター テンペラチャー オーケー？',zh:'シュイ ウェン ハァ シー マ？',ko:'ムル オンドヌン クェンチャヌセヨ？'}},
+    neck:{en:'Just let your neck relax.',zh:'脖子放松就好。',ko:'목에 힘을 빼세요.',ja:'首を楽にしてください。',kana:{en:'ジャスト レット ユア ネック リラックス。',zh:'ボーズ ファン ソン ジウ ハオ。',ko:'モゲ ヒムル ペセヨ。'}},
+    wait:{en:'Just a moment!',zh:'请稍等一下～',ko:'잠깐만요!',ja:'少々お待ちください。',kana:{en:'ジャスト ア モーメント！',zh:'チン シャオ ドン イー シャ。',ko:'チャムカンマニョ！'}},
+    thin:{en:'Want me to take a bit more off?',zh:'要再薄一点吗？',ko:'좀 더 가볍게 할까요?',ja:'もう少し細かくしますか？',kana:{en:'ウォント ミー トゥ テイク ア ビット モア オフ？',zh:'ヤオ ザイ バォ イー ディェン マ？',ko:'チョム ド カビョプケ ハルカヨ？'}},
+    len:{en:'How does the length look?',zh:'长度满意吗？',ko:'길이는 어떠세요?',ja:'長さはいかがですか？',kana:{en:'ハウ ダズ ザ レングス ルック？',zh:'チャン ドゥー マン イー マ？',ko:'キリヌン オットセヨ？'}},
+    mir:{en:'Can you take a look in the mirror?',zh:'帮您看看镜子里的效果？',ko:'거울로 한번 확인해볼까요?',ja:'鏡でご確認ください。',kana:{en:'キャン ユー テイク ア ルック イン ザ ミラー？',zh:'バン ニン カン カン ジン ズ リー ダ シャオ グオ？',ko:'コウルロ ハンボン ファギネボルカヨ？'}},
+    res:{en:'How do you like it?',zh:'您觉得满意吗？',ko:'마음에 드세요?',ja:'仕上がりはいかがですか？',kana:{en:'ハウ ドゥ ユー ライク イット？',zh:'ニン ジュエ ダー マン イー マ？',ko:'マウメ トゥセヨ？'}},
+    back:{en:'Let\'s check the back too!',zh:'也帮您看看后面吧！',ko:'뒤도 같이 확인해볼까요!',ja:'後ろもご確認ください。',kana:{en:'レッツ チェック ザ バック トゥー！',zh:'イェ バン ニン カン カン ホウ ミェン バ！',ko:'ドゥィド カッチ ファギネボルカヨ！'}},
+    thnk:{en:'Thank you so much — see you next time!',zh:'非常感谢！下次再见！',ko:'감사합니다! 또 오세요!',ja:'ありがとうございました！',kana:{en:'サンキュー ソー マッチ！シー ユー ネクスト タイム！',zh:'フェイ チャン ガン シェ！シャ ツー ザイ ジェン！',ko:'カムサハムニダ！ット オセヨ！'}}
   },
   fee_menu:{en:'Menu',zh:'项目',ko:'메뉴',ja:'メニュー'},fee_price:{en:'Price',zh:'价格',ko:'가격',ja:'料金'},
   fee_cut:{en:'Cut',zh:'剪发',ko:'커트',ja:'カット'},fee_shampoo:{en:'Shampoo & Blowdry',zh:'洗发吹发',ko:'샴푸·블로우',ja:'シャンプー・ブロー'},fee_treat:{en:'Treatment',zh:'护发护理',ko:'트리트먼트',ja:'トリートメント'},fee_total:{en:'Total',zh:'合计',ko:'합계',ja:'合計'},
-  tip:{en:'ℹ️ No tip is necessary in Japan. Thank you!',zh:'ℹ️ 日本不需要给小费。非常感谢！',ko:'ℹ️ 일본에서는 팁이 필요하지 않습니다。감사합니다!',ja:'ℹ️ 日本ではチップは不要です。ありがとうございました！'},
-  done_after:{en:'We look forward to seeing you again.',zh:'期待您的再次光临！',ko:'또 방문해 주세요！',ja:'またのご来店をお待ちしております。'},
-  qr_next:{en:'Next visit — scan to book:',zh:'下次预约，请扫描：',ko:'다음 예약은 QR로：',ja:'次回予約はこちら：'},
-  care1_nm:{en:'Leave-in hair oil',zh:'免洗护发油',ko:'아웃바스 오일',ja:'アウトバスオイル'},care1_ds:{en:'Apply to damp hair',zh:'湿发时使用',ko:'젖은 머리에 발라',ja:'濡れた髪に使用'},
-  care2_nm:{en:'Moisturizing shampoo',zh:'保湿洗发水',ko:'보습 샴푸',ja:'保湿シャンプー'},care2_ds:{en:'Daily use for hydration',zh:'日常使用',ko:'매일 사용',ja:'毎日使いで'},
-  done_t:{en:'Treatment complete — thank you!',zh:'护理完成，谢谢！',ko:'시술 완료！감사합니다！',ja:'施術完了！ありがとうございました！'},
+  tip:{en:'ℹ️ No tip needed in Japan — just your smile! 😊',zh:'ℹ️ 日本不需要给小费，谢谢您的光临！😊',ko:'ℹ️ 일본에서는 팁이 필요 없어요. 감사합니다! 😊',ja:'ℹ️ 日本ではチップは不要です。ありがとうございました！'},
+  done_after:{en:'Hope to see you again soon!',zh:'期待您下次光临！',ko:'또 오세요! 기다릴게요!',ja:'またのご来店をお待ちしております。'},
+  qr_next:{en:'Next visit — scan to book:',zh:'下次预约，扫一扫：',ko:'다음 예약은 QR로：',ja:'次回予約はこちら：'},
+  care1_nm:{en:'Leave-in hair oil',zh:'免洗护发油',ko:'아웃바스 오일',ja:'アウトバスオイル'},care1_ds:{en:'Apply to damp hair for shine & softness',zh:'湿发时使用，滋润顺滑',ko:'젖은 머리에 발라주면 윤기 UP',ja:'濡れた髪に使用'},
+  care2_nm:{en:'Moisturizing shampoo',zh:'保湿洗发水',ko:'보습 샴푸',ja:'保湿シャンプー'},care2_ds:{en:'Keeps hair soft every day',zh:'日常使用，持续保湿',ko:'매일 사용으로 촉촉한 머릿결',ja:'毎日使いで'},
+  done_t:{en:'All done — you look amazing!',zh:'完成！效果很棒！',ko:'완료! 너무 잘 어울려요!',ja:'施術完了！ありがとうございました！'},
   next_appt:{en:'Next visit & Home care',zh:'下次预约・居家护理',ko:'다음 예약・홈 케어',ja:'次回予約・ホームケア'}
 };
 var KANA={
-  welcome:{en:'ウェルカム！ プリーズ フィール フリー トゥ レット アス ノウ ユア ヘア プレファレンシズ トゥデイ。',zh:'ファン イン グアン リン！ チン ガオ スー ウォー メン ニン ジン ティエン ダ ファ シン シュー チウ。',ko:'オソオセヨ！ オヌル ウォナシヌン ヘオスタイルル アリョジュセヨ。',ja:''},
-  consent:{en:'ドゥ ユー ハヴ エニー アレルジーズ トゥ ヘア ダイ オア ケミカル トリートメンツ？',zh:'ニン ドゥイ ラン ファ ジー フォ ホア シュエ ヤオ ピン ヨウ グオ ミン シー マ？',ko:'ヘア ヨムニョナ ファハク チェプムエ アルレルギガ イッスシンガヨ？',ja:''},
-  tip:{en:'ノー チップ イズ ネセサリー イン ジャパン。 サンキュー！',zh:'リー ベン ブー シュー ヤオ ゲイ シャオ フェイ。 フェイ チャン ガン シェ！',ko:'イルボネソヌン チップイ ピリョハジ アンスムニダ。 カムサハムニダ！',ja:''}
+  welcome:{en:'ハイ ゼア！ ワット キャン ウィー ドゥ フォー ユア ヘア トゥデイ？',zh:'ファン イン！ ジン ティエン シャン ズォ シェン マ ファ シン ネ？',ko:'オソオセヨ！ オヌル オットケ ヘドゥリルカヨ？',ja:''},
+  consent:{en:'ドゥ ユー ハヴ エニー アレルジーズ トゥ ヘア ダイ オア ケミカル プロダクツ？',zh:'ニン ドゥイ ラン ファ ジー フォ タン ラン チャン ピン ヨウ グオ ミン ファン イン マ？',ko:'ホッシ ヘオ ヨムニョナ ヤクプメ アルレルギガ イッスシンガヨ？',ja:''},
+  tip:{en:'ノー チップ ニーデッド イン ジャパン！ サンキュー！',zh:'リー ベン ブー シュー ヤオ ゲイ シャオ フェイ！シェシェ！',ko:'イルボネソヌン チップイ ピリョ オプソヨ。カムサハムニダ！',ja:''}
 };
 
 function g(id){return document.getElementById(id)}
@@ -1012,35 +1072,35 @@ function updateFeeClientBlock(){
 
 /* 言語切替時：ラベルと明細名の翻訳 */
 var FEE_LABELS={
-  title:    {ja:'料金明細',en:'Billing',    zh:'费用明细',      ko:'요금 명세'},
+  title:    {ja:'料金明細',en:'Your Bill',    zh:'费用明细',      ko:'요금 안내'},
   total:    {ja:'合計',    en:'Total',      zh:'合计',          ko:'합계'},
   tipFree:  {
     ja:'日本ではチップは不要です。ありがとうございました！',
-    en:'ℹ️ No tip is necessary in Japan. Thank you!',
-    zh:'ℹ️ 日本不需要给小费。非常感谢！',
-    ko:'ℹ️ 일본에서는 팁이 필요하지 않습니다。감사합니다!'
+    en:'ℹ️ No tip needed in Japan — just your smile! 😊',
+    zh:'ℹ️ 日本不需要给小费，谢谢您的光临！😊',
+    ko:'ℹ️ 일본에서는 팁이 필요 없어요. 감사합니다! 😊'
   },
   tipKana:{
-    en:'ノー チップ イズ ネセサリー イン ジャパン。 サンキュー！',
-    zh:'リー ベン ブー シュー ヤオ ゲイ シャオ フェイ。 フェイ チャン ガン シェ！',
-    ko:'イルボネソヌン チップイ ピリョハジ アンスムニダ。 カムサハムニダ！',
+    en:'ノー チップ ニーデッド イン ジャパン！',
+    zh:'リー ベン ブー シュー ヤオ ゲイ シャオ フェイ！',
+    ko:'イルボネソヌン チップイ ピリョ オプソヨ。',
     ja:''
   },
   seeAgain:{
     ja:'またのご来店をお待ちしております。',
-    en:'We look forward to seeing you again.',
-    zh:'期待您的再次光临！',
-    ko:'또 방문해 주세요！'
+    en:'Hope to see you again soon!',
+    zh:'期待您下次光临！',
+    ko:'또 오세요! 기다릴게요!'
   },
   seeAgainKana:{
-    en:'ウィー ルック フォワード トゥ シーイング ユー アゲイン。',
-    zh:'チー ダイ ニン ダ ザイ ツー グアン リン！',
-    ko:'ット バンムネ ジュセヨ！',
+    en:'ホープ トゥ シー ユー アゲイン スーン！',
+    zh:'チー ダイ ニン シャ ツー グアン リン！',
+    ko:'ット オセヨ！キダリルケヨ！',
     ja:''
   },
   qrNext:{
-    ja:'次回予約はこちら：',en:'Next visit — scan to book:',
-    zh:'下次预约，请扫描：',ko:'다음 예약은 QR로：'
+    ja:'次回予約はこちら：',en:'Book your next visit here:',
+    zh:'扫码预约下次：',ko:'다음 예약은 여기서:'
   }
 };
 
@@ -1095,46 +1155,46 @@ function updateFeeDisplay(){
 /* ────── ①来店受付 多言語データ ────── */
 var SC1_TL={
   welcome:{
-    en:{txt:'Welcome! Do you have a reservation today?',
-        kana:'ウェルカム！ ドゥ ユー ハヴ ア レザベーション トゥデイ？'},
-    zh:{txt:'欢迎光临！请问您今天有预约吗？',
-        kana:'ファン イン グアン リン！ チン ウェン ニン ジン ティエン ヨウ ユー ユエ マ？'},
-    ko:{txt:'어서오세요! 오늘 예약이 있으신가요?',
-        kana:'オソオセヨ！ オヌル イェヤギ イッスシンガヨ？'},
+    en:{txt:'Hi! Do you have a reservation today?',
+        kana:'ハイ！ ドゥ ユー ハヴ ア レザベーション トゥデイ？'},
+    zh:{txt:'您好！请问今天有预约吗？',
+        kana:'ニン ハオ！ チン ウェン ジン ティエン ヨウ ユー ユエ マ？'},
+    ko:{txt:'안녕하세요! 오늘 예약하셨나요?',
+        kana:'アンニョンハセヨ！ オヌル イェヤカションナヨ？'},
     ja:{txt:'',kana:''}
   },
-  yes_lbl:{en:'YES ✓',zh:'✓ 是',ko:'✓ 네',ja:'✓ はい'},
-  yes_sub:{en:'I have a reservation',zh:'我有预约',ko:'예약이 있습니다',ja:'予約があります'},
+  yes_lbl:{en:'YES ✓',zh:'✓ 有',ko:'✓ 네',ja:'✓ はい'},
+  yes_sub:{en:'Yes, I have a reservation',zh:'有预约',ko:'예약했어요',ja:'予約があります'},
   no_lbl:{en:'NO ✗',zh:'✗ 没有',ko:'✗ 아니요',ja:'✗ いいえ'},
-  no_sub:{en:'No reservation',zh:'没有预约',ko:'예약이 없습니다',ja:'予約はありません'},
+  no_sub:{en:'No reservation',zh:'没有预约',ko:'예약 안 했어요',ja:'予約はありません'},
   yes_q1:{
-    en:{txt:'May I have your name, please?',kana:'メイ アイ ハヴ ユア ネーム、プリーズ？'},
-    zh:{txt:'请告诉我您的姓名。',kana:'チン ガオ スー ウォー ニン ダ シン ミン。'},
-    ko:{txt:'성함을 알려주세요。',kana:'ソンハムル アリョジュセヨ。'},
+    en:{txt:'Could I get your name?',kana:'クッド アイ ゲット ユア ネーム？'},
+    zh:{txt:'请问您怎么称呼？',kana:'チン ウェン ニン ゼン マ チョン フ？'},
+    ko:{txt:'성함이 어떻게 되세요?',kana:'ソンハミ オットケ ドゥェセヨ？'},
     ja:{txt:'',kana:''}
   },
   yes_q2:{
-    en:{txt:'One moment, please.',kana:'ワン モーメント、プリーズ。'},
-    zh:{txt:'请稍等一下。',kana:'チン シャオ ドン イー シャ。'},
-    ko:{txt:'잠시만 기다려 주세요。',kana:'チャムシマン キダリョ ジュセヨ。'},
+    en:{txt:'Just a moment!',kana:'ジャスト ア モーメント！'},
+    zh:{txt:'请稍等一下～',kana:'チン シャオ ドン イー シャ！'},
+    ko:{txt:'잠깐만요!',kana:'チャムカンマニョ！'},
     ja:{txt:'',kana:''}
   },
   no_q1:{
-    en:{txt:'We are a reservation-based salon, but we have a stylist available now. One moment, please.',
-        kana:'ウィー アー ア レザベーション ベイスド サロン、バット ウィー ハヴ ア スタイリスト アベイラブル ナウ。ワン モーメント、プリーズ。'},
-    zh:{txt:'本店为预约制，但目前有可以为您服务的发型师。请稍等一下。',
-        kana:'ベン ディエン ウェイ ユー ユエ ジー、ダン ムー チエン ヨウ クァ イー ウェイ ニン フゥ ウー ダ ファ シン シー。チン シャオ ドン イー シャ。'},
-    ko:{txt:'저희는 예약제이지만 지금 담당 스타일리스트가 있습니다。잠시만 기다려 주세요。',
-        kana:'チョヒヌン イェヤクチェイジマン チグム タムダン スタイリストゥガ イッスムニダ。チャムシマン キダリョ ジュセヨ。'},
+    en:{txt:'We\'re mainly by reservation, but we have a stylist free right now! One moment.',
+        kana:'ウィア メインリー バイ レザベーション、バット ウィー ハヴ ア スタイリスト フリー ライト ナウ！ワン モーメント。'},
+    zh:{txt:'我们主要是预约制，但现在有发型师可以为您服务！请稍等。',
+        kana:'ウォー メン ジュー ヤオ シー ユー ユエ ジー、ダン シェン ザイ ヨウ ファ シン シー クァ イー ウェイ ニン フゥ ウー！チン シャオ ドン。'},
+    ko:{txt:'저희는 주로 예약제인데, 지금 바로 담당 스타일리스트가 가능해요! 잠깐만요.',
+        kana:'チョヒヌン チュロ イェヤクチェインデ、チグム バロ タムダン スタイリストゥガ カヌンヘヨ！チャムカンマニョ。'},
     ja:{txt:'',kana:''}
   },
   no_q2:{
-    en:{txt:'We are a reservation-based salon and unfortunately have no availability at this time. Please make a reservation and visit us again.',
-        kana:'ウィー アー ア レザベーション ベイスド サロン アンド アンフォーチュネイトリー ハヴ ノー アベイラビリティ アット ディス タイム。プリーズ メイク ア レザベーション アンド ヴィジット アス アゲイン。'},
-    zh:{txt:'本店为预约制，目前没有可以为您服务的发型师。请预约后再来。',
-        kana:'ベン ディエン ウェイ ユー ユエ ジー、ムー チエン メイ ヨウ クァ イー ウェイ ニン フゥ ウー ダ ファ シン シー。チン ユー ユエ ホウ ザイ ライ。'},
-    ko:{txt:'저희는 예약제이며 지금은 담당자가 없습니다。예약 후 다시 방문해 주세요。',
-        kana:'チョヒヌン イェヤクチェイミョ チグムン タムダンジャガ オプスムニダ。イェヤク フ タシ バンムネ ジュセヨ。'},
+    en:{txt:'Sorry, we\'re fully booked right now. We\'d love to see you with a reservation next time!',
+        kana:'ソーリー、ウィア フリー ブックト ライト ナウ。ウィード ラヴ トゥ シー ユー ウィズ ア レザベーション ネクスト タイム！'},
+    zh:{txt:'非常抱歉，我们目前已约满。欢迎您预约后再来！',
+        kana:'フェイ チャン バオ チェン、ウォー メン ムー チエン イー ユエ マン。ファン イン ニン ユー ユエ ホウ ザイ ライ！'},
+    ko:{txt:'죄송해요, 지금은 자리가 꽉 찼어요. 예약하고 다시 오시면 꼭 모실게요!',
+        kana:'チュェソンヘヨ、チグムン チャリガ クァク チャッソヨ。イェヤカゴ タシ オシミョン クック モシルケヨ！'},
     ja:{txt:'',kana:''}
   }
 };
@@ -1178,34 +1238,32 @@ function sc1Reset(){
 }
 
 var HIST_Q={
-  en:{txt:'Please tell us about any hair treatments you have had in the past 2 years.',
-      kana:'プリーズ テル アス アバウト エニー ヘア トリートメンツ ユー ハヴ ハッド イン ザ パスト トゥー イヤーズ。'},
-  zh:{txt:'请告诉我们您过去2年内接受过哪些美发服务。',
-      kana:'チン ガオ スー ウォー メン ニン グォ チュー リャン ニェン ネイ ジェ ショウ グォ ナー シェ メイ ファ フゥ ウー。'},
-  ko:{txt:'지난 2년간 받으신 미용 시술을 알려주세요。',
-      kana:'ジナン イニョンガン バドゥシン ミヨン シスルル アリョジュセヨ。'},
+  en:{txt:'Have you had any hair treatments in the past 2 years? (e.g. colour, perm, bleach)',
+      kana:'ハヴ ユー ハッド エニー ヘア トリートメンツ イン ザ パスト トゥー イヤーズ？'},
+  zh:{txt:'过去2年内做过哪些美发项目呢？（比如染发、烫发、漂发等）',
+      kana:'グォ チュー リャン ニェン ネイ ズォ グォ ナー シェ メイ ファ シャン ムー ネ？'},
+  ko:{txt:'최근 2년간 받으신 시술이 있으신가요? (예: 염색, 파마, 탈색 등)',
+      kana:'チェグン イニョンガン バドゥシン シスリ イッスシンガヨ？'},
   ja:{txt:'',kana:''}
 };
-/* updateHistQ → updateAllSubQに統合 */
-
 
 /* ── 2-2 アレルギー・2-3 本日のご希望 案内文（多言語） ── */
 var ALLERGY_Q={
-  en:{txt:'Do you have any allergies to hair dye or chemical treatments?',
-      kana:'ドゥ ユー ハヴ エニー アレルジーズ トゥ ヘア ダイ オア ケミカル トリートメンツ？'},
-  zh:{txt:'您对染发剂或化学药品有过敏史吗？',
-      kana:'ニン ドゥイ ラン ファ ジー フォ ホア シュエ ヤオ ピン ヨウ グオ ミン シー マ？'},
-  ko:{txt:'헤어 염료나 화학 약품에 알레르기가 있으신가요?',
-      kana:'ヘオ ヨムニョナ ファハク ヤクプメ アルレルギガ イッスシンガヨ？'},
+  en:{txt:'Any allergies to hair dye or chemical products? It\'s really important — please let us know!',
+      kana:'エニー アレルジーズ トゥ ヘア ダイ オア ケミカル プロダクツ？'},
+  zh:{txt:'您对染发剂或烫染产品有过敏反应吗？这很重要，请务必告诉我们！',
+      kana:'ニン ドゥイ ラン ファ ジー フォ タン ラン チャン ピン ヨウ グオ ミン ファン イン マ？'},
+  ko:{txt:'혹시 염색약이나 약품에 알레르기가 있으신가요? 중요하니 꼭 알려주세요!',
+      kana:'ホッシ ヨムセンヤクイナ ヤクプメ アルレルギガ イッスシンガヨ？'},
   ja:{txt:'',kana:''}
 };
 var MENU_Q={
-  en:{txt:'What services would you like today?',
-      kana:'ワット サービシズ ウッド ユー ライク トゥデイ？'},
-  zh:{txt:'您今天想要什么服务？',
-      kana:'ニン ジン ティエン シャン ヤオ シェン マ フゥ ウー？'},
-  ko:{txt:'오늘은 어떤 시술을 원하시나요?',
-      kana:'オヌルン オットン シスルル ウォナシナヨ？'},
+  en:{txt:'What would you like to do today?',
+      kana:'ワット ウッド ユー ライク トゥ ドゥ トゥデイ？'},
+  zh:{txt:'今天想做什么项目呢？',
+      kana:'ジン ティエン シャン ズォ シェン マ シャン ムー ネ？'},
+  ko:{txt:'오늘 어떤 시술 받으실 건가요?',
+      kana:'オヌル オットン シスル バドゥシル コンガヨ？'},
   ja:{txt:'',kana:''}
 };
 
@@ -1235,17 +1293,20 @@ function updateAllSubQ(){
   var mck=document.getElementById('menu-client-kana');
   if(mcq){mcq.textContent=lang==='ja'?'本日はどのようなメニューをご希望ですか？':(MENU_Q[lang]?MENU_Q[lang].txt:'');}
   if(mck){var mk=MENU_Q[lang]?MENU_Q[lang].kana:'';mck.textContent=mk?'🗣 '+mk:'';mck.style.display=(mk&&lang!=='ja')?'':'none';}
-  /* s2-consent も言語更新 */
+  /* s2-consent 言語更新（自然な表現） */
   var sc=document.getElementById('s2-consent');
   if(sc){
     var consent_txt={
-      en:'Do you have any allergies to hair dye or chemical treatments?<br>Please let us know before we begin.',
-      zh:'您对染发剂或化学药品有过敏史吗？<br>开始前请告知我们。',
-      ko:'헤어 염료나 화학 제품에 알레르기가 있으신가요?<br>시술 전에 알려주세요。',
+      en:'Any allergies to hair dye or chemical products?<br>Just let us know before we start!',
+      zh:'您对染发剂或烫染产品有过敏反应吗？<br>请在开始前告诉我们。',
+      ko:'혹시 헤어 염료나 약품에 알레르기가 있으신가요?<br>시작 전에 알려주세요!',
       ja:'ヘアカラーや薬剤にアレルギーはありますか？<br>施術前にお知らせください。'
     };
     sc.innerHTML=consent_txt[lang]||consent_txt.en;
   }
+  /* アレルギーカタカナ読み更新 */
+  var aqk=document.getElementById('allergy-q-kana');
+  if(aqk){var ak=ALLERGY_Q[lang]?ALLERGY_Q[lang].kana:'';aqk.textContent=ak?'🗣 '+ak:'';aqk.style.display=(ak&&lang!=='ja')?'':'none';}
   ['en','zh','ko','ja'].forEach(function(l){var el=document.getElementById('s2-chips-'+l);if(el)el.style.display=l===lang?'flex':'none';});
   /* 確認画面が表示中の場合は再構築 */
   if(currentSub===4)buildConfirmScreen();
@@ -1440,30 +1501,30 @@ var micIsRecording=false;
 
 /* 簡易翻訳辞書（よく使う美容室フレーズ） */
 var MIC_DICT=[
-  {ja:['かゆい','痒い'],en:'Is there anywhere that feels itchy?',zh:'有没有感觉痒的地方？',ko:'가려운 곳은 없으신가요?',
-   en_k:'イズ ゼア エニィウェア ザット フィールズ イッチー？',zh_k:'ヨウ メイ ヨウ ヤン ダ ディ ファン？',ko_k:'カリョウン コスン オブスシンガヨ？'},
-  {ja:['お湯','湯加減','温度','ぬるい','熱い'],en:'How is the water temperature?',zh:'水温合适吗？',ko:'물 온도는 어떠세요?',
-   en_k:'ハウ イズ ザ ウォーター テンペラチャー？',zh_k:'シュイ ウェン ハァ シー マ？',ko_k:'ムル オンドヌン オットセヨ？'},
-  {ja:['少し','少々','お待ち','待って'],en:'One moment, please.',zh:'请稍等一下。',ko:'잠시만 기다려 주세요。',
-   en_k:'ワン モーメント、プリーズ。',zh_k:'チン シャオ ドン イー シャ。',ko_k:'チャムシマン キダリョ ジュセヨ。'},
-  {ja:['鏡','確認','ご確認'],en:'Could you check in the mirror?',zh:'请在镜子里确认一下。',ko:'거울에서 확인해 주세요。',
-   en_k:'クッド ユー チェック イン ザ ミラー？',zh_k:'チン ザイ ジン ズ リー チュエ レン。',ko_k:'コウレソ ファギンヘ ジュセヨ。'},
-  {ja:['首','楽に','リラックス'],en:'Please relax your neck.',zh:'请放松您的脖子。',ko:'목에 힘을 빼주세요。',
-   en_k:'プリーズ リラックス ユア ネック。',zh_k:'チン ファン ソン ニン ダ ボーズ。',ko_k:'モゲ ヒムル ペジュセヨ。'},
-  {ja:['長さ','いかが'],en:'How is the length so far?',zh:'长度合适吗？',ko:'길이는 어떠세요?',
-   en_k:'ハウ イズ ザ レングス ソー ファー？',zh_k:'チャン ドゥー ハァ シー マ？',ko_k:'キリヌン オットセヨ？'},
-  {ja:['仕上がり','いかが','どうですか'],en:'How do you like the result?',zh:'您对造型满意吗？',ko:'마무리는 어떠세요?',
-   en_k:'ハウ ドゥ ユー ライク ザ リザルト？',zh_k:'ニン ドゥイ ザオ シン マン イー マ？',ko_k:'マムリヌン オットセヨ？'},
-  {ja:['後ろ','うしろ'],en:'Please check the back as well.',zh:'请也看一下后面。',ko:'뒤도 확인해 주세요。',
-   en_k:'プリーズ チェック ザ バック アズ ウェル。',zh_k:'チン イェ カン イー シャ ホウ ミェン。',ko_k:'ドゥィド ファギンヘ ジュセヨ。'},
-  {ja:['ありがとう'],en:'Thank you so much!',zh:'非常感谢！',ko:'감사합니다!',
-   en_k:'サンキュー ソー マッチ！',zh_k:'フェイ チャン ガン シェ！',ko_k:'カムサハムニダ！'},
-  {ja:['すく','梳く','量'],en:'Shall I thin it out a bit more?',zh:'需要打薄一点吗？',ko:'좀 더 숱을 칠까요?',
-   en_k:'シャル アイ シン イット アウト ア ビット モア？',zh_k:'シュー ヤオ ダー バォ イー ディェン マ？',ko_k:'チョム ド スルル チルカヨ？'},
-  {ja:['いらっしゃい','ようこそ'],en:'Welcome!',zh:'欢迎光临！',ko:'어서오세요！',
-   en_k:'ウェルカム！',zh_k:'ファン イン グアン リン！',ko_k:'オソオセヨ！'},
-  {ja:['チップ','tip','不要'],en:'No tip is necessary in Japan.',zh:'日本不需要给小费。',ko:'일본에서는 팁이 필요하지 않습니다。',
-   en_k:'ノー チップ イズ ネセサリー イン ジャパン。',zh_k:'リー ベン ブー シュー ヤオ ゲイ シャオ フェイ。',ko_k:'イルボネソヌン チップイ ピリョハジ アンスムニダ。'}
+  {ja:['かゆい','痒い'],en:'Does it feel itchy anywhere?',zh:'有哪里感觉痒吗？',ko:'가려운 곳은 없으세요?',
+   en_k:'ダズ イット フィール イッチー エニィウェア？',zh_k:'ヨウ ナァ リー ガン ジュエ ヤン マ？',ko_k:'カリョウン コスン オプセヨ？'},
+  {ja:['お湯','湯加減','温度','ぬるい','熱い'],en:'Is the water temperature okay?',zh:'水温合适吗？',ko:'물 온도는 괜찮으세요?',
+   en_k:'イズ ザ ウォーター テンペラチャー オーケー？',zh_k:'シュイ ウェン ハァ シー マ？',ko_k:'ムル オンドヌン クェンチャヌセヨ？'},
+  {ja:['少し','少々','お待ち','待って'],en:'Just a moment!',zh:'请稍等一下～',ko:'잠깐만요!',
+   en_k:'ジャスト ア モーメント！',zh_k:'チン シャオ ドン イー シャ！',ko_k:'チャムカンマニョ！'},
+  {ja:['鏡','確認','ご確認'],en:'Can you take a look in the mirror?',zh:'帮您看看镜子里的效果？',ko:'거울로 한번 확인해볼까요?',
+   en_k:'キャン ユー テイク ア ルック イン ザ ミラー？',zh_k:'バン ニン カン カン ジン ズ リー ダ シャオ グオ？',ko_k:'コウルロ ハンボン ファギネボルカヨ？'},
+  {ja:['首','楽に','リラックス'],en:'Just let your neck relax.',zh:'脖子放松就好。',ko:'목에 힘을 빼세요.',
+   en_k:'ジャスト レット ユア ネック リラックス。',zh_k:'ボーズ ファン ソン ジウ ハオ。',ko_k:'モゲ ヒムル ペセヨ。'},
+  {ja:['長さ','いかが'],en:'How does the length look?',zh:'长度满意吗？',ko:'길이는 어떠세요?',
+   en_k:'ハウ ダズ ザ レングス ルック？',zh_k:'チャン ドゥー マン イー マ？',ko_k:'キリヌン オットセヨ？'},
+  {ja:['仕上がり','いかが','どうですか'],en:'How do you like it?',zh:'您觉得满意吗？',ko:'마음에 드세요?',
+   en_k:'ハウ ドゥ ユー ライク イット？',zh_k:'ニン ジュエ ダー マン イー マ？',ko_k:'マウメ ドゥセヨ？'},
+  {ja:['後ろ','うしろ'],en:"Let's check the back too!",zh:'也帮您看看后面吧！',ko:'뒤도 같이 확인해볼까요!',
+   en_k:'レッツ チェック ザ バック トゥー！',zh_k:'イェ バン ニン カン カン ホウ ミェン バ！',ko_k:'ドゥィド カッチ ファギネボルカヨ！'},
+  {ja:['ありがとう'],en:'Thank you so much — see you next time!',zh:'非常感谢！下次见！',ko:'감사합니다! 또 오세요!',
+   en_k:'サンキュー ソー マッチ！シー ユー ネクスト タイム！',zh_k:'フェイ チャン ガン シェ！シャ ツー ジェン！',ko_k:'カムサハムニダ！ット オセヨ！'},
+  {ja:['すく','梳く','量'],en:'Want me to take a bit more off?',zh:'要再薄一点吗？',ko:'좀 더 가볍게 할까요?',
+   en_k:'ウォント ミー トゥ テイク ア ビット モア オフ？',zh_k:'ヤオ ザイ バォ イー ディェン マ？',ko_k:'チョム ド カビョプケ ハルカヨ？'},
+  {ja:['いらっしゃい','ようこそ'],en:'Hi, welcome!',zh:'欢迎！',ko:'어서오세요!',
+   en_k:'ハイ、ウェルカム！',zh_k:'ファン イン！',ko_k:'オソオセヨ！'},
+  {ja:['チップ','tip','不要'],en:'No tip needed here in Japan!',zh:'日本不需要给小费哦！',ko:'일본에서는 팁 안 주셔도 돼요!',
+   en_k:'ノー チップ ニーデッド ヒア イン ジャパン！',zh_k:'リー ベン ブー シュー ヤオ ゲイ シャオ フェイ オ！',ko_k:'イルボネソヌン ティブ アン ジュショド ドゥェヨ！'}
 ];
 
 function micTranslate(text){
@@ -1680,19 +1741,29 @@ function buildSD(step){
   var ttl=g('sd-ttl');if(ttl)ttl.textContent='📋 '+stepNames[step]+'で役立つ用語';
   var cnt=g('sd-cnt');if(cnt)cnt.textContent=items.length+'件';
   var body=g('sd-body');if(!body)return;body.innerHTML='';
+  var color=stepColors[step]||'#888';
   items.forEach(function(it){
-    var mainTxt,jpTxt,kanaTxt;
-    if(lang==='zh'){mainTxt=it.zh;jpTxt=it.zh_jp;kanaTxt=it.zh_kana;}
-    else if(lang==='ko'){mainTxt=it.ko;jpTxt=it.ko_jp;kanaTxt=it.ko_kana;}
-    else{mainTxt=it.en;jpTxt='';kanaTxt=it.en_kana||'';}
-    var th='<div class="sd-trans-main">'+mainTxt+'</div>';
-    if(jpTxt)th+='<div class="sd-trans-jp">日本語：'+jpTxt+'</div>';
-    if(kanaTxt)th+='<div class="sd-trans-kana">🗣 '+kanaTxt+'</div>';
-    var tr=document.createElement('div');tr.className='sd-item';
-    tr.style.cursor='pointer';
-    tr.innerHTML='<div><div class="sd-jp">'+it.jp+'</div></div><div><span class="sd-badge" style="background:'+it.bc+'22;color:'+it.bc+'">'+it.badge+'</span><div class="sd-ctx">'+it.ctx+'</div></div><div>'+th+'</div><div style="font-size:18px;color:#C0C0C0;align-self:center">›</div>';
-    tr.onclick=(function(item,badgeColor){return function(){openSdModal(item,badgeColor);};})(it,it.bc);
-    body.appendChild(tr);
+    var mainTxt,kanaTxt;
+    if(lang==='zh'){mainTxt=it.zh;kanaTxt=it.zh_kana;}
+    else if(lang==='ko'){mainTxt=it.ko;kanaTxt=it.ko_kana;}
+    else{mainTxt=it.en;kanaTxt=it.en_kana||'';}
+
+    var row=document.createElement('div');
+    row.className='fi-item';
+    row.style.cssText='cursor:pointer;';
+    row.innerHTML=
+      '<div><div class="fi-jp">'+it.jp+'</div></div>'+
+      '<div style="display:flex;flex-direction:column;gap:2px;flex:1">'+
+        '<span class="fi-badge" style="background:'+color+'22;color:'+color+'">'+it.badge+'</span>'+
+        '<div class="fi-ctx">'+it.ctx+'</div>'+
+        '<div style="margin-top:3px"><div class="fi-en">'+mainTxt+'</div>'+
+        (kanaTxt?'<div class="fi-lang-kana" style="font-size:10px;margin-top:2px">🗣 '+kanaTxt+'</div>':'')+
+        '</div>'+
+      '</div>'+
+      '<div style="font-size:18px;color:#C0C0C0;padding-left:6px;align-self:center">›</div>';
+
+    row.onclick=(function(item,badgeColor){return function(){openSdModal(item,badgeColor);};})(it,it.bc);
+    body.appendChild(row);
   });
   if(sdOpen)body.classList.add('open');
 }
@@ -2102,15 +2173,15 @@ function confirmModalNo(){
 
 /* ────── 事前問診 確認画面構築 ────── */
 var CONFIRM_LABELS_DEF={
-  title:{en:'Please confirm your selections.',zh:'请确认以下内容。',ko:'다음 내용을 확인해 주세요。',ja:''},
+  title:{en:'Does everything look right?',zh:'以下内容确认一下？',ko:'이 내용이 맞나요?',ja:''},
   hist:{en:'Past treatments',zh:'过去施术',ko:'과거 시술',ja:'施術歴'},
   allergy:{en:'Allergies',zh:'过敏',ko:'알레르기',ja:'アレルギー'},
-  menu:{en:"Today's service",zh:'今日服务',ko:'오늘의 메뉴',ja:'本日のご希望'},
-  none:{en:'None selected',zh:'未选择',ko:'미선택',ja:'未選択'},
-  yes:{en:'YES ✓',zh:'✓ 确认',ko:'✓ 확인',ja:'✓ はい'},
-  yes_sub:{en:'Yes, please go ahead',zh:'好的，请继续',ko:'네, 진행해 주세요',ja:'はい、お願いします'},
-  no:{en:'NO ✗',zh:'✗ 修改',ko:'✗ 수정',ja:'✗ 修正する'},
-  no_sub:{en:"I'd like to change",zh:'我想修改',ko:'수정하고 싶어요',ja:'修正します'}
+  menu:{en:"Today's service",zh:'今日项目',ko:'오늘 시술',ja:'本日のご希望'},
+  none:{en:'None',zh:'无',ko:'없음',ja:'未選択'},
+  yes:{en:'YES ✓',zh:'✓ 没问题！',ko:'✓ 맞아요!',ja:'✓ はい'},
+  yes_sub:{en:'All good — let\'s go!',zh:'就这样，开始吧！',ko:'맞아요, 시작해요!',ja:'はい、お願いします'},
+  no:{en:'NO ✗',zh:'✗ 想改一下',ko:'✗ 수정할게요',ja:'✗ 修正する'},
+  no_sub:{en:'Let me change something',zh:'有些地方想修改',ko:'다시 확인할게요',ja:'修正します'}
 };
 
 function buildConfirmScreen(){
@@ -2254,9 +2325,9 @@ function buildConfirmScreen(){
           <span style="font-size:11px;color:#fff;font-weight:500">📱 この画面をお客様に向けてください</span>
         </div>
         <div style="background:#fff;border:2px solid #1D9E75;border-top:none;border-radius:0 0 10px 10px;padding:20px 16px;text-align:center">
-          <div id="mic-client-txt" style="font-size:28px;font-weight:600;color:#1C1C1E;line-height:1.5;margin-bottom:8px"></div>
-          <div id="mic-client-jp" style="font-size:12px;color:#633806;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:inline-block;margin-bottom:6px"></div>
-          <div id="mic-client-kana" style="font-size:12px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:none"></div>
+          <div id="mic-client-jp" style="font-size:13px;color:#633806;background:#FFF8E7;border-radius:4px;padding:5px 12px;display:inline-block;margin-bottom:10px"></div>
+          <div id="mic-client-txt" style="font-size:28px;font-weight:700;color:#1C1C1E;line-height:1.5;margin-bottom:8px"></div>
+          <div id="mic-client-kana" style="font-size:13px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;display:none"></div>
         </div>
       </div>
     </div>
