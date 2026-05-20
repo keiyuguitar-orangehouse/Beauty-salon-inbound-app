@@ -261,6 +261,9 @@ input[type=range]{width:100%;accent-color:#1D9E75}
 .ccard[onclick]{transition:transform .12s,box-shadow .12s;}
 .ccard[onclick]:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(59,109,17,.2);}
 .ccard[onclick]:active{transform:scale(.98);}
+
+#confirm-modal { display:none; }
+#confirm-modal.open { display:flex !important; }
 </style>
 </head>
 <body>
@@ -536,7 +539,7 @@ input[type=range]{width:100%;accent-color:#1D9E75}
     </div>
   </div>
   <div id="mode-c" style="display:none">
-    <div class="client-screen" onclick="openClientModal(this)" style="cursor:pointer">
+    <div class="client-screen">
       <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span><button class="client-bar-back" onclick="backToStylist()">← 戻る</button></div>
       <div class="yn-wrap">
         <div class="yn-suggest-lbl"><span id="yn-lbl">Your stylist suggests:</span><span class="jp">スタイリストからの提案</span></div>
@@ -1414,8 +1417,20 @@ function selVC(el,ja,en,zh,ko,desc){el.closest('.vg').querySelectorAll('.vc').fo
 function setMode(m,btn){g('mode-s').style.display=m==='s'?'':'none';g('mode-c').style.display=m==='c'?'':'none';document.querySelectorAll('.mtb').forEach(function(b){b.classList.remove('on')});if(btn)btn.classList.add('on');if(m==='c')applyLang();}
 function backToStylist(){setMode('s',g('mt-st'));g('mt-st').classList.add('on');g('mt-cl').classList.remove('on');var r=g('yn-res');if(r)r.style.display='none';document.querySelectorAll('.yn-chip').forEach(function(c){c.classList.remove('on')});}
 function sendProp(){var ym=g('yn-main');if(ym&&ym.childNodes[0])ym.childNodes[0].textContent=propData[lang]||propData.ja;var ymj=g('yn-main-jp');if(ymj)ymj.textContent=lang==='ja'?'':('（'+propData.ja+'）');var ys=g('yn-sub');if(ys)ys.textContent=lang==='ja'?'':propData.en;var yd=g('yn-desc');if(yd)yd.textContent=propData.desc;setMode('c',g('mt-cl'));}
-function ynAns(v){var r=g('yn-res');r.style.display='block';if(v==='y'){r.style.background='#EAF3DE';r.style.color='#27500A';r.textContent={en:'✓ Great! We will proceed.',zh:'✓ 好的！我们按照建议进行。',ko:'✓ 알겠습니다！제안대로 진행합니다。',ja:'✓ ありがとうございます！'}[lang];}else{r.style.background='#FAECE7';r.style.color='#993C1D';r.textContent={en:'Please use the options below.',zh:'请用下方选项告诉我们。',ko:'아래 옵션으로 알려주세요。',ja:'下のボタンでご要望をお知らせください。'}[lang];}}
-function ynChip(el,jp){document.querySelectorAll('.yn-chip').forEach(function(c){c.classList.remove('on')});el.classList.add('on');var r=g('yn-res');r.style.display='block';r.style.background='#EAF3DE';r.style.color='#27500A';r.textContent='→ 美容師メモ：「'+jp+'」をご希望です。';}
+function ynAns(v){
+  if(v==='y'){
+    goStep(4);
+  } else {
+    backToStylist();
+  }
+}
+
+function ynChip(el,jp){
+  document.querySelectorAll('.yn-chip').forEach(function(c){c.classList.remove('on')});
+  el.classList.add('on');
+  backToStylist();
+}
+
 function selPT(el,id){el.closest('#ph-tabs').querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});el.classList.add('on');['psh','pcu','pfi'].forEach(function(k){var d=g(k);if(d)d.style.display=k===id?'':'none';});}
 function tapP(el,key){el.classList.add('flashed');setTimeout(function(){el.classList.remove('flashed')},500);var ph=T.phrases[key];if(!ph)return;var ps=g('phrase-show'),pb=g('phrase-big');pb.textContent=ph[lang]||ph.en;pb.setAttribute('data-key',key);ps.style.display='block';var pjt=g('phrase-jp-text');if(pjt)pjt.textContent=ph.ja||'';var pkw=g('phrase-kana-wrap'),pkt=g('phrase-kana-text');var kd=ph.kana&&ph.kana[lang];if(pkw)pkw.style.display=(lang==='ja'||!kd)?'none':'';if(pkt)pkt.textContent=kd||'';}
 
@@ -2067,12 +2082,12 @@ function openConfirmModal(){
   var modal=document.getElementById('confirm-modal');
   if(!modal)return;
   buildConfirmScreen();
-  modal.style.display='flex';
+  modal.classList.add('open');
   document.body.style.overflow='hidden';
 }
 function closeConfirmModal(){
   var modal=document.getElementById('confirm-modal');
-  if(modal)modal.style.display='none';
+  if(modal)modal.classList.remove('open');
   document.body.style.overflow='';
 }
 function confirmModalYes(){
@@ -2399,9 +2414,10 @@ function buildConfirmScreen(){
 
 <!-- ── 事前問診 確認モーダル ── -->
 <div id="confirm-modal" style="
-  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  position:fixed;top:0;left:0;width:100%;height:100%;
   background:rgba(0,0,0,.65);z-index:10000;
   justify-content:flex-end;align-items:stretch;flex-direction:column;
+  display:none;
 ">
   <div onclick="event.stopPropagation()" style="
     background:#fff;border-radius:20px 20px 0 0;
