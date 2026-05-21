@@ -447,73 +447,13 @@ input[type=range]{width:100%;accent-color:#1D9E75;height:6px}
 <div class="screen" id="sc2">
 <!-- サブステップタブ -->
 <div style="display:flex;gap:6px;margin-bottom:12px">
-  <button class="substep-btn s2-active" id="sub21" onclick="goSub(1)">2-1　施術歴</button>
-  <button class="substep-btn" id="sub22" onclick="goSub(2)">2-2　アレルギー</button>
-  <button class="substep-btn" id="sub23" onclick="goSub(3)">2-3　本日のご希望</button>
+  <button class="substep-btn s2-active" id="sub21" onclick="goSub(1)">2-1　本日のご希望</button>
+  <button class="substep-btn" id="sub22" onclick="goSub(2)" style="display:none">2-2　施術歴</button>
+  <button class="substep-btn" id="sub23" onclick="goSub(3)" style="display:none">2-3　アレルギー</button>
 </div>
 
-<!-- ══ 2-1 施術歴 ══ -->
+<!-- ══ 2-1 本日のご希望 ══ -->
 <div id="sub2-1">
-  <!-- お客様に見せる -->
-  <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
-    <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
-    <div style="padding:14px">
-      <div class="jp-gloss" style="margin-bottom:10px"><span class="jp-gloss-label">🗣 美容師メモ：</span>過去2年の施術歴を教えてください。</div>
-      <div id="hist-client-q" style="font-size:20px;font-weight:600;color:#1C1C1E;line-height:1.8">Have you had any hair treatments in the past 2 years?</div>
-      <div id="hist-client-kana" style="font-size:13px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;margin-top:6px;display:none"></div>
-    </div>
-  </div>
-  <!-- 美容師側カード -->
-  <div class="card">
-    <div class="card-title" style="display:flex;align-items:center;gap:8px">
-      <span style="background:#534AB7;color:#fff;font-size:10px;padding:2px 8px;border-radius:999px">2-1</span>
-      施術歴（過去2年）
-    </div>
-    <div class="chips-wrap" style="margin-bottom:0">
-      <div class="bichips" id="hist-chips"></div>
-      <div class="selection-summary" style="margin-top:8px">
-        <div class="ss-label">📋 選択中の施術歴</div>
-        <div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="hist-ja-out"><span class="ss-empty">未選択</span></div></div>
-        <div class="ss-row"><span class="ss-flag" id="lang-flag-hist">🇺🇸</span><div class="ss-chips" id="hist-fl-out"><span class="ss-empty">—</span></div></div>
-      </div>
-    </div>
-  </div>
-  <button class="next-btn nb2" onclick="goSub(2)" style="margin-top:6px">次へ：アレルギー確認 →</button>
-</div>
-
-<!-- ══ 2-2 アレルギー ══ -->
-<div id="sub2-2" style="display:none">
-  <!-- お客様に見せる -->
-  <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
-    <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
-    <div style="padding:14px">
-      <div class="jp-gloss" style="margin-bottom:10px"><span class="jp-gloss-label">🗣 美容師メモ：</span>ヘアカラーや薬剤にアレルギーはありますか？</div>
-      <div id="s2-consent" style="font-size:20px;font-weight:600;color:#1C1C1E;line-height:1.9">Any allergies to hair dye or chemical products?<br>Just let us know before we start!</div>
-      <div id="allergy-q-kana" style="font-size:13px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;margin-top:6px;display:none"></div>
-    </div>
-  </div>
-  <!-- 美容師側カード -->
-  <div class="card">
-    <div class="card-title" style="display:flex;align-items:center;gap:8px">
-      <span style="background:#D85A30;color:#fff;font-size:10px;padding:2px 8px;border-radius:999px">2-2</span>
-      アレルギー確認
-    </div>
-    <div class="bilabel" style="font-size:11px;color:#8E8E93;margin-bottom:6px">⚠️ 美容師側チェック</div>
-    <div class="bichips" id="allergy-chips"></div>
-    <div class="selection-summary" style="margin-top:8px">
-      <div class="ss-label">📋 選択中のアレルギー</div>
-      <div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="allergy-ja-out"><span class="ss-empty">未選択</span></div></div>
-      <div class="ss-row"><span class="ss-flag" id="lang-flag-allergy">🇺🇸</span><div class="ss-chips" id="allergy-fl-out"><span class="ss-empty">—</span></div></div>
-    </div>
-  </div>
-  <div style="display:flex;gap:8px;margin-top:4px">
-    <button onclick="goSub(1)" style="flex:1;padding:13px;border:1.5px solid #E5E5EA;border-radius:10px;background:#fff;color:#8E8E93;font-size:14px;cursor:pointer;font-weight:500">← 施術歴に戻る</button>
-    <button onclick="goSub(3)" style="flex:2;padding:13px;border:none;border-radius:10px;background:#534AB7;color:#fff;font-size:14px;font-weight:700;cursor:pointer">次へ：本日のご希望 →</button>
-  </div>
-</div>
-
-<!-- ══ 2-3 本日のご希望 ══ -->
-<div id="sub2-3" style="display:none">
   <!-- お客様に見せる -->
   <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
     <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
@@ -526,8 +466,8 @@ input[type=range]{width:100%;accent-color:#1D9E75;height:6px}
   <!-- 美容師側カード -->
   <div class="card">
     <div class="card-title" style="display:flex;align-items:center;gap:8px">
-      <span style="background:#3B6D11;color:#fff;font-size:10px;padding:2px 8px;border-radius:999px">2-3</span>
-      本日のご希望
+      <span style="background:#3B6D11;color:#fff;font-size:10px;padding:2px 8px;border-radius:999px">2-1</span>
+      本日のご希望（複数選択可）
     </div>
     <div class="birgroup" id="menu-chips"></div>
     <div class="selection-summary" style="margin-top:8px">
@@ -536,8 +476,68 @@ input[type=range]{width:100%;accent-color:#1D9E75;height:6px}
       <div class="ss-row"><span class="ss-flag" id="lang-flag-menu">🇺🇸</span><div class="ss-chips" id="menu-fl-out"><span class="ss-empty">—</span></div></div>
     </div>
   </div>
+  <button class="next-btn nb2" id="menu-next-btn" onclick="menuNext()" style="margin-top:6px">次へ →</button>
+</div>
+
+<!-- ══ 2-2 施術歴 ══ -->
+<div id="sub2-2" style="display:none">
+  <!-- お客様に見せる -->
+  <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
+    <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
+    <div style="padding:14px">
+      <div class="jp-gloss" style="margin-bottom:10px"><span class="jp-gloss-label">🗣 美容師メモ：</span>過去2年の施術歴を教えてください。</div>
+      <div id="hist-client-q" style="font-size:20px;font-weight:600;color:#1C1C1E;line-height:1.8">Have you had any hair treatments in the past 2 years?</div>
+      <div id="hist-client-kana" style="font-size:13px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;margin-top:6px;display:none"></div>
+    </div>
+  </div>
+  <!-- 美容師側カード -->
+  <div class="card">
+    <div class="card-title" style="display:flex;align-items:center;gap:8px">
+      <span style="background:#534AB7;color:#fff;font-size:10px;padding:2px 8px;border-radius:999px">2-2</span>
+      施術歴（過去2年）
+    </div>
+    <div class="chips-wrap" style="margin-bottom:0">
+      <div class="bichips" id="hist-chips"></div>
+      <div class="selection-summary" style="margin-top:8px">
+        <div class="ss-label">📋 選択中の施術歴</div>
+        <div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="hist-ja-out"><span class="ss-empty">未選択</span></div></div>
+        <div class="ss-row"><span class="ss-flag" id="lang-flag-hist">🇺🇸</span><div class="ss-chips" id="hist-fl-out"><span class="ss-empty">—</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:6px">
+    <button onclick="goSub(1)" style="flex:1;padding:13px;border:1.5px solid #E5E5EA;border-radius:10px;background:#fff;color:#8E8E93;font-size:14px;cursor:pointer;font-weight:500">← ご希望に戻る</button>
+    <button onclick="goSub(3)" style="flex:2;padding:13px;border:none;border-radius:10px;background:#534AB7;color:#fff;font-size:14px;font-weight:700;cursor:pointer">次へ：アレルギー確認 →</button>
+  </div>
+</div>
+
+<!-- ══ 2-3 アレルギー ══ -->
+<div id="sub2-3" style="display:none">
+  <!-- お客様に見せる -->
+  <div class="client-screen" onclick="openClientModal(this)" style="margin-bottom:8px;cursor:pointer">
+    <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
+    <div style="padding:14px">
+      <div class="jp-gloss" style="margin-bottom:10px"><span class="jp-gloss-label">🗣 美容師メモ：</span>ヘアカラーや薬剤にアレルギーはありますか？</div>
+      <div id="s2-consent" style="font-size:20px;font-weight:600;color:#1C1C1E;line-height:1.9">Any allergies to hair dye or chemical products?<br>Just let us know before we start!</div>
+      <div id="allergy-q-kana" style="font-size:13px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:4px 10px;margin-top:6px;display:none"></div>
+    </div>
+  </div>
+  <!-- 美容師側カード -->
+  <div class="card">
+    <div class="card-title" style="display:flex;align-items:center;gap:8px">
+      <span style="background:#D85A30;color:#fff;font-size:10px;padding:2px 8px;border-radius:999px">2-3</span>
+      アレルギー確認
+    </div>
+    <div class="bilabel" style="font-size:11px;color:#8E8E93;margin-bottom:6px">⚠️ 美容師側チェック</div>
+    <div class="bichips" id="allergy-chips"></div>
+    <div class="selection-summary" style="margin-top:8px">
+      <div class="ss-label">📋 選択中のアレルギー</div>
+      <div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="allergy-ja-out"><span class="ss-empty">未選択</span></div></div>
+      <div class="ss-row"><span class="ss-flag" id="lang-flag-allergy">🇺🇸</span><div class="ss-chips" id="allergy-fl-out"><span class="ss-empty">—</span></div></div>
+    </div>
+  </div>
   <div style="display:flex;gap:8px;margin-top:4px">
-    <button onclick="goSub(2)" style="flex:1;padding:13px;border:1.5px solid #E5E5EA;border-radius:10px;background:#fff;color:#8E8E93;font-size:14px;cursor:pointer;font-weight:500">← アレルギーに戻る</button>
+    <button onclick="goSub(2)" style="flex:1;padding:13px;border:1.5px solid #E5E5EA;border-radius:10px;background:#fff;color:#8E8E93;font-size:14px;cursor:pointer;font-weight:500">← 施術歴に戻る</button>
     <button onclick="openConfirmModal()" style="flex:2;padding:13px;border:none;border-radius:10px;background:#3B6D11;color:#fff;font-size:14px;font-weight:700;cursor:pointer">確認画面へ →</button>
   </div>
 </div>
@@ -734,11 +734,12 @@ input[type=range]{width:100%;accent-color:#1D9E75;height:6px}
 var lang='en',currentStep=1,sdOpen=false,fdOpen=false,fdCat='all',fdQ='';
 var completedSteps=new Set();
 var propData={ja:'レイヤーカット',en:'Layer cut',zh:'分层剪发',ko:'레이어 커트',desc:'Light, airy layers for volume and movement.'};
-var histSel=new Set(),allergySel=new Set(),menuSel=null;
+var histSel=new Set(),allergySel=new Set(),menuSel=new Set();
+
+var MENU=[{ja:'カット',en:'Cut',zh:'剪发',ko:'커트'},{ja:'カラー',en:'Colour',zh:'染发',ko:'컬러'},{ja:'パーマ',en:'Perm',zh:'烫发',ko:'파마'},{ja:'トリートメント',en:'Treatment',zh:'护发护理',ko:'트리트먼트'}];
 
 var HIST=[{ja:'カット',en:'Cut',zh:'剪发',ko:'커트',red:false},{ja:'ファッションカラー',en:'Fashion colour',zh:'时尚染发',ko:'패션 컬러',red:false},{ja:'白髪染め',en:'Grey coverage',zh:'白发染色',ko:'새치 커버',red:false},{ja:'パーマ',en:'Perm',zh:'烫发',ko:'파마',red:false},{ja:'縮毛矯正',en:'Straightening',zh:'拉直烫',ko:'매직 스트레이트',red:false},{ja:'ブリーチ',en:'Bleach',zh:'漂发',ko:'블리치',red:true},{ja:'なし',en:'None',zh:'没有',ko:'없음',red:false}];
 var ALLERGY=[{ja:'染料アレルギー',en:'Dye allergy',zh:'染料过敏',ko:'염료 알레르기',red:true},{ja:'ラテックス',en:'Latex allergy',zh:'乳胶过敏',ko:'라텍스 알레르기',red:true},{ja:'頭皮敏感',en:'Sensitive scalp',zh:'头皮敏感',ko:'두피 민감',red:true},{ja:'なし',en:'None',zh:'没有',ko:'없음',red:false}];
-var MENU=[{ja:'カット',en:'Cut',zh:'剪发',ko:'커트'},{ja:'カラー',en:'Colour',zh:'染发',ko:'컬러'},{ja:'パーマ',en:'Perm',zh:'烫发',ko:'파마'},{ja:'トリートメント',en:'Treatment',zh:'护发护理',ko:'트리트먼트'},{ja:'カット＋カラー',en:'Cut + Colour',zh:'剪发＋染发',ko:'커트＋컬러'}];
 var LANG_FLAGS={en:'🇺🇸',zh:'🇨🇳',ko:'🇰🇷',ja:'🇯🇵'};
 function fl(it){return lang==='ja'?it.ja:(it[lang]||it.en);}
 
@@ -1323,9 +1324,34 @@ var CONFIRM_LABELS={
 };
 
 
+/* カラー/パーマが選択されているか判定 */
+function needsHistory(){
+  var needsCat=false;
+  menuSel.forEach(function(i){
+    if(MENU[i].ja==='カラー'||MENU[i].ja==='パーマ')needsCat=true;
+  });
+  return needsCat;
+}
+
+/* 2-1「次へ」ボタンの処理：フロー分岐 */
+function menuNext(){
+  if(menuSel.size===0){
+    alert('メニューを選択してください');return;
+  }
+  if(needsHistory()){
+    /* カラー or パーマあり → 施術歴へ */
+    var t2=g('sub22'),t3=g('sub23');
+    if(t2)t2.style.display='';
+    if(t3)t3.style.display='';
+    goSub(2);
+  } else {
+    /* カット・トリートメントのみ → カウンセリングへ */
+    goStep(3);
+  }
+}
+
 function goSub(n){
   currentSub=n;
-  /* 全サブパネルを非表示 */
   [1,2,3,4].forEach(function(i){
     var panel=document.getElementById('sub2-'+i);
     var btn=document.getElementById('sub2'+i);
@@ -1335,11 +1361,9 @@ function goSub(n){
       if(i===n)btn.classList.add('s2-active');
     }
   });
-  /* ページトップにスクロール */
   var sc2=document.getElementById('sc2');
   if(sc2)sc2.scrollIntoView({behavior:'smooth',block:'start'});
   updateAllSubQ();
-  /* 確認画面の場合はサマリーを構築 */
   if(n===4)buildConfirmScreen();
 }
 
@@ -1349,7 +1373,17 @@ function renderChips(){
   var ac=g('allergy-chips');ac.innerHTML='';
   ALLERGY.forEach(function(it,i){var d=document.createElement('div');d.className='bichip'+(it.red?' red':'')+(allergySel.has(i)?' on':'');var ak=getKana(ALLERGY_KANA,i);d.innerHTML='<span class="ja">'+it.ja+'</span>'+(lang!=='ja'?'<span class="fl">'+fl(it)+'</span>':'')+(ak&&lang!=='ja'?'<span class="chip-kana">🗣 '+ak+'</span>':'');d.onclick=function(){allergySel.has(i)?allergySel.delete(i):allergySel.add(i);renderChips();updSums();};ac.appendChild(d);});
   var mc=g('menu-chips');mc.innerHTML='';
-  MENU.forEach(function(it,i){var d=document.createElement('div');d.className='birbtn'+(menuSel===i?' on':'');var mk=getKana(MENU_KANA,i);d.innerHTML='<span class="ja">'+it.ja+'</span>'+(lang!=='ja'?'<span class="fl">'+fl(it)+'</span>':'')+(mk&&lang!=='ja'?'<span class="chip-kana">🗣 '+mk+'</span>':'');d.onclick=function(){menuSel=i;renderChips();updSums();};mc.appendChild(d);});
+  MENU.forEach(function(it,i){
+    var d=document.createElement('div');
+    d.className='birbtn'+(menuSel.has(i)?' on':'');
+    var mk=getKana(MENU_KANA,i);
+    d.innerHTML='<span class="ja">'+it.ja+'</span>'+(lang!=='ja'?'<span class="fl">'+fl(it)+'</span>':'')+(mk&&lang!=='ja'?'<span class="chip-kana">🗣 '+mk+'</span>':'');
+    d.onclick=function(){
+      menuSel.has(i)?menuSel.delete(i):menuSel.add(i);
+      renderChips();updSums();
+    };
+    mc.appendChild(d);
+  });
   var f=LANG_FLAGS[lang]||'🌐';
   ['hist','allergy','menu'].forEach(function(k){var el=g('lang-flag-'+k);if(el)el.textContent=f;});
 }
@@ -1357,8 +1391,12 @@ function updSums(){
   updSum('hist-ja-out','hist-fl-out',HIST,histSel,false);
   updSum('allergy-ja-out','allergy-fl-out',ALLERGY,allergySel,true);
   var jao=g('menu-ja-out'),flo=g('menu-fl-out');
-  if(menuSel===null){jao.innerHTML='<span class="ss-empty">未選択</span>';flo.innerHTML='<span class="ss-empty">—</span>';}
-  else{var it=MENU[menuSel];jao.innerHTML='<span class="ss-chip sel">'+it.ja+'</span>';flo.innerHTML=lang==='ja'?'<span class="ss-empty">（日本語のみ）</span>':'<span class="ss-chip sel">'+fl(it)+'</span>';}
+  if(menuSel.size===0){jao.innerHTML='<span class="ss-empty">未選択</span>';flo.innerHTML='<span class="ss-empty">—</span>';}
+  else{
+    var jh='',fh='';
+    menuSel.forEach(function(i){var it=MENU[i];jh+='<span class="ss-chip sel">'+it.ja+'</span>';if(lang!=='ja')fh+='<span class="ss-chip sel">'+fl(it)+'</span>';});
+    jao.innerHTML=jh;flo.innerHTML=lang==='ja'?'<span class="ss-empty">（日本語のみ）</span>':fh;
+  }
 }
 function updSum(jid,fid,items,sel,isRed){
   var jao=g(jid),flo=g(fid);
@@ -2446,11 +2484,15 @@ function buildConfirmScreen(){
   /* メニュー */
   var mi=document.getElementById('cm-menu-item');
   if(mi){
-    if(menuSel===null){
+    if(menuSel.size===0){
       mi.innerHTML='<span style="font-size:12px;color:#8E8E93;font-style:italic">'+d.none[lang]+'</span>';
     } else {
-      var it=MENU[menuSel];
-      mi.innerHTML=it.ja+(lang!=='ja'&&fl(it)?'<span style="font-size:14px;color:#534AB7;margin-left:8px">'+fl(it)+'</span>':'');
+      var mHtml='';
+      menuSel.forEach(function(i){
+        var it=MENU[i];
+        mHtml+='<span style="display:inline-flex;flex-direction:column;align-items:center;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:600;margin:2px;background:#E1F5EE;color:#085041">'+it.ja+(lang!=='ja'&&fl(it)?'<span style="font-size:10px;opacity:.75;display:block">'+fl(it)+'</span>':'')+'</span>';
+      });
+      mi.innerHTML=mHtml;
     }
   }
   /* 美容師メモ */
@@ -2458,8 +2500,8 @@ function buildConfirmScreen(){
   if(memo){
     var hTxt=histSel.size===0?'未選択':Array.from(histSel).map(function(i){return HIST[i].ja;}).join('・');
     var aTxt=allergySel.size===0?'未選択':Array.from(allergySel).map(function(i){return ALLERGY[i].ja;}).join('・');
-    var mTxt=menuSel===null?'未選択':MENU[menuSel].ja;
-    memo.innerHTML='🗂 施術歴：<b>'+hTxt+'</b><br>⚠️ アレルギー：<b>'+aTxt+'</b><br>✂️ 本日のご希望：<b>'+mTxt+'</b>';
+    var mTxt=menuSel.size===0?'未選択':Array.from(menuSel).map(function(i){return MENU[i].ja;}).join('・');
+    memo.innerHTML='✂️ 本日のご希望：<b>'+mTxt+'</b><br>🗂 施術歴：<b>'+hTxt+'</b><br>⚠️ アレルギー：<b>'+aTxt+'</b>';
   }
 }
 
