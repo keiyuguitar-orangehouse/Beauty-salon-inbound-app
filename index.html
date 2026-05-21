@@ -553,7 +553,7 @@ input[type=range]{width:100%;accent-color:#1D9E75;height:6px}
     <div class="mode-toggle"><button class="mtb on" id="mt-st" onclick="setMode('s',this)">✂️ 美容師側</button><button class="mtb" id="mt-cl" onclick="setMode('c',this)">📱 お客様に見せる</button></div>
   </div>
   <div id="mode-s">
-    <div class="two">
+    <div>
       <div>
         <div class="card" style="padding:12px">
           <div class="tabs" id="tech-tabs"><div class="tab amber on" onclick="selTT(this,'tcut')">カット</div><div class="tab amber" onclick="selTT(this,'tcol')">カラー</div><div class="tab amber" onclick="selTT(this,'tper')">パーマ</div><div class="tab amber" onclick="selTT(this,'tcar')">ケア</div></div>
@@ -580,21 +580,14 @@ input[type=range]{width:100%;accent-color:#1D9E75;height:6px}
           </div></div>
           <div class="slrow"><div class="slabel"><div id="sl1a" class="sl-lbl-wrap"><span class="sl-ja">すく</span><span class="sl-tl-fixed" id="sl1a-tl"></span></div><div id="sl1b" class="sl-lbl-wrap" style="text-align:right"><span class="sl-ja">残す</span><span class="sl-tl-fixed" id="sl1b-tl"></span></div></div><input type="range" min="0" max="100" value="40"></div>
           <div class="slrow"><div class="slabel"><div id="sl2a" class="sl-lbl-wrap"><span class="sl-ja">さらさら</span><span class="sl-tl-fixed" id="sl2a-tl"></span></div><div id="sl2b" class="sl-lbl-wrap" style="text-align:right"><span class="sl-ja">ふわっと</span><span class="sl-tl-fixed" id="sl2b-tl"></span></div></div><input type="range" min="0" max="100" value="60"></div>
+          <!-- 仕上がりイメージ -->
+          <div style="font-size:12px;color:#8E8E93;margin-bottom:6px;margin-top:4px">仕上がりイメージ</div>
+          <div class="chips" style="margin-bottom:0"><div class="chip on" onclick="tog(this)">さらさら<span class="chip-tl" id="ftl-0"></span></div><div class="chip" onclick="tog(this)">ふわっと<span class="chip-tl" id="ftl-1"></span></div><div class="chip" onclick="tog(this)">ナチュラル<span class="chip-tl" id="ftl-2"></span></div><div class="chip" onclick="tog(this)">ツヤサラ<span class="chip-tl" id="ftl-3"></span></div><div class="chip" onclick="tog(this)">まとまり感<span class="chip-tl" id="ftl-4"></span></div></div>
         </div>
       </div>
-      <div>
-        <div class="card" style="padding:12px">
-          <div style="font-size:11px;color:#8E8E93;margin-bottom:6px">現在の提案</div>
-          <div id="prop-ja" style="font-size:18px;font-weight:700;color:#1C1C1E;margin-bottom:3px">レイヤーカット</div>
-          <div id="prop-en" style="font-size:13px;color:#8E8E93;margin-bottom:2px">Light, airy layers for volume and movement</div><div id="prop-tl" style="font-size:12px;color:#1D9E75;font-weight:500;margin-bottom:10px;display:none"></div>
-          <div style="font-size:11px;color:#8E8E93;margin-bottom:5px">仕上がりイメージ</div>
-          <div class="chips" style="margin-bottom:10px"><div class="chip on" onclick="tog(this)">さらさら<span class="chip-tl" id="ftl-0"></span></div><div class="chip" onclick="tog(this)">ふわっと<span class="chip-tl" id="ftl-1"></span></div><div class="chip" onclick="tog(this)">ナチュラル<span class="chip-tl" id="ftl-2"></span></div><div class="chip" onclick="tog(this)">ツヤサラ<span class="chip-tl" id="ftl-3"></span></div><div class="chip" onclick="tog(this)">まとまり感<span class="chip-tl" id="ftl-4"></span></div></div>
-          <button class="prop-btn" onclick="sendProp()">📱 お客様に見せる →</button>
-        </div>
-        <div class="card" style="padding:10px;background:#F2F2F7;margin-top:0">
-          <div style="font-size:11px;color:#8E8E93;margin-bottom:4px">📖 クイック参照</div>
-          <div id="quick-ref" style="font-size:11px;color:#1C1C1E;line-height:2.2"></div>
-        </div>
+      <div class="card" style="padding:10px;background:#F2F2F7;margin-top:0">
+        <div style="font-size:11px;color:#8E8E93;margin-bottom:4px">📖 クイック参照</div>
+        <div id="quick-ref" style="font-size:11px;color:#1C1C1E;line-height:2.2"></div>
       </div>
     </div>
   </div>
@@ -1473,7 +1466,19 @@ function goStep(n){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function selTT(el,id){el.closest('#tech-tabs').querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});el.classList.add('on');['tcut','tcol','tper','tcar'].forEach(function(k){var d=g(k);if(d)d.style.display=k===id?'':'none';});}
-function selVC(el,ja,en,zh,ko,desc){el.closest('.vg').querySelectorAll('.vc').forEach(function(v){v.classList.remove('on')});el.classList.add('on');propData={ja:ja,en:en,zh:zh,ko:ko,desc:desc};g('prop-ja').textContent=ja;g('prop-en').textContent=en;var ym=g('yn-main');if(ym&&ym.childNodes[0])ym.childNodes[0].textContent=propData[lang]||ja;var ymj=g('yn-main-jp');if(ymj)ymj.textContent=lang==='ja'?'':('（'+ja+'）');var ys=g('yn-sub');if(ys)ys.textContent=lang==='ja'?'':en;var yd=g('yn-desc');if(yd)yd.textContent=desc;updateCounselTL();}
+function selVC(el,ja,en,zh,ko,desc){
+  el.closest('.vg').querySelectorAll('.vc').forEach(function(v){v.classList.remove('on')});
+  el.classList.add('on');
+  propData={ja:ja,en:en,zh:zh,ko:ko,desc:desc};
+  /* お客様向け画面を即更新 */
+  var ym=g('yn-main');if(ym&&ym.childNodes[0])ym.childNodes[0].textContent=propData[lang]||ja;
+  var ymj=g('yn-main-jp');if(ymj)ymj.textContent=lang==='ja'?'':('（'+ja+'）');
+  var ys=g('yn-sub');if(ys)ys.textContent=lang==='ja'?'':en;
+  var yd=g('yn-desc');if(yd)yd.textContent=desc;
+  updateCounselTL();
+  /* 選択と同時にお客様画面へ切替 */
+  setMode('c',g('mt-cl'));
+}
 function setMode(m,btn){g('mode-s').style.display=m==='s'?'':'none';g('mode-c').style.display=m==='c'?'':'none';document.querySelectorAll('.mtb').forEach(function(b){b.classList.remove('on')});if(btn)btn.classList.add('on');if(m==='c')applyLang();}
 function backToStylist(){setMode('s',g('mt-st'));g('mt-st').classList.add('on');g('mt-cl').classList.remove('on');var r=g('yn-res');if(r)r.style.display='none';document.querySelectorAll('.yn-chip').forEach(function(c){c.classList.remove('on')});}
 function sendProp(){var ym=g('yn-main');if(ym&&ym.childNodes[0])ym.childNodes[0].textContent=propData[lang]||propData.ja;var ymj=g('yn-main-jp');if(ymj)ymj.textContent=lang==='ja'?'':('（'+propData.ja+'）');var ys=g('yn-sub');if(ys)ys.textContent=lang==='ja'?'':propData.en;var yd=g('yn-desc');if(yd)yd.textContent=propData.desc;setMode('c',g('mt-cl'));}
