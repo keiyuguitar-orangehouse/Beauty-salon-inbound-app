@@ -554,36 +554,37 @@ input[type=range]{width:100%;accent-color:#1D9E75;height:6px}
   </div>
   <div id="mode-s">
     <div>
-      <div>
-        <div class="card" style="padding:12px">
-          <div class="tabs" id="tech-tabs"><div class="tab amber on" onclick="selTT(this,'tcut')">カット</div><div class="tab amber" onclick="selTT(this,'tcol')">カラー</div><div class="tab amber" onclick="selTT(this,'tper')">パーマ</div><div class="tab amber" onclick="selTT(this,'tcar')">ケア</div></div>
-          <div id="tcut"><div class="vg">
-            <div class="vc on" onclick="selVC(this,'レイヤーカット','Layer cut','分层剪发','레이어 커트','Light, airy layers for volume and movement')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#BA7517" stroke-width="1.8"/><path d="M11 32 Q11 15 22 15 Q33 15 33 32" fill="none" stroke="#BA7517" stroke-width="1.8"/><line x1="13" y1="22" x2="31" y2="22" stroke="#BA7517" stroke-width="1.2" stroke-dasharray="2 2"/><line x1="14" y1="28" x2="30" y2="28" stroke="#BA7517" stroke-width="1.2" stroke-dasharray="2 2"/></svg></div><div class="vl"><div class="ja vc-ja-row">レイヤー</div><div class="vc-en">Layer</div><span class="vc-tl" id="vc-tl-0"></span><span class="vc-kana" id="vc-kana-0"></span></div></div>
-            <div class="vc" onclick="selVC(this,'グラデーション','Graduation','渐层剪发','그라데이션','Weight and shape')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><path d="M11 32 Q13 20 22 22 Q31 24 33 32" fill="none" stroke="#888" stroke-width="1.8"/></svg></div><div class="vl"><div class="ja vc-ja-row">グラデ</div><div class="vc-en">Graduation</div><span class="vc-tl" id="vc-tl-1"></span><span class="vc-kana" id="vc-kana-1"></span></div></div>
-            <div class="vc" onclick="selVC(this,'ワンレン','One length','齐发','원랭스','All one length')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><path d="M9 32 Q22 20 35 32" fill="none" stroke="#888" stroke-width="1.8"/></svg></div><div class="vl"><div class="ja vc-ja-row">ワンレン</div><div class="vc-en">One length</div><span class="vc-tl" id="vc-tl-2"></span><span class="vc-kana" id="vc-kana-2"></span></div></div>
-            <div class="vc" onclick="selVC(this,'ボブ','Bob','波波头','보브','Classic bob')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><path d="M11 26 Q11 32 22 33 Q33 32 33 26" fill="none" stroke="#888" stroke-width="1.8"/><line x1="11" y1="26" x2="33" y2="26" stroke="#888" stroke-width="1.2"/></svg></div><div class="vl"><div class="ja vc-ja-row">ボブ</div><div class="vc-en">Bob</div><span class="vc-tl" id="vc-tl-3"></span><span class="vc-kana" id="vc-kana-3"></span></div></div>
-          </div></div>
-          <div id="tcol" style="display:none"><div class="vg">
-            <div class="vc" onclick="selVC(this,'ハイライト','Highlights','挑染','하이라이트','Partial lightening')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><line x1="18" y1="8" x2="16" y2="28" stroke="#f0a020" stroke-width="2"/><line x1="22" y1="6" x2="20" y2="28" stroke="#f0a020" stroke-width="2"/><line x1="26" y1="8" x2="24" y2="28" stroke="#f0a020" stroke-width="2"/></svg></div><div class="vl"><div class="ja vc-ja-row">ハイライト</div><div class="vc-en">Highlights</div><span class="vc-tl" id="vc-tl-4"></span><span class="vc-kana" id="vc-kana-4"></span></div></div>
-            <div class="vc" onclick="selVC(this,'バレイヤージュ','Balayage','挑染渐变','발라야주','Sun-kissed gradient')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><path d="M11 32 Q14 18 22 22 Q30 26 33 32" fill="#ffe0a0" stroke="none" opacity=".6"/></svg></div><div class="vl"><div class="ja vc-ja-row">バレイヤージュ</div><div class="vc-en">Balayage</div><span class="vc-tl" id="vc-tl-5"></span><span class="vc-kana" id="vc-kana-5"></span></div></div>
-            <div class="vc" onclick="selVC(this,'全体カラー','All-over colour','全头染色','전체 염색','Uniform colour')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="#c084fc" stroke="#888" stroke-width="1.8" opacity=".5"/></svg></div><div class="vl"><div class="ja vc-ja-row">全体カラー</div><div class="vc-en">All-over</div><span class="vc-tl" id="vc-tl-6"></span><span class="vc-kana" id="vc-kana-6"></span></div></div>
-            <div class="vc" onclick="selVC(this,'白髪染め','Grey coverage','白发染色','새치 커버','Grey coverage')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><circle cx="22" cy="15" r="5" fill="#bbb"/></svg></div><div class="vl"><div class="ja vc-ja-row">白髪染め</div><div class="vc-en">Grey cover</div><span class="vc-tl" id="vc-tl-7"></span><span class="vc-kana" id="vc-kana-7"></span></div></div>
-          </div></div>
-          <div id="tper" style="display:none"><div class="vg">
-            <div class="vc" onclick="selVC(this,'ゆるふわパーマ','Soft wave perm','宽松烫发','소프트 웨이브','Gentle loose waves')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><path d="M10 20 Q16 12 22 20 Q28 28 34 20" fill="none" stroke="#888" stroke-width="2"/><path d="M10 28 Q16 20 22 28 Q28 36 34 28" fill="none" stroke="#888" stroke-width="2"/></svg></div><div class="vl"><div class="ja vc-ja-row">ゆるふわ</div><div class="vc-en">Soft wave</div><span class="vc-tl" id="vc-tl-8"></span><span class="vc-kana" id="vc-kana-8"></span></div></div>
-            <div class="vc" onclick="selVC(this,'デジタルパーマ','Digital perm','数码烫','디지털 펌','Defined curl')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><path d="M14 22 Q17 14 20 22 Q23 30 26 22 Q29 14 32 22" fill="none" stroke="#888" stroke-width="2"/></svg></div><div class="vl"><div class="ja vc-ja-row">デジパー</div><div class="vc-en">Digital perm</div><span class="vc-tl" id="vc-tl-9"></span><span class="vc-kana" id="vc-kana-9"></span></div></div>
-            <div class="vc" onclick="selVC(this,'縮毛矯正','Straightening','拉直烫','매직 스트레이트','Permanent straight')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><line x1="14" y1="14" x2="30" y2="14" stroke="#888" stroke-width="2"/><line x1="14" y1="22" x2="30" y2="22" stroke="#888" stroke-width="2"/><line x1="14" y1="30" x2="30" y2="30" stroke="#888" stroke-width="2"/></svg></div><div class="vl"><div class="ja vc-ja-row">縮毛矯正</div><div class="vc-en">Straight</div><span class="vc-tl" id="vc-tl-10"></span><span class="vc-kana" id="vc-kana-10"></span></div></div>
-          </div></div>
-          <div id="tcar" style="display:none"><div class="vg">
-            <div class="vc" onclick="selVC(this,'トリートメント','Deep treatment','护发护理','트리트먼트','Intensive repair')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="22" rx="12" ry="14" fill="none" stroke="#888" stroke-width="1.8"/><path d="M16 18 Q22 12 28 18" fill="none" stroke="#1D9E75" stroke-width="1.5"/></svg></div><div class="vl"><div class="ja vc-ja-row">トリートメント</div><div class="vc-en">Treatment</div><span class="vc-tl" id="vc-tl-11"></span><span class="vc-kana" id="vc-kana-11"></span></div></div>
-            <div class="vc" onclick="selVC(this,'頭皮ケア','Scalp care','头皮护理','두피 케어','Scalp massage')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><circle cx="22" cy="18" r="12" fill="none" stroke="#888" stroke-width="1.8"/><circle cx="22" cy="18" r="4" fill="#1D9E75" opacity=".4"/></svg></div><div class="vl"><div class="ja vc-ja-row">頭皮ケア</div><div class="vc-en">Scalp care</div><span class="vc-tl" id="vc-tl-12"></span><span class="vc-kana" id="vc-kana-12"></span></div></div>
-          </div></div>
-          <div class="slrow"><div class="slabel"><div id="sl1a" class="sl-lbl-wrap"><span class="sl-ja">すく</span><span class="sl-tl-fixed" id="sl1a-tl"></span></div><div id="sl1b" class="sl-lbl-wrap" style="text-align:right"><span class="sl-ja">残す</span><span class="sl-tl-fixed" id="sl1b-tl"></span></div></div><input type="range" min="0" max="100" value="40"></div>
-          <div class="slrow"><div class="slabel"><div id="sl2a" class="sl-lbl-wrap"><span class="sl-ja">さらさら</span><span class="sl-tl-fixed" id="sl2a-tl"></span></div><div id="sl2b" class="sl-lbl-wrap" style="text-align:right"><span class="sl-ja">ふわっと</span><span class="sl-tl-fixed" id="sl2b-tl"></span></div></div><input type="range" min="0" max="100" value="60"></div>
-          <!-- 仕上がりイメージ -->
-          <div style="font-size:12px;color:#8E8E93;margin-bottom:6px;margin-top:4px">仕上がりイメージ</div>
-          <div class="chips" style="margin-bottom:0"><div class="chip on" onclick="tog(this)">さらさら<span class="chip-tl" id="ftl-0"></span></div><div class="chip" onclick="tog(this)">ふわっと<span class="chip-tl" id="ftl-1"></span></div><div class="chip" onclick="tog(this)">ナチュラル<span class="chip-tl" id="ftl-2"></span></div><div class="chip" onclick="tog(this)">ツヤサラ<span class="chip-tl" id="ftl-3"></span></div><div class="chip" onclick="tog(this)">まとまり感<span class="chip-tl" id="ftl-4"></span></div></div>
-        </div>
+      <div class="card" style="padding:12px">
+        <div class="tabs" id="tech-tabs"><div class="tab amber on" onclick="selTT(this,'tcut')">✂️ カット</div><div class="tab amber" onclick="selTT(this,'tcol')">🎨 カラー</div><div class="tab amber" onclick="selTT(this,'tper')">〜 パーマ</div><div class="tab amber" onclick="selTT(this,'tcar')">💧 ケア</div></div>
+        <div id="tcut"><div class="vg">
+          <div class="vc on" onclick="selVC(this,'cut','レイヤーカット','Layer cut','分层剪发','레이어 커트','Light, airy layers for volume and movement')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#BA7517" stroke-width="1.8"/><path d="M11 32 Q11 15 22 15 Q33 15 33 32" fill="none" stroke="#BA7517" stroke-width="1.8"/><line x1="13" y1="22" x2="31" y2="22" stroke="#BA7517" stroke-width="1.2" stroke-dasharray="2 2"/><line x1="14" y1="28" x2="30" y2="28" stroke="#BA7517" stroke-width="1.2" stroke-dasharray="2 2"/></svg></div><div class="vl"><div class="ja vc-ja-row">レイヤー</div><div class="vc-en">Layer</div><span class="vc-tl" id="vc-tl-0"></span><span class="vc-kana" id="vc-kana-0"></span></div></div>
+          <div class="vc" onclick="selVC(this,'cut','グラデーション','Graduation','渐层剪发','그라데이션','Weight and shape')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><path d="M11 32 Q13 20 22 22 Q31 24 33 32" fill="none" stroke="#888" stroke-width="1.8"/></svg></div><div class="vl"><div class="ja vc-ja-row">グラデ</div><div class="vc-en">Graduation</div><span class="vc-tl" id="vc-tl-1"></span><span class="vc-kana" id="vc-kana-1"></span></div></div>
+          <div class="vc" onclick="selVC(this,'cut','ワンレン','One length','齐发','원랭스','All one length')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><path d="M9 32 Q22 20 35 32" fill="none" stroke="#888" stroke-width="1.8"/></svg></div><div class="vl"><div class="ja vc-ja-row">ワンレン</div><div class="vc-en">One length</div><span class="vc-tl" id="vc-tl-2"></span><span class="vc-kana" id="vc-kana-2"></span></div></div>
+          <div class="vc" onclick="selVC(this,'cut','ボブ','Bob','波波头','보브','Classic bob')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><path d="M11 26 Q11 32 22 33 Q33 32 33 26" fill="none" stroke="#888" stroke-width="1.8"/><line x1="11" y1="26" x2="33" y2="26" stroke="#888" stroke-width="1.2"/></svg></div><div class="vl"><div class="ja vc-ja-row">ボブ</div><div class="vc-en">Bob</div><span class="vc-tl" id="vc-tl-3"></span><span class="vc-kana" id="vc-kana-3"></span></div></div>
+        </div></div>
+        <div id="tcol" style="display:none"><div class="vg">
+          <div class="vc" onclick="selVC(this,'col','ハイライト','Highlights','挑染','하이라이트','Partial lightening')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><line x1="18" y1="8" x2="16" y2="28" stroke="#f0a020" stroke-width="2"/><line x1="22" y1="6" x2="20" y2="28" stroke="#f0a020" stroke-width="2"/><line x1="26" y1="8" x2="24" y2="28" stroke="#f0a020" stroke-width="2"/></svg></div><div class="vl"><div class="ja vc-ja-row">ハイライト</div><div class="vc-en">Highlights</div><span class="vc-tl" id="vc-tl-4"></span><span class="vc-kana" id="vc-kana-4"></span></div></div>
+          <div class="vc" onclick="selVC(this,'col','バレイヤージュ','Balayage','挑染渐变','발라야주','Sun-kissed gradient')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><path d="M11 32 Q14 18 22 22 Q30 26 33 32" fill="#ffe0a0" stroke="none" opacity=".6"/></svg></div><div class="vl"><div class="ja vc-ja-row">バレイヤージュ</div><div class="vc-en">Balayage</div><span class="vc-tl" id="vc-tl-5"></span><span class="vc-kana" id="vc-kana-5"></span></div></div>
+          <div class="vc" onclick="selVC(this,'col','全体カラー','All-over colour','全头染色','전체 염색','Uniform colour')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="#c084fc" stroke="#888" stroke-width="1.8" opacity=".5"/></svg></div><div class="vl"><div class="ja vc-ja-row">全体カラー</div><div class="vc-en">All-over</div><span class="vc-tl" id="vc-tl-6"></span><span class="vc-kana" id="vc-kana-6"></span></div></div>
+          <div class="vc" onclick="selVC(this,'col','白髪染め','Grey coverage','白发染色','새치 커버','Grey coverage')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><circle cx="22" cy="15" r="5" fill="#bbb"/></svg></div><div class="vl"><div class="ja vc-ja-row">白髪染め</div><div class="vc-en">Grey cover</div><span class="vc-tl" id="vc-tl-7"></span><span class="vc-kana" id="vc-kana-7"></span></div></div>
+        </div></div>
+        <div id="tper" style="display:none"><div class="vg">
+          <div class="vc" onclick="selVC(this,'per','ゆるふわパーマ','Soft wave perm','宽松烫发','소프트 웨이브','Gentle loose waves')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><path d="M10 20 Q16 12 22 20 Q28 28 34 20" fill="none" stroke="#888" stroke-width="2"/><path d="M10 28 Q16 20 22 28 Q28 36 34 28" fill="none" stroke="#888" stroke-width="2"/></svg></div><div class="vl"><div class="ja vc-ja-row">ゆるふわ</div><div class="vc-en">Soft wave</div><span class="vc-tl" id="vc-tl-8"></span><span class="vc-kana" id="vc-kana-8"></span></div></div>
+          <div class="vc" onclick="selVC(this,'per','デジタルパーマ','Digital perm','数码烫','디지털 펌','Defined curl')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><path d="M14 22 Q17 14 20 22 Q23 30 26 22 Q29 14 32 22" fill="none" stroke="#888" stroke-width="2"/></svg></div><div class="vl"><div class="ja vc-ja-row">デジパー</div><div class="vc-en">Digital perm</div><span class="vc-tl" id="vc-tl-9"></span><span class="vc-kana" id="vc-kana-9"></span></div></div>
+          <div class="vc" onclick="selVC(this,'per','縮毛矯正','Straightening','拉直烫','매직 스트레이트','Permanent straight')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><line x1="14" y1="14" x2="30" y2="14" stroke="#888" stroke-width="2"/><line x1="14" y1="22" x2="30" y2="22" stroke="#888" stroke-width="2"/><line x1="14" y1="30" x2="30" y2="30" stroke="#888" stroke-width="2"/></svg></div><div class="vl"><div class="ja vc-ja-row">縮毛矯正</div><div class="vc-en">Straight</div><span class="vc-tl" id="vc-tl-10"></span><span class="vc-kana" id="vc-kana-10"></span></div></div>
+        </div></div>
+        <div id="tcar" style="display:none"><div class="vg">
+          <div class="vc" onclick="selVC(this,'car','トリートメント','Deep treatment','护发护理','트리트먼트','Intensive repair')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="22" rx="12" ry="14" fill="none" stroke="#888" stroke-width="1.8"/><path d="M16 18 Q22 12 28 18" fill="none" stroke="#1D9E75" stroke-width="1.5"/></svg></div><div class="vl"><div class="ja vc-ja-row">トリートメント</div><div class="vc-en">Treatment</div><span class="vc-tl" id="vc-tl-11"></span><span class="vc-kana" id="vc-kana-11"></span></div></div>
+          <div class="vc" onclick="selVC(this,'car','頭皮ケア','Scalp care','头皮护理','두피 케어','Scalp massage')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><circle cx="22" cy="18" r="12" fill="none" stroke="#888" stroke-width="1.8"/><circle cx="22" cy="18" r="4" fill="#1D9E75" opacity=".4"/></svg></div><div class="vl"><div class="ja vc-ja-row">頭皮ケア</div><div class="vc-en">Scalp care</div><span class="vc-tl" id="vc-tl-12"></span><span class="vc-kana" id="vc-kana-12"></span></div></div>
+        </div></div>
+        <!-- カテゴリ別スライダー（タブ切替で差し替え） -->
+        <div id="slider-zone" style="margin-top:10px"></div>
+      </div>
+      <!-- 選択中サマリー -->
+      <div id="sel-summary" class="card" style="padding:12px;margin-top:0;display:none">
+        <div style="font-size:12px;color:#8E8E93;margin-bottom:8px;font-weight:600">✅ 選択中のメニュー</div>
+        <div id="sel-summary-body" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
+        <button class="prop-btn" onclick="sendProp()" style="font-size:15px;padding:14px">📱 お客様に見せる →</button>
       </div>
       <div class="card" style="padding:10px;background:#F2F2F7;margin-top:0">
         <div style="font-size:11px;color:#8E8E93;margin-bottom:4px">📖 クイック参照</div>
@@ -595,27 +596,24 @@ input[type=range]{width:100%;accent-color:#1D9E75;height:6px}
     <div class="client-screen">
       <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span><button class="client-bar-back" onclick="backToStylist()">← 戻る</button></div>
       <div class="yn-wrap">
-        <div class="yn-suggest-lbl"><span id="yn-lbl">Your stylist suggests:</span><span class="jp">スタイリストからの提案</span></div>
-        <div class="yn-card">
-          <div class="yn-main"><span id="yn-main">レイヤーカット</span><span class="jp-small" id="yn-main-jp">（レイヤーカット）</span></div>
-          <div class="yn-sub" id="yn-sub">Layer cut</div>
-          <div class="yn-desc" id="yn-desc">Light, airy layers for volume and movement.</div>
-        </div>
+        <div class="yn-suggest-lbl"><span id="yn-lbl">Your stylist recommends:</span><span class="jp">スタイリストからの提案</span></div>
+        <!-- 複数メニュー＋スライダー結果まとめ表示 -->
+        <div id="yn-multi-card" class="yn-card" style="text-align:left;padding:16px"></div>
         <div class="yn-btns">
-          <button class="yn-btn y" onclick="ynAns('y')"><span class="yn-client-area"><span class="yn-client-lbl" id="yn-yes-lbl">YES ✓</span><span class="yn-client-sub" id="yn-yes-sub">Yes, please go ahead</span></span><span class="yn-stylist-area">→ 美容師メモ：「はい・同意」</span></button>
-          <button class="yn-btn n" onclick="ynAns('n')"><span class="yn-client-area"><span class="yn-client-lbl" id="yn-no-lbl">NO ✗</span><span class="yn-client-sub" id="yn-no-sub">I'd like something different</span></span><span class="yn-stylist-area">→ 美容師メモ：「いいえ・別の提案を」</span></button>
+          <button class="yn-btn y" onclick="ynAns('y')"><span class="yn-client-area"><span class="yn-client-lbl" id="yn-yes-lbl">YES ✓</span><span class="yn-client-sub" id="yn-yes-sub">Sounds good, let's go!</span></span><span class="yn-stylist-area">→ 美容師メモ：「はい・同意」</span></button>
+          <button class="yn-btn n" onclick="ynAns('n')"><span class="yn-client-area"><span class="yn-client-lbl" id="yn-no-lbl">NO ✗</span><span class="yn-client-sub" id="yn-no-sub">Hmm, not quite…</span></span><span class="yn-stylist-area">→ 美容師メモ：「いいえ・別の提案を」</span></button>
         </div>
-        <div class="yn-or"><span id="yn-or">Or I'd like something...</span><span class="jp">別のご要望</span></div>
-        <div class="yn-chips-wrap" id="yn-chips-en"><div class="yn-chip" onclick="ynChip(this,'もっと短く')">Shorter<span class="cjp">もっと短く</span></div><div class="yn-chip" onclick="ynChip(this,'もっと長く')">Longer<span class="cjp">もっと長く</span></div><div class="yn-chip" onclick="ynChip(this,'もっと軽く')">Lighter<span class="cjp">もっと軽く</span></div><div class="yn-chip" onclick="ynChip(this,'ボリュームを増やす')">More volume<span class="cjp">ボリュームを増やす</span></div><div class="yn-chip" onclick="ynChip(this,'もっとストレートに')">Straighter<span class="cjp">もっとストレートに</span></div></div>
-        <div class="yn-chips-wrap" id="yn-chips-zh" style="display:none"><div class="yn-chip" onclick="ynChip(this,'もっと短く')">更短一点<span class="cjp">もっと短く</span></div><div class="yn-chip" onclick="ynChip(this,'もっと長く')">更长一点<span class="cjp">もっと長く</span></div><div class="yn-chip" onclick="ynChip(this,'もっと軽く')">更轻盈<span class="cjp">もっと軽く</span></div><div class="yn-chip" onclick="ynChip(this,'ボリュームを増やす')">更有蓬松感<span class="cjp">ボリュームを増やす</span></div><div class="yn-chip" onclick="ynChip(this,'もっとストレートに')">更直一点<span class="cjp">もっとストレートに</span></div></div>
-        <div class="yn-chips-wrap" id="yn-chips-ko" style="display:none"><div class="yn-chip" onclick="ynChip(this,'もっと短く')">더 짧게<span class="cjp">もっと短く</span></div><div class="yn-chip" onclick="ynChip(this,'もっと長く')">더 길게<span class="cjp">もっと長く</span></div><div class="yn-chip" onclick="ynChip(this,'もっと軽く')">더 가볍게<span class="cjp">もっと軽く</span></div><div class="yn-chip" onclick="ynChip(this,'ボリュームを増やす')">볼륨 더<span class="cjp">ボリュームを増やす</span></div><div class="yn-chip" onclick="ynChip(this,'もっとストレートに')">더 직선으로<span class="cjp">もっとストレートに</span></div></div>
-        <div class="yn-chips-wrap" id="yn-chips-ja" style="display:none"><div class="yn-chip" onclick="ynChip(this,'もっと短く')">もっと短く</div><div class="yn-chip" onclick="ynChip(this,'もっと長く')">もっと長く</div><div class="yn-chip" onclick="ynChip(this,'もっと軽く')">もっと軽く</div><div class="yn-chip" onclick="ynChip(this,'ボリュームを増やす')">ボリュームを増やす</div><div class="yn-chip" onclick="ynChip(this,'もっとストレートに')">もっとストレートに</div></div>
         <div class="yn-res" id="yn-res"></div>
       </div>
     </div>
-    <div style="margin-top:8px;text-align:center"><button onclick="backToStylist()" style="font-size:11px;padding:7px 15px;border:0.5px solid #E5E5EA;border-radius:999px;background:#fff;cursor:pointer;color:#8E8E93">← 美容師側に戻る（再提案）</button></div>
+    <!-- YES後：合意完了ボタン -->
+    <div id="agree-btn-wrap" style="display:none;margin-top:10px">
+      <button class="next-btn nb3" onclick="goStep(4)" style="font-size:18px;padding:18px">✅ 合意完了 → 施術へ</button>
+    </div>
+    <div id="back-btn-wrap" style="margin-top:8px;text-align:center">
+      <button onclick="backToStylist()" style="font-size:13px;padding:9px 18px;border:1.5px solid #E5E5EA;border-radius:999px;background:#fff;cursor:pointer;color:#8E8E93;font-weight:500">← 美容師側に戻る（再提案）</button>
+    </div>
   </div>
-  <button class="next-btn nb3" onclick="goStep(4)" style="margin-top:10px">合意完了 → 施術へ</button>
 </div>
 
 <!-- ④ -->
@@ -1465,33 +1463,155 @@ function goStep(n){
   /* 画面トップにスクロール */
   window.scrollTo({top:0,behavior:'smooth'});
 }
-function selTT(el,id){el.closest('#tech-tabs').querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});el.classList.add('on');['tcut','tcol','tper','tcar'].forEach(function(k){var d=g(k);if(d)d.style.display=k===id?'':'none';});}
-function selVC(el,ja,en,zh,ko,desc){
-  el.closest('.vg').querySelectorAll('.vc').forEach(function(v){v.classList.remove('on')});
+function selTT(el,id){
+  el.closest('#tech-tabs').querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});
   el.classList.add('on');
-  propData={ja:ja,en:en,zh:zh,ko:ko,desc:desc};
-  /* お客様向け画面を即更新 */
-  var ym=g('yn-main');if(ym&&ym.childNodes[0])ym.childNodes[0].textContent=propData[lang]||ja;
-  var ymj=g('yn-main-jp');if(ymj)ymj.textContent=lang==='ja'?'':('（'+ja+'）');
-  var ys=g('yn-sub');if(ys)ys.textContent=lang==='ja'?'':en;
-  var yd=g('yn-desc');if(yd)yd.textContent=desc;
-  updateCounselTL();
-  /* 選択と同時にお客様画面へ切替 */
+  ['tcut','tcol','tper','tcar'].forEach(function(k){var d=g(k);if(d)d.style.display=k===id?'':'none';});
+  var catMap={tcut:'cut',tcol:'col',tper:'per',tcar:'car'};
+  var newCat=catMap[id]||'cut';
+  /* 切替前に現在のスライダー値を保存 */
+  saveSliderValues(currentCat);
+  currentCat=newCat;
+  renderSliders(currentCat);
+}
+/* カテゴリ別選択状態 */
+var selectedServices={cut:null,col:null,per:null,car:null};
+var catLabels={cut:'✂️ カット',col:'🎨 カラー',per:'〜 パーマ',car:'💧 ケア'};
+
+function selVC(el,cat,ja,en,zh,ko,desc){
+  /* 同カテゴリ内の選択を切替（同じものを押したら解除） */
+  var already=el.classList.contains('on');
+  el.closest('.vg').querySelectorAll('.vc').forEach(function(v){v.classList.remove('on');});
+  if(already){
+    selectedServices[cat]=null;
+  } else {
+    el.classList.add('on');
+    selectedServices[cat]={ja:ja,en:en,zh:zh,ko:ko,desc:desc};
+  }
+  updateSummary();
+}
+
+function updateSummary(){
+  var items=[];
+  ['cut','col','per','car'].forEach(function(c){if(selectedServices[c])items.push({cat:c,d:selectedServices[c]});});
+  var wrap=g('sel-summary');
+  var body=g('sel-summary-body');
+  if(!wrap||!body)return;
+  if(items.length===0){wrap.style.display='none';return;}
+  wrap.style.display='';
+  body.innerHTML='';
+  items.forEach(function(it){
+    var t=document.createElement('div');
+    t.style.cssText='display:inline-flex;flex-direction:column;padding:7px 12px;background:#FAEEDA;border:1.5px solid #BA7517;border-radius:10px;min-width:80px;';
+    t.innerHTML='<span style="font-size:10px;color:#85500B;font-weight:600">'+catLabels[it.cat]+'</span>'+
+                '<span style="font-size:15px;font-weight:700;color:#1C1C1E">'+it.d.ja+'</span>'+
+                '<span style="font-size:11px;color:#BA7517">'+it.d.en+'</span>';
+    body.appendChild(t);
+  });
+}
+
+function buildClientCard(){
+  var items=[];
+  ['cut','col','per','car'].forEach(function(c){if(selectedServices[c])items.push({cat:c,d:selectedServices[c]});});
+  var card=g('yn-multi-card');
+  if(!card)return;
+
+  if(items.length===0){
+    card.innerHTML='<div style="color:#8E8E93;font-size:14px;text-align:center;padding:10px">メニューが選択されていません</div>';
+    return;
+  }
+
+  var html='<div style="font-size:12px;color:#8E8E93;margin-bottom:10px;font-weight:600">🗣 美容師メモ：本日のご提案</div>';
+
+  items.forEach(function(it){
+    var tl=lang==='zh'?it.d.zh:(lang==='ko'?it.d.ko:it.d.en);
+    var tl2=lang!=='en'?it.d.en:'';
+
+    /* このカテゴリのスライダー保存値を使う（DOM不問） */
+    /* まず現在表示中カテゴリのDOM値を保存してから読む */
+    saveSliderValues(currentCat);
+    var sliders=CAT_SLIDERS[it.cat]||[];
+    var slHtml='';
+    sliders.forEach(function(sl,i){
+      var val=(sliderValues[it.cat]&&sliderValues[it.cat][i]!==undefined)?sliderValues[it.cat][i]:sl.val;
+      /* 0-100 → 左ラベル寄り(0-40)・中央(41-59)・右ラベル寄り(60-100) */
+      var aLabel=lang==='zh'?sl.zh_a:(lang==='ko'?sl.ko_a:lang==='ja'?sl.ja_a:sl.en_a);
+      var bLabel=lang==='zh'?sl.zh_b:(lang==='ko'?sl.ko_b:lang==='ja'?sl.ja_b:sl.en_b);
+      var aJa=sl.ja_a; var bJa=sl.ja_b;
+      var indicator,indicatorJa;
+      if(val<=35){indicator=aLabel;indicatorJa=aJa;}
+      else if(val>=65){indicator=bLabel;indicatorJa=bJa;}
+      else{
+        /* 中央付近はどちらでもない → 両端を薄く表示 */
+        indicator=aLabel+' ↔ '+bLabel;
+        indicatorJa=aJa+' ↔ '+bJa;
+      }
+      /* バーグラフ表示 */
+      var pct=val+'%';
+      slHtml+='<div style="margin-top:6px">'+
+        '<div style="display:flex;justify-content:space-between;font-size:11px;color:#8E8E93;margin-bottom:2px">'+
+          '<span>'+sl.ja_a+'</span><span>'+sl.ja_b+'</span>'+
+        '</div>'+
+        '<div style="position:relative;height:8px;background:#E5E5EA;border-radius:4px;margin-bottom:2px">'+
+          '<div style="position:absolute;left:0;top:0;height:8px;width:'+pct+';background:#BA7517;border-radius:4px;transition:width .3s"></div>'+
+        '</div>'+
+        '<div style="font-size:13px;font-weight:600;color:#BA7517">'+indicator+
+          (lang!=='ja'?'<span style="font-size:10px;color:#8E8E93;font-weight:400;margin-left:5px">（'+indicatorJa+'）</span>':'')+
+        '</div>'+
+      '</div>';
+    });
+
+    html+='<div style="margin-bottom:12px;padding:12px;background:#F9F9FB;border-radius:10px;border-left:3px solid #BA7517">'+
+      '<div style="font-size:11px;color:#85500B;font-weight:600;margin-bottom:4px">'+catLabels[it.cat]+'</div>'+
+      '<div style="font-size:22px;font-weight:700;color:#1C1C1E;line-height:1.3">'+tl+'</div>'+
+      (tl2?'<div style="font-size:12px;color:#8E8E93;margin-top:2px">'+tl2+'</div>':'')+
+      (slHtml?'<div style="margin-top:8px;padding-top:8px;border-top:0.5px solid #E5E5EA">'+slHtml+'</div>':'')+
+    '</div>';
+  });
+
+  card.innerHTML=html;
+}
+
+function setMode(m,btn){
+  g('mode-s').style.display=m==='s'?'':'none';
+  g('mode-c').style.display=m==='c'?'':'none';
+  document.querySelectorAll('.mtb').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  if(m==='c'){buildClientCard();applyLang();}
+}
+
+function backToStylist(){
+  setMode('s',g('mt-st'));
+  var r=g('yn-res');if(r)r.style.display='none';
+  var ab=g('agree-btn-wrap');if(ab)ab.style.display='none';
+  document.querySelectorAll('.yn-chip').forEach(function(c){c.classList.remove('on');});
+}
+
+function sendProp(){
+  var items=[];
+  ['cut','col','per','car'].forEach(function(c){if(selectedServices[c])items.push(c);});
+  if(items.length===0){alert('メニューを選択してください');return;}
   setMode('c',g('mt-cl'));
 }
-function setMode(m,btn){g('mode-s').style.display=m==='s'?'':'none';g('mode-c').style.display=m==='c'?'':'none';document.querySelectorAll('.mtb').forEach(function(b){b.classList.remove('on')});if(btn)btn.classList.add('on');if(m==='c')applyLang();}
-function backToStylist(){setMode('s',g('mt-st'));g('mt-st').classList.add('on');g('mt-cl').classList.remove('on');var r=g('yn-res');if(r)r.style.display='none';document.querySelectorAll('.yn-chip').forEach(function(c){c.classList.remove('on')});}
-function sendProp(){var ym=g('yn-main');if(ym&&ym.childNodes[0])ym.childNodes[0].textContent=propData[lang]||propData.ja;var ymj=g('yn-main-jp');if(ymj)ymj.textContent=lang==='ja'?'':('（'+propData.ja+'）');var ys=g('yn-sub');if(ys)ys.textContent=lang==='ja'?'':propData.en;var yd=g('yn-desc');if(yd)yd.textContent=propData.desc;setMode('c',g('mt-cl'));}
+
 function ynAns(v){
   if(v==='y'){
-    goStep(4);
+    var ab=g('agree-btn-wrap');
+    if(ab)ab.style.display='';
+    var bb=g('back-btn-wrap');
+    /* YES押下後は戻るボタンを一旦非表示に */
+    if(bb)bb.style.display='none';
+    /* スクロールして合意ボタンを見せる */
+    if(ab)ab.scrollIntoView({behavior:'smooth',block:'center'});
   } else {
+    var ab2=g('agree-btn-wrap');if(ab2)ab2.style.display='none';
+    var bb2=g('back-btn-wrap');if(bb2)bb2.style.display='';
     backToStylist();
   }
 }
 
 function ynChip(el,jp){
-  document.querySelectorAll('.yn-chip').forEach(function(c){c.classList.remove('on')});
+  document.querySelectorAll('.yn-chip').forEach(function(c){c.classList.remove('on');});
   el.classList.add('on');
   backToStylist();
 }
@@ -2054,12 +2174,119 @@ var FINISH_TL_DATA=[
   {en:'Glossy',     en_k:'グロッシー',      zh:'亮滑', zh_k:'リャン ホア', ko:'광택실크', ko_k:'グァンテク シルク'},
   {en:'Frizz-free', en_k:'フリズフリー',    zh:'服帖', zh_k:'フー ティエ', ko:'정돈됨',   ko_k:'チョンドンデム'}
 ];
-var SL_TL={
-  sl1a:{en:'Thinning',    zh:'打薄',    ko:'숱 치기',  en_k:'シニング',          zh_k:'ダー バォ',    ko_k:'スル チギ'},
-  sl1b:{en:'Keep bulk',   zh:'保留发量', ko:'볼륨 유지', en_k:'キープ バルク',      zh_k:'バオ リウ ファ リャン',ko_k:'ボルリュム ユジ'},
-  sl2a:{en:'Silky',       zh:'顺滑',    ko:'매끄럽게', en_k:'シルキー',          zh_k:'シュン ホア',  ko_k:'メックルプゲ'},
-  sl2b:{en:'Fluffy',      zh:'蓬松',    ko:'폭신하게', en_k:'フラッフィー',       zh_k:'ポン ソン',    ko_k:'ポクシナゲ'}
+/* ── カテゴリ別スライダー定義 ── */
+var CAT_SLIDERS={
+  cut:[
+    {ja_a:'前髪：短く',ja_b:'前髪：残す',val:50,
+     en_a:'Bangs: shorter',en_b:'Bangs: keep length',
+     zh_a:'刘海：短',zh_b:'刘海：留长',
+     ko_a:'앞머리：짧게',ko_b:'앞머리：남기기'},
+    {ja_a:'全体：短く',ja_b:'全体：長めに',val:50,
+     en_a:'Length: shorter',en_b:'Length: longer',
+     zh_a:'整体：短',zh_b:'整体：留长',
+     ko_a:'전체：짧게',ko_b:'전체：길게'},
+    {ja_a:'毛量：すく',ja_b:'毛量：残す',val:40,
+     en_a:'Volume: thinner',en_b:'Volume: keep bulk',
+     zh_a:'发量：打薄',zh_b:'发量：保留',
+     ko_a:'모량：숱 치기',ko_b:'모량：유지'}
+  ],
+  col:[
+    {ja_a:'明るく',ja_b:'暗めに',val:50,
+     en_a:'Lighter',en_b:'Darker',
+     zh_a:'更亮',zh_b:'更暗',
+     ko_a:'밝게',ko_b:'어둡게'},
+    {ja_a:'ナチュラル',ja_b:'はっきり',val:40,
+     en_a:'Natural',en_b:'Vivid',
+     zh_a:'自然',zh_b:'鲜艳',
+     ko_a:'내추럴',ko_b:'선명하게'},
+    {ja_a:'ツヤあり',ja_b:'マットに',val:60,
+     en_a:'Glossy',en_b:'Matte',
+     zh_a:'有光泽',zh_b:'哑光',
+     ko_a:'윤기있게',ko_b:'매트하게'}
+  ],
+  per:[
+    {ja_a:'ゆるめ',ja_b:'しっかり',val:40,
+     en_a:'Loose',en_b:'Defined',
+     zh_a:'宽松',zh_b:'明显',
+     ko_a:'루즈하게',ko_b:'확실하게'},
+    {ja_a:'根元から',ja_b:'毛先だけ',val:50,
+     en_a:'Root to tip',en_b:'Ends only',
+     zh_a:'从发根',zh_b:'只发尾',
+     ko_a:'뿌리부터',ko_b:'모끝만'},
+    {ja_a:'ふんわり',ja_b:'タイトに',val:45,
+     en_a:'Airy / fluffy',en_b:'Tight curl',
+     zh_a:'蓬松',zh_b:'紧密',
+     ko_a:'폭신하게',ko_b:'타이트하게'}
+  ],
+  car:[
+    {ja_a:'さらさら',ja_b:'しっとり',val:60,
+     en_a:'Sleek & smooth',en_b:'Moisturized',
+     zh_a:'顺滑',zh_b:'滋润',
+     ko_a:'매끄럽게',ko_b:'촉촉하게'},
+    {ja_a:'頭皮ケア：ふつう',ja_b:'頭皮ケア：しっかり',val:40,
+     en_a:'Scalp: standard',en_b:'Scalp: intensive',
+     zh_a:'头皮：普通',zh_b:'头皮：加强',
+     ko_a:'두피：보통',ko_b:'두피：집중'},
+    {ja_a:'ダメージ補修：軽め',ja_b:'ダメージ補修：しっかり',val:50,
+     en_a:'Repair: light',en_b:'Repair: intensive',
+     zh_a:'修复：轻',zh_b:'修复：加强',
+     ko_a:'손상 케어：가볍게',ko_b:'손상 케어：집중'}
+  ]
 };
+
+var currentCat='cut';
+
+/* 全カテゴリのスライダー値を保持（タブ切替でDOMが消えても値を保存） */
+var sliderValues={};
+/* 初期値をCAT_SLIDERSから設定 */
+['cut','col','per','car'].forEach(function(cat){
+  sliderValues[cat]=(CAT_SLIDERS[cat]||[]).map(function(sl){return sl.val;});
+});
+
+function saveSliderValues(cat){
+  var sliders=CAT_SLIDERS[cat]||[];
+  sliders.forEach(function(sl,i){
+    var el=g('sl-'+cat+'-'+i);
+    if(el)sliderValues[cat][i]=parseInt(el.value);
+  });
+}
+
+function renderSliders(cat){
+  /* 現在表示中のカテゴリの値を保存してから切替 */
+  if(cat!==currentCat)saveSliderValues(currentCat);
+  var zone=g('slider-zone');
+  if(!zone)return;
+  var sliders=CAT_SLIDERS[cat]||[];
+  zone.innerHTML='';
+  sliders.forEach(function(sl,i){
+    var savedVal=(sliderValues[cat]&&sliderValues[cat][i]!==undefined)?sliderValues[cat][i]:sl.val;
+    var aLabel=lang==='zh'?sl.zh_a:(lang==='ko'?sl.ko_a:lang==='ja'?sl.ja_a:sl.en_a);
+    var bLabel=lang==='zh'?sl.zh_b:(lang==='ko'?sl.ko_b:lang==='ja'?sl.ja_b:sl.en_b);
+    var row=document.createElement('div');
+    row.className='slrow';
+    row.innerHTML=
+      '<div class="slabel">'+
+        '<div class="sl-lbl-wrap">'+
+          '<span class="sl-ja">'+sl.ja_a+'</span>'+
+          (lang!=='ja'?'<span class="sl-tl-fixed" style="color:#1D9E75;font-size:11px;font-weight:600">'+aLabel+'</span>':'')+
+        '</div>'+
+        '<div class="sl-lbl-wrap" style="text-align:right">'+
+          '<span class="sl-ja">'+sl.ja_b+'</span>'+
+          (lang!=='ja'?'<span class="sl-tl-fixed" style="color:#1D9E75;font-size:11px;font-weight:600;display:block">'+bLabel+'</span>':'')+
+        '</div>'+
+      '</div>'+
+      '<input type="range" min="0" max="100" value="'+savedVal+'" id="sl-'+cat+'-'+i+'">';
+    zone.appendChild(row);
+    /* 操作のたびに値を保存 */
+    (function(c,idx){
+      var input=zone.querySelectorAll('input[type=range]')[idx];
+      if(input)input.addEventListener('input',function(){
+        if(!sliderValues[c])sliderValues[c]=[];
+        sliderValues[c][idx]=parseInt(this.value);
+      });
+    })(cat,i);
+  });
+}
 function updateCounselTL(){
   /* カード翻訳ラベル（言語テキスト＋カタカナ読み）＋英語行の表示制御 */
   /* 英語以外の時は .vc-en（英語行）を非表示に */
@@ -2086,33 +2313,12 @@ function updateCounselTL(){
     tlEl.textContent=txt||'';
     if(kEl)kEl.textContent=kana?'🗣 '+kana:'';
   });
-  /* スライダーラベル翻訳（言語テキスト＋カタカナ別行） */
-  Object.keys(SL_TL).forEach(function(sid){
-    var el=g(sid+'-tl');if(!el)return;
-    if(lang==='ja'){el.innerHTML='';return;}
-    var d=SL_TL[sid];
-    var txt=lang==='zh'?d.zh:(lang==='ko'?d.ko:d.en);
-    var kana=lang==='zh'?d.zh_k:(lang==='ko'?d.ko_k:d.en_k);
-    el.innerHTML='<span style="display:block;color:#1D9E75;font-size:11px;font-weight:600">'+txt+'</span>'+(kana?'<span style="display:block;color:#85500B;font-size:10px;font-weight:500;background:#FFF8E7;border-radius:3px;padding:1px 3px">🗣 '+kana+'</span>':'');
-  });
-  /* 仕上がりイメージチップ翻訳（言語＋カタカナ別行） */
-  FINISH_TL_DATA.forEach(function(d,i){
-    var el=g('ftl-'+i);if(!el)return;
-    if(lang==='ja'){el.innerHTML='';return;}
-    var txt=lang==='en'?d.en:(lang==='zh'?d.zh:(lang==='ko'?d.ko:''));
-    var kana=lang==='en'?d.en_k:(lang==='zh'?d.zh_k:(lang==='ko'?d.ko_k:''));
-    el.innerHTML=(txt?'<span style="display:block;font-size:9px;color:#1D9E75;font-weight:500">/ '+txt+'</span>':'')
-               +(kana?'<span style="display:block;font-size:9px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:3px;padding:0 2px">🗣 '+kana+'</span>':'');
-  });
-  /* 現在の提案エリア翻訳 */
-  var ptl=g('prop-tl');if(ptl){
-    if(lang==='ja'||lang==='en'){ptl.style.display='none';}
-    else{var t=propData[lang]||'';ptl.textContent=t;ptl.style.display=t?'':'none';}
-  }
+  /* スライダー：カテゴリ別に再描画 */
+  renderSliders(currentCat);
   buildQuickRef();
 }
 
-renderChips();updSums();buildSD(1);buildFD();updateSc1();updateAllSubQ();updateCounselTL();buildQuickRef();renderFeeTable();updateFeeDisplay();
+renderChips();updSums();buildSD(1);buildFD();updateSc1();updateAllSubQ();updateCounselTL();buildQuickRef();renderFeeTable();updateFeeDisplay();renderSliders('cut');
 
 /* ── フルスクリーンモーダル ── */
 function openClientModal(el){
