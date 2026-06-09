@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美容室インバウンド接客アプリ v8</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:#F2F2F7;color:#1C1C1E}
+#app{max-width:980px;margin:0 auto;padding:14px}
+.top-bar{background:#fff;border:0.5px solid #E5E5EA;border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.top-bar-title{font-size:14px;font-weight:600;color:#1C1C1E;flex:1}
+.lang-row{display:flex;gap:4px;flex-shrink:0}
+.lb{font-size:11px;padding:5px 10px;border:0.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#F2F2F7;color:#8E8E93;transition:all .12s}
+.lb.on{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.step-nav{display:flex;gap:5px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
+.snb{flex:0 0 auto;font-size:11px;padding:6px 11px;border:0.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#fff;color:#8E8E93;white-space:nowrap;transition:all .2s}
+.snb.active{color:#fff;border-color:transparent}
+.snb.s1.active{background:#1D9E75}.snb.s2.active{background:#534AB7}.snb.s3.active{background:#BA7517}.snb.s4.active{background:#D85A30}.snb.s5.active{background:#3B6D11}
+.snb.done{border-color:transparent;color:#fff;opacity:.75}
+.snb.s1.done{background:#1D9E75}.snb.s2.done{background:#534AB7}.snb.s3.done{background:#BA7517}.snb.s4.done{background:#D85A30}.snb.s5.done{background:#3B6D11}
+.snb.done::after{content:'✓';margin-left:4px;font-size:10px}
+.screen{display:none}.screen.on{display:block}
+.card{background:#fff;border:0.5px solid #E5E5EA;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.card-title{font-size:12px;color:#8E8E93;margin-bottom:10px;font-weight:500}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.chip{font-size:12px;padding:5px 12px;border:0.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#F2F2F7;color:#8E8E93;transition:all .12s}
+.chip.on{background:#E1F5EE;color:#085041;border-color:#1D9E75}
+.chip.red.on{background:#FAECE7;color:#993C1D;border-color:#D85A30}.chip-tl{font-size:9px;color:#1D9E75;display:block;line-height:1.4;font-weight:500}.chip-kana{font-size:9px;color:#85500B;background:#FFF8E7;display:block;line-height:1.3;padding:1px 3px;border-radius:3px;margin-top:1px}
+.lang-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.lcard{background:#F2F2F7;border:0.5px solid #E5E5EA;border-radius:12px;padding:16px 8px;text-align:center;cursor:pointer;transition:all .12s}
+.lcard.on{border:1.5px solid #1D9E75;background:#E1F5EE}
+.lcard .flag{font-size:26px;margin-bottom:5px}
+.lcard .lng{font-size:13px;font-weight:600;color:#1C1C1E}
+.lcard .sub{font-size:10px;color:#8E8E93;margin-top:2px}
+.client-screen{background:#fff;border:2px solid #1D9E75;border-radius:12px;overflow:hidden}
+.client-bar{background:#1D9E75;padding:8px 14px;display:flex;align-items:center;gap:8px}
+.client-bar-dot{width:8px;height:8px;border-radius:50%;background:#fff;opacity:.7;animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+.client-bar-lbl{font-size:11px;color:#fff;font-weight:500;flex:1}
+.client-bar-back{font-size:11px;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;cursor:pointer}
+.jp-gloss{font-size:11px;color:#633806;background:#FFF8E7;border:0.5px solid #FAC775;border-radius:4px;padding:3px 8px;margin-top:5px;display:inline-block;line-height:1.5}
+.jp-gloss-label{font-size:9px;color:#85500B;font-weight:500;margin-right:4px}
+.kana-guide{margin-top:8px;padding:7px 11px;background:#FFF8E7;border:0.5px solid #FAC775;border-radius:8px}
+.kana-guide-label{font-size:9px;color:#633806;margin-bottom:2px;font-weight:500}
+.kana-text{font-size:12px;color:#412402;line-height:1.8;font-weight:500}
+.bilabel{font-size:11px;color:#8E8E93;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.chips-wrap{margin-bottom:12px}
+.bichips{display:flex;flex-wrap:wrap;gap:6px}
+.bichip{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border:0.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#F2F2F7;transition:all .12s}
+.bichip .ja{font-size:12px;color:#1C1C1E;font-weight:500}
+.bichip .fl{font-size:11px;color:#8E8E93}
+.bichip.on{background:#E1F5EE;border-color:#1D9E75}.bichip.on .ja{color:#085041}.bichip.on .fl{color:#1D9E75}
+.bichip.red.on{background:#FAECE7;border-color:#D85A30}.bichip.red.on .ja{color:#993C1D}.bichip.red.on .fl{color:#D85A30}
+.selection-summary{background:#F2F2F7;border:0.5px solid #E5E5EA;border-radius:8px;padding:10px 12px;margin-top:6px}
+.ss-label{font-size:10px;color:#8E8E93;margin-bottom:6px;font-weight:500}
+.ss-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:5px}
+.ss-row:last-child{margin-bottom:0}
+.ss-flag{font-size:14px;flex-shrink:0;margin-top:1px}
+.ss-chips{display:flex;flex-wrap:wrap;gap:4px}
+.ss-chip{font-size:11px;padding:3px 9px;border-radius:999px;background:#fff;border:0.5px solid #E5E5EA;color:#1C1C1E}
+.ss-chip.sel{background:#E1F5EE;border-color:#1D9E75;color:#085041}
+.ss-chip.sel-red{background:#FAECE7;border-color:#D85A30;color:#993C1D}
+.ss-empty{font-size:11px;color:#8E8E93;font-style:italic}
+.birgroup{display:flex;flex-wrap:wrap;gap:6px}
+.birbtn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 14px;border:0.5px solid #E5E5EA;border-radius:8px;cursor:pointer;background:#F2F2F7;transition:all .12s}
+.birbtn .ja{font-size:12px;color:#1C1C1E;font-weight:500}.birbtn .fl{font-size:11px;color:#8E8E93}
+.birbtn.on{background:#EEEDFE;border-color:#534AB7}.birbtn.on .ja{color:#534AB7}.birbtn.on .fl{color:#6b4c9a}
+.mode-toggle{display:flex;background:#F2F2F7;border-radius:999px;padding:2px;border:0.5px solid #E5E5EA}
+.mtb{font-size:11px;padding:5px 14px;border-radius:999px;cursor:pointer;background:transparent;border:none;color:#8E8E93;transition:all .12s}
+.mtb.on{background:#fff;color:#1C1C1E;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.tabs{display:flex;border-bottom:0.5px solid #E5E5EA;margin-bottom:12px}
+.tab{font-size:12px;padding:7px 13px;cursor:pointer;color:#8E8E93;border-bottom:2px solid transparent;margin-bottom:-0.5px;transition:all .12s;white-space:nowrap}
+.tab.on{font-weight:500}
+.amber.on{color:#BA7517;border-color:#BA7517}.coral.on{color:#D85A30;border-color:#D85A30}
+.vg{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:12px}
+.vc{border:0.5px solid #E5E5EA;border-radius:8px;cursor:pointer;text-align:center;transition:all .12s;overflow:hidden}
+.vc.on{border:1.5px solid #BA7517;background:#FAEEDA}
+.vi{height:52px;background:#F2F2F7;display:flex;align-items:center;justify-content:center}
+.vc.on .vi{background:#FAEEDA}
+.vl .ja{font-size:10px;font-weight:500;color:#1C1C1E;padding:4px 3px 2px}
+.vl .en{font-size:9px;color:#8E8E93;padding:0 3px 1px}.vc-tl{font-size:9px;color:#1D9E75;display:block;padding:0 3px 1px;font-weight:500;min-height:1px}.vc-kana{font-size:9px;color:#85500B;background:#FFF8E7;display:block;padding:0 3px 4px;font-weight:500;border-radius:0 0 3px 3px}.vc-en{font-size:9px;color:#8E8E93;padding:0 3px 1px}
+.slrow{margin-bottom:9px}
+.slabel{display:flex;justify-content:space-between;font-size:10px;color:#8E8E93;margin-bottom:3px}.sl-lbl-wrap{display:flex;flex-direction:column;gap:1px}.sl-tl-fixed{font-size:9px;color:#1D9E75;font-weight:500;line-height:1.5;white-space:normal;word-break:keep-all}
+input[type=range]{width:100%;accent-color:#1D9E75}
+.prop-btn{width:100%;padding:11px;border:none;border-radius:8px;background:#BA7517;color:#fff;font-size:12px;font-weight:600;cursor:pointer}
+.yn-wrap{padding:18px}
+.yn-suggest-lbl{font-size:13px;color:#8E8E93;text-align:center;margin-bottom:8px}
+.yn-suggest-lbl .jp{font-size:10px;color:#633806;background:#FFF8E7;padding:1px 6px;border-radius:3px;margin-left:5px}
+.yn-card{background:#F2F2F7;border-radius:12px;padding:14px;text-align:center;margin-bottom:14px}
+.yn-main{font-size:24px;font-weight:600;color:#1C1C1E;line-height:1.3;margin-bottom:4px}
+.yn-main .jp-small{font-size:12px;font-weight:400;color:#8E8E93;display:block;margin-top:2px}
+.yn-sub{font-size:13px;color:#8E8E93;margin-bottom:5px}
+.yn-desc{font-size:12px;color:#8E8E93;line-height:1.6}
+.yn-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.yn-btn{padding:0;border:none;border-radius:12px;cursor:pointer;overflow:hidden}
+.yn-client-area{padding:18px 12px 12px;display:block}
+.yn-client-lbl{font-size:30px;font-weight:700;display:block;margin-bottom:5px}
+.yn-client-sub{font-size:12px;display:block;opacity:.85}
+.yn-stylist-area{display:block;padding:6px 10px;border-top:1px solid rgba(0,0,0,.08);font-size:10px;font-weight:500;text-align:center}
+.y .yn-client-area{background:#C0DD97;color:#27500A}.y .yn-stylist-area{background:#a8cc7a;color:#1a4a08}
+.n .yn-client-area{background:#F7C1C1;color:#791F1F}.n .yn-stylist-area{background:#f0a0a0;color:#5a1515}
+.yn-or{font-size:12px;color:#8E8E93;text-align:center;margin-bottom:8px}
+.yn-or .jp{font-size:10px;color:#633806;background:#FFF8E7;padding:1px 5px;border-radius:3px;margin-left:4px}
+.yn-chips-wrap{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px}
+.yn-chip{font-size:12px;padding:7px 13px;border:0.5px solid #639922;border-radius:999px;background:#fff;color:#3B6D11;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.yn-chip.on{background:#C0DD97;font-weight:500}
+.yn-chip .cjp{font-size:9px;color:#85500B;background:#FFF8E7;padding:1px 5px;border-radius:3px}
+.yn-res{display:none;margin-top:10px;padding:12px;border-radius:8px;font-size:13px;text-align:center}
+.consent-chip{font-size:13px;padding:7px 14px;border:0.5px solid #E5E5EA;border-radius:999px;cursor:pointer;background:#F2F2F7;color:#8E8E93;transition:all .12s;display:flex;flex-direction:column;align-items:center;gap:2px}
+.consent-chip.on{background:#E1F5EE;color:#085041;border-color:#1D9E75}
+.consent-chip.red.on{background:#FAECE7;color:#993C1D;border-color:#D85A30}
+.consent-chip .cjp{font-size:9px;color:#85500B;background:#FFF8E7;padding:1px 5px;border-radius:3px}.ck{font-size:9px;color:#412402;font-weight:500;display:block;line-height:1.3;padding:1px 0}
+.pc{background:#F2F2F7;border:0.5px solid #E5E5EA;border-radius:8px;padding:10px 13px;cursor:pointer;transition:all .12s;margin-bottom:5px}
+.pc:hover{background:#FAECE7;border-color:#D85A30}
+.pc .ja{font-size:13px;color:#1C1C1E;font-weight:500}
+.pc .tr{font-size:12px;color:#8E8E93;margin-top:3px}
+.pc.flashed{background:#FAECE7;border-color:#D85A30}.ph-kana{font-size:10px;color:#1D9E75;font-weight:500;margin-top:2px;line-height:1.4}
+.mic-bar{display:flex;align-items:center;gap:10px;padding:10px;background:#F2F2F7;border:0.5px solid #E5E5EA;border-radius:8px;margin-top:8px;cursor:pointer}
+.mic-icon{width:38px;height:38px;border-radius:50%;background:#FAECE7;border:0.5px solid #D85A30;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.mic-out{display:none;margin-top:6px;padding:8px 12px;background:#FAECE7;border-radius:8px;font-size:12px;color:#993C1D}
+.phrase-show{background:#fff;border:2px solid #D85A30;border-radius:12px;overflow:hidden;margin-top:10px;display:none}
+.phrase-show-bar{background:#D85A30;padding:7px 14px;display:flex;align-items:center;gap:8px}
+.phrase-show-bar span{font-size:11px;color:#fff;font-weight:500}
+.phrase-show-body{padding:18px;text-align:center}
+.phrase-big{font-size:28px;font-weight:600;color:#1C1C1E;line-height:1.5;margin-bottom:6px}
+.phrase-jp-gloss{font-size:12px;color:#633806;background:#FFF8E7;border:0.5px solid #FAC775;border-radius:8px;padding:6px 12px;display:inline-block;margin-top:6px}
+.phrase-jp-label{font-size:9px;color:#85500B;display:block;margin-bottom:2px}
+.fee-table{width:100%;border-collapse:collapse}
+.fee-table th{font-size:11px;color:#8E8E93;text-align:left;padding:5px 8px;border-bottom:0.5px solid #E5E5EA}
+.fee-table td{font-size:13px;padding:8px;border-bottom:0.5px solid #E5E5EA;color:#1C1C1E}
+.fee-table td:last-child{text-align:right;font-weight:500}
+.fee-total{font-size:15px;font-weight:600;text-align:right;padding:10px 8px}
+.care-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+.ccard{background:#F2F2F7;border-radius:8px;padding:10px;border:0.5px solid #E5E5EA}
+.ccard .ico{font-size:18px;margin-bottom:4px}
+.ccard .nm{font-size:12px;font-weight:500;color:#1C1C1E}
+.ccard .ds{font-size:11px;color:#8E8E93;margin-top:2px}
+.done-banner{background:#EAF3DE;border:1.5px solid #639922;border-radius:12px;padding:20px;text-align:center;margin-top:10px}
+.done-banner .ico{font-size:32px;margin-bottom:8px}
+.done-banner .t{font-size:15px;font-weight:600;color:#27500A;margin-bottom:4px}
+.done-banner .s{font-size:12px;color:#3B6D11}
+.next-btn{width:100%;padding:12px;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;color:#fff;margin-top:8px}
+.nb1{background:#1D9E75}.nb2{background:#534AB7}.nb3{background:#3B6D11}.nb4{background:#D85A30}.nb5{background:#3B6D11}
+
+/* ══ 辞書2列 ══ */
+.dict-zone{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.dict-panel{background:#fff;border:0.5px solid #E5E5EA;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.dict-panel-hdr{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:pointer;background:#F2F2F7;user-select:none;border-left:3px solid #ccc}
+.dict-panel-hdr .ttl{font-size:12px;font-weight:600;color:#1C1C1E;flex:1}
+.dict-panel-hdr .cnt{font-size:10px;color:#8E8E93;margin-right:4px}
+.dict-panel-hdr .chev{font-size:12px;color:#8E8E93;transition:transform .2s;display:inline-block}
+.dict-panel-hdr.open .chev{transform:rotate(180deg)}
+.dict-panel-body{display:none;overflow-y:auto;max-height:420px}
+.dict-panel-body.open{display:block}
+
+/* 場面別辞書アイテム */
+.sd-item{padding:8px 10px;border-bottom:0.5px solid #F2F2F7;display:grid;grid-template-columns:90px 1fr 1fr;gap:6px;align-items:start}
+.sd-item:last-child{border-bottom:none}
+.sd-jp{font-size:13px;font-weight:600;color:#1C1C1E}
+.sd-badge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;margin-bottom:2px}
+.sd-ctx{font-size:9px;color:#8E8E93;line-height:1.4}
+.sd-trans-main{font-size:12px;font-weight:500;color:#1C1C1E;margin-bottom:1px}
+.sd-trans-jp{font-size:9px;color:#633806;background:#FFF8E7;border:0.5px solid #FAC775;border-radius:3px;padding:1px 5px;display:inline-block;margin-bottom:2px}
+.sd-trans-kana{font-size:10px;color:#412402;font-weight:500;line-height:1.5;margin-top:1px}
+
+/* 全項目辞書 */
+.fd-controls{padding:8px 8px 4px;display:flex;gap:5px;flex-wrap:wrap;align-items:center;border-bottom:0.5px solid #E5E5EA}
+.fd-btn{font-size:10px;padding:4px 10px;border-radius:999px;border:0.5px solid #E5E5EA;cursor:pointer;background:#F2F2F7;color:#8E8E93;transition:all .12s;white-space:nowrap}
+.fd-btn.on{color:#fff;border-color:transparent}
+.fd-all.on{background:#1C1C1E}.fd-tech.on{background:#BA7517}.fd-feel.on{background:#3B6D11}.fd-serv.on{background:#185FA5}
+.fd-search{position:relative;margin-left:auto}
+.fd-search input{font-size:11px;padding:4px 8px 4px 24px;border-radius:999px;border:0.5px solid #E5E5EA;background:#F2F2F7;color:#1C1C1E;width:130px;outline:none}
+.fd-search .si{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:11px;color:#8E8E93}
+.fd-section-head{display:flex;align-items:center;gap:6px;padding:7px 10px 3px;font-size:11px;font-weight:600;background:#F9F9FB;border-bottom:0.5px solid #F2F2F7}
+.fd-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.fd-cnt{font-size:10px;color:#8E8E93;margin-left:auto}
+.fi-wrap{border-bottom:0.5px solid #F2F2F7}
+.fi-item{display:grid;grid-template-columns:90px 1fr;gap:6px;padding:8px 10px;cursor:pointer;transition:background .1s;align-items:start}
+.fi-item:hover{background:#F9F9FB}
+.fi-jp{font-size:13px;font-weight:600;color:#1C1C1E}
+.fi-read{font-size:9px;color:#8E8E93;margin-top:1px}
+.fi-badge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;margin-bottom:2px}
+.fi-ctx{font-size:9px;color:#8E8E93;line-height:1.4}
+.fi-detail{display:none;padding:0 10px 10px;background:#FAFAFA}
+.fi-detail.open{display:block}
+.fi-detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px}
+.fi-lang-card{background:#fff;border-radius:8px;padding:7px 9px;border:0.5px solid #E5E5EA}
+.fi-lang-flag{font-size:13px;margin-bottom:3px}
+.fi-lang-main{font-size:12px;font-weight:500;color:#1C1C1E}
+.fi-lang-sub{font-size:9px;color:#8E8E93;margin-top:1px}
+.fi-lang-kana{font-size:10px;color:#412402;background:#FFF8E7;border-radius:3px;padding:2px 5px;margin-top:3px;display:inline-block;font-weight:500}
+.fi-note{margin-top:6px;padding:5px 9px;background:#F2F2F7;border-radius:6px;font-size:10px;color:#8E8E93}
+.fi-chev{font-size:11px;color:#8E8E93;margin-left:auto;transition:transform .15s;align-self:center}
+.fi-item.open .fi-chev{transform:rotate(180deg)}
+
+@media(max-width:680px){
+  .two{grid-template-columns:1fr}.vg{grid-template-columns:repeat(2,1fr)}
+  .lang-grid{grid-template-columns:repeat(2,1fr)}.yn-client-lbl{font-size:24px}.yn-main{font-size:18px}
+  .dict-zone{grid-template-columns:1fr}.sd-item{grid-template-columns:80px 1fr}
+  .fi-detail-grid{grid-template-columns:1fr}
+}
+
+/* ── 料金明細（編集可能版） ── */
+.fee-row-input{font-size:13px;border:none;background:transparent;color:#1C1C1E;width:100%;outline:none;padding:2px 0}
+.fee-row-input:focus{background:#F0FDF4;border-radius:4px;padding:2px 4px}
+.fee-price-input{font-size:13px;border:none;background:transparent;color:#1C1C1E;text-align:right;width:90px;outline:none;padding:2px 0}
+.fee-price-input:focus{background:#F0FDF4;border-radius:4px;padding:2px 4px}
+.fee-del-btn{width:24px;height:24px;border-radius:50%;border:none;background:#FFEBE8;color:#D85A30;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.fee-del-btn:hover{background:#D85A30;color:#fff}.fee-lang-input{font-size:10px;border:none;background:transparent;color:#8E8E93;width:100%;outline:none;padding:1px 0}.fee-lang-input:focus{background:#F0FDF4;border-radius:3px;padding:1px 4px;color:#085041}
+.fee-table tbody tr td{vertical-align:middle}
+.fee-client-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:0.5px solid #E5E5EA;font-size:13px;gap:8px}
+.fee-client-row:last-child{border-bottom:none}
+</style>
+</head>
+<body>
+<div id="app">
+<div class="top-bar">
+  <div style="flex:1"><div class="top-bar-title">✂️ 美容室インバウンド接客アプリ <span style="font-size:10px;color:#8E8E93;font-weight:400">v8</span></div><div style="font-size:11px;color:#8E8E93" id="top-sub">Multilingual Salon Counseling</div></div>
+  <div class="lang-row">
+    <button class="lb on" onclick="setLang('en',this)">🇺🇸 EN</button>
+    <button class="lb" onclick="setLang('zh',this)">🇨🇳 中文</button>
+    <button class="lb" onclick="setLang('ko',this)">🇰🇷 한국어</button>
+  </div>
+</div>
+<div class="step-nav">
+  <button class="snb s1 active" id="snb1" onclick="goStep(1)">① 来店受付</button>
+  <button class="snb s2" id="snb2" onclick="goStep(2)">② 事前問診</button>
+  <button class="snb s3" id="snb3" onclick="goStep(3)">③ カウンセリング ★</button>
+  <button class="snb s4" id="snb4" onclick="goStep(4)">④ 施術中</button>
+  <button class="snb s5" id="snb5" onclick="goStep(5)">⑤ 会計・アフター</button>
+</div>
+
+<!-- ① -->
+<div class="screen on" id="sc1">
+  <div class="card">
+    <div class="card-title">お客様の言語を選んでください</div>
+    <div class="lang-grid">
+      <div class="lcard" onclick="pickLang(this,'ja')"><div class="flag">🇯🇵</div><div class="lng">日本語</div><div class="sub">Japanese</div></div>
+      <div class="lcard on" onclick="pickLang(this,'en')"><div class="flag">🇺🇸</div><div class="lng">English</div><div class="sub">英語</div></div>
+      <div class="lcard" onclick="pickLang(this,'zh')"><div class="flag">🇨🇳</div><div class="lng">中文</div><div class="sub">中国語</div></div>
+      <div class="lcard" onclick="pickLang(this,'ko')"><div class="flag">🇰🇷</div><div class="lng">한국어</div><div class="sub">韓国語</div></div>
+    </div>
+    <div class="client-screen">
+      <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
+      <div style="padding:14px">
+        <div id="welcome-msg" style="font-size:18px;font-weight:500;color:#1C1C1E;line-height:1.8">Welcome! Please feel free to let us know your hair preferences today.</div>
+        <div class="jp-gloss"><span class="jp-gloss-label">🗣 美容師メモ：</span>ようこそ！本日のご希望をお気軽にお聞かせください。</div>
+        <div class="kana-guide" id="kana-welcome" style="display:none"><div class="kana-guide-label">🗣 読み方（カタカナ）</div><div class="kana-text" id="kana-welcome-text"></div></div>
+      </div>
+    </div>
+  </div>
+  <button class="next-btn nb1" onclick="goStep(2)">次へ：事前問診 →</button>
+</div>
+
+<!-- ② -->
+<div class="screen" id="sc2">
+  <div class="card">
+    <div class="card-title">② 事前問診 — 日本語でタップ → お客様言語でも同時表示</div>
+    <div class="chips-wrap">
+      <div class="bilabel">🗂 施術歴（過去2年）</div>
+      <div class="bichips" id="hist-chips"></div>
+      <div class="selection-summary"><div class="ss-label">📋 選択中の施術歴</div><div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="hist-ja-out"><span class="ss-empty">未選択</span></div></div><div class="ss-row"><span class="ss-flag" id="lang-flag-hist">🇺🇸</span><div class="ss-chips" id="hist-fl-out"><span class="ss-empty">—</span></div></div></div>
+    </div>
+    <div class="chips-wrap">
+      <div class="bilabel">⚠️ アレルギー</div>
+      <div class="bichips" id="allergy-chips"></div>
+      <div class="selection-summary"><div class="ss-label">📋 選択中のアレルギー</div><div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="allergy-ja-out"><span class="ss-empty">未選択</span></div></div><div class="ss-row"><span class="ss-flag" id="lang-flag-allergy">🇺🇸</span><div class="ss-chips" id="allergy-fl-out"><span class="ss-empty">—</span></div></div></div>
+    </div>
+    <div class="chips-wrap">
+      <div class="bilabel">✂️ 本日のご希望</div>
+      <div class="birgroup" id="menu-chips"></div>
+      <div class="selection-summary" style="margin-top:6px"><div class="ss-label">📋 選択中のメニュー</div><div class="ss-row"><span class="ss-flag">🇯🇵</span><div class="ss-chips" id="menu-ja-out"><span class="ss-empty">未選択</span></div></div><div class="ss-row"><span class="ss-flag" id="lang-flag-menu">🇺🇸</span><div class="ss-chips" id="menu-fl-out"><span class="ss-empty">—</span></div></div></div>
+    </div>
+  </div>
+  <div class="client-screen">
+    <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📋 お客様に見せる確認文</span></div>
+    <div style="padding:14px">
+      <div id="s2-consent" style="font-size:17px;font-weight:500;color:#1C1C1E;line-height:1.9">Do you have any allergies to hair dye or chemical treatments?<br>Please let us know before we begin.</div>
+      <div class="jp-gloss" style="margin-top:6px"><span class="jp-gloss-label">🗣 美容師メモ：</span>ヘアカラーや薬剤にアレルギーはありますか？</div>
+      <div id="s2-chips-en" class="chips" style="margin-top:10px;margin-bottom:0;gap:6px"><div class="consent-chip" onclick="tog(this)">No allergies<span class="cjp">アレルギーなし</span><span class="ck">🗣 ノー アレルジーズ</span></div><div class="consent-chip red" onclick="tog(this)">Dye allergy<span class="cjp">染料アレルギー</span><span class="ck">🗣 ダイ アレルジー</span></div><div class="consent-chip red" onclick="tog(this)">Sensitive scalp<span class="cjp">頭皮が敏感</span><span class="ck">🗣 センシティヴ スカルプ</span></div></div>
+      <div id="s2-chips-zh" class="chips" style="display:none;margin-top:10px;margin-bottom:0;gap:6px"><div class="consent-chip" onclick="tog(this)">没有过敏<span class="cjp">アレルギーなし</span><span class="ck">🗣 メイ ヨウ グオ ミン</span></div><div class="consent-chip red" onclick="tog(this)">染料过敏<span class="cjp">染料アレルギー</span><span class="ck">🗣 ラン リャオ グオ ミン</span></div><div class="consent-chip red" onclick="tog(this)">头皮敏感<span class="cjp">頭皮が敏感</span><span class="ck">🗣 トウ ピー ミン ガン</span></div></div>
+      <div id="s2-chips-ko" class="chips" style="display:none;margin-top:10px;margin-bottom:0;gap:6px"><div class="consent-chip" onclick="tog(this)">알레르기 없음<span class="cjp">アレルギーなし</span><span class="ck">🗣 アルレルギ オプスム</span></div><div class="consent-chip red" onclick="tog(this)">염료 알레르기<span class="cjp">染料アレルギー</span><span class="ck">🗣 ヨムニョ アルレルギ</span></div><div class="consent-chip red" onclick="tog(this)">두피 민감<span class="cjp">頭皮が敏感</span><span class="ck">🗣 トゥピ ミンガム</span></div></div>
+      <div id="s2-chips-ja" class="chips" style="display:none;margin-top:10px;margin-bottom:0"><div class="consent-chip" onclick="tog(this)">アレルギーなし</div><div class="consent-chip red" onclick="tog(this)">染料アレルギー</div><div class="consent-chip red" onclick="tog(this)">頭皮が敏感</div></div>
+      <div class="kana-guide" id="kana-consent" style="margin-top:10px;display:none"><div class="kana-guide-label">🗣 読み方（カタカナ）</div><div class="kana-text" id="kana-consent-text"></div></div>
+    </div>
+  </div>
+  <button class="next-btn nb2" onclick="goStep(3)" style="margin-top:10px">次へ：技術カウンセリング →</button>
+</div>
+
+<!-- ③ -->
+<div class="screen" id="sc3">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+    <div style="font-size:13px;font-weight:600;color:#1C1C1E">③ 技術カウンセリング</div>
+    <div class="mode-toggle"><button class="mtb on" id="mt-st" onclick="setMode('s',this)">✂️ 美容師側</button><button class="mtb" id="mt-cl" onclick="setMode('c',this)">📱 お客様に見せる</button></div>
+  </div>
+  <div id="mode-s">
+    <div class="two">
+      <div>
+        <div class="card" style="padding:12px">
+          <div class="tabs" id="tech-tabs"><div class="tab amber on" onclick="selTT(this,'tcut')">カット</div><div class="tab amber" onclick="selTT(this,'tcol')">カラー</div><div class="tab amber" onclick="selTT(this,'tper')">パーマ</div><div class="tab amber" onclick="selTT(this,'tcar')">ケア</div></div>
+          <div id="tcut"><div class="vg">
+            <div class="vc on" onclick="selVC(this,'レイヤーカット','Layer cut','分层剪发','레이어 커트','Light, airy layers for volume and movement')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#BA7517" stroke-width="1.8"/><path d="M11 32 Q11 15 22 15 Q33 15 33 32" fill="none" stroke="#BA7517" stroke-width="1.8"/><line x1="13" y1="22" x2="31" y2="22" stroke="#BA7517" stroke-width="1.2" stroke-dasharray="2 2"/><line x1="14" y1="28" x2="30" y2="28" stroke="#BA7517" stroke-width="1.2" stroke-dasharray="2 2"/></svg></div><div class="vl"><div class="ja vc-ja-row">レイヤー</div><div class="vc-en">Layer</div><span class="vc-tl" id="vc-tl-0"></span><span class="vc-kana" id="vc-kana-0"></span></div></div>
+            <div class="vc" onclick="selVC(this,'グラデーション','Graduation','渐层剪发','그라데이션','Weight and shape')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><path d="M11 32 Q13 20 22 22 Q31 24 33 32" fill="none" stroke="#888" stroke-width="1.8"/></svg></div><div class="vl"><div class="ja vc-ja-row">グラデ</div><div class="vc-en">Graduation</div><span class="vc-tl" id="vc-tl-1"></span><span class="vc-kana" id="vc-kana-1"></span></div></div>
+            <div class="vc" onclick="selVC(this,'ワンレン','One length','齐发','원랭스','All one length')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><path d="M9 32 Q22 20 35 32" fill="none" stroke="#888" stroke-width="1.8"/></svg></div><div class="vl"><div class="ja vc-ja-row">ワンレン</div><div class="vc-en">One length</div><span class="vc-tl" id="vc-tl-2"></span><span class="vc-kana" id="vc-kana-2"></span></div></div>
+            <div class="vc" onclick="selVC(this,'ボブ','Bob','波波头','보브','Classic bob')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><path d="M11 26 Q11 32 22 33 Q33 32 33 26" fill="none" stroke="#888" stroke-width="1.8"/><line x1="11" y1="26" x2="33" y2="26" stroke="#888" stroke-width="1.2"/></svg></div><div class="vl"><div class="ja vc-ja-row">ボブ</div><div class="vc-en">Bob</div><span class="vc-tl" id="vc-tl-3"></span><span class="vc-kana" id="vc-kana-3"></span></div></div>
+          </div></div>
+          <div id="tcol" style="display:none"><div class="vg">
+            <div class="vc" onclick="selVC(this,'ハイライト','Highlights','挑染','하이라이트','Partial lightening')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><line x1="18" y1="8" x2="16" y2="28" stroke="#f0a020" stroke-width="2"/><line x1="22" y1="6" x2="20" y2="28" stroke="#f0a020" stroke-width="2"/><line x1="26" y1="8" x2="24" y2="28" stroke="#f0a020" stroke-width="2"/></svg></div><div class="vl"><div class="ja vc-ja-row">ハイライト</div><div class="vc-en">Highlights</div><span class="vc-tl" id="vc-tl-4"></span><span class="vc-kana" id="vc-kana-4"></span></div></div>
+            <div class="vc" onclick="selVC(this,'バレイヤージュ','Balayage','挑染渐变','발라야주','Sun-kissed gradient')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><path d="M11 32 Q14 18 22 22 Q30 26 33 32" fill="#ffe0a0" stroke="none" opacity=".6"/></svg></div><div class="vl"><div class="ja vc-ja-row">バレイヤージュ</div><div class="vc-en">Balayage</div><span class="vc-tl" id="vc-tl-5"></span><span class="vc-kana" id="vc-kana-5"></span></div></div>
+            <div class="vc" onclick="selVC(this,'全体カラー','All-over colour','全头染色','전체 염색','Uniform colour')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="#c084fc" stroke="#888" stroke-width="1.8" opacity=".5"/></svg></div><div class="vl"><div class="ja vc-ja-row">全体カラー</div><div class="vc-en">All-over</div><span class="vc-tl" id="vc-tl-6"></span><span class="vc-kana" id="vc-kana-6"></span></div></div>
+            <div class="vc" onclick="selVC(this,'白髪染め','Grey coverage','白发染色','새치 커버','Grey coverage')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="15" rx="13" ry="11" fill="none" stroke="#888" stroke-width="1.8"/><circle cx="22" cy="15" r="5" fill="#bbb"/></svg></div><div class="vl"><div class="ja vc-ja-row">白髪染め</div><div class="vc-en">Grey cover</div><span class="vc-tl" id="vc-tl-7"></span><span class="vc-kana" id="vc-kana-7"></span></div></div>
+          </div></div>
+          <div id="tper" style="display:none"><div class="vg">
+            <div class="vc" onclick="selVC(this,'ゆるふわパーマ','Soft wave perm','宽松烫发','소프트 웨이브','Gentle loose waves')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><path d="M10 20 Q16 12 22 20 Q28 28 34 20" fill="none" stroke="#888" stroke-width="2"/><path d="M10 28 Q16 20 22 28 Q28 36 34 28" fill="none" stroke="#888" stroke-width="2"/></svg></div><div class="vl"><div class="ja vc-ja-row">ゆるふわ</div><div class="vc-en">Soft wave</div><span class="vc-tl" id="vc-tl-8"></span><span class="vc-kana" id="vc-kana-8"></span></div></div>
+            <div class="vc" onclick="selVC(this,'デジタルパーマ','Digital perm','数码烫','디지털 펌','Defined curl')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><path d="M14 22 Q17 14 20 22 Q23 30 26 22 Q29 14 32 22" fill="none" stroke="#888" stroke-width="2"/></svg></div><div class="vl"><div class="ja vc-ja-row">デジパー</div><div class="vc-en">Digital perm</div><span class="vc-tl" id="vc-tl-9"></span><span class="vc-kana" id="vc-kana-9"></span></div></div>
+            <div class="vc" onclick="selVC(this,'縮毛矯正','Straightening','拉直烫','매직 스트레이트','Permanent straight')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><line x1="14" y1="14" x2="30" y2="14" stroke="#888" stroke-width="2"/><line x1="14" y1="22" x2="30" y2="22" stroke="#888" stroke-width="2"/><line x1="14" y1="30" x2="30" y2="30" stroke="#888" stroke-width="2"/></svg></div><div class="vl"><div class="ja vc-ja-row">縮毛矯正</div><div class="vc-en">Straight</div><span class="vc-tl" id="vc-tl-10"></span><span class="vc-kana" id="vc-kana-10"></span></div></div>
+          </div></div>
+          <div id="tcar" style="display:none"><div class="vg">
+            <div class="vc" onclick="selVC(this,'トリートメント','Deep treatment','护发护理','트리트먼트','Intensive repair')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><ellipse cx="22" cy="22" rx="12" ry="14" fill="none" stroke="#888" stroke-width="1.8"/><path d="M16 18 Q22 12 28 18" fill="none" stroke="#1D9E75" stroke-width="1.5"/></svg></div><div class="vl"><div class="ja vc-ja-row">トリートメント</div><div class="vc-en">Treatment</div><span class="vc-tl" id="vc-tl-11"></span><span class="vc-kana" id="vc-kana-11"></span></div></div>
+            <div class="vc" onclick="selVC(this,'頭皮ケア','Scalp care','头皮护理','두피 케어','Scalp massage')"><div class="vi"><svg width="34" height="34" viewBox="0 0 44 44"><circle cx="22" cy="18" r="12" fill="none" stroke="#888" stroke-width="1.8"/><circle cx="22" cy="18" r="4" fill="#1D9E75" opacity=".4"/></svg></div><div class="vl"><div class="ja vc-ja-row">頭皮ケア</div><div class="vc-en">Scalp care</div><span class="vc-tl" id="vc-tl-12"></span><span class="vc-kana" id="vc-kana-12"></span></div></div>
+          </div></div>
+          <div class="slrow"><div class="slabel"><div id="sl1a" class="sl-lbl-wrap"><span class="sl-ja">すく</span><span class="sl-tl-fixed" id="sl1a-tl"></span></div><div id="sl1b" class="sl-lbl-wrap" style="text-align:right"><span class="sl-ja">残す</span><span class="sl-tl-fixed" id="sl1b-tl"></span></div></div><input type="range" min="0" max="100" value="40"></div>
+          <div class="slrow"><div class="slabel"><div id="sl2a" class="sl-lbl-wrap"><span class="sl-ja">さらさら</span><span class="sl-tl-fixed" id="sl2a-tl"></span></div><div id="sl2b" class="sl-lbl-wrap" style="text-align:right"><span class="sl-ja">ふわっと</span><span class="sl-tl-fixed" id="sl2b-tl"></span></div></div><input type="range" min="0" max="100" value="60"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="padding:12px">
+          <div style="font-size:11px;color:#8E8E93;margin-bottom:6px">現在の提案</div>
+          <div id="prop-ja" style="font-size:15px;font-weight:600;color:#1C1C1E;margin-bottom:3px">レイヤーカット</div>
+          <div id="prop-en" style="font-size:11px;color:#8E8E93;margin-bottom:2px">Light, airy layers for volume and movement</div><div id="prop-tl" style="font-size:12px;color:#1D9E75;font-weight:500;margin-bottom:10px;display:none"></div>
+          <div style="font-size:11px;color:#8E8E93;margin-bottom:5px">仕上がりイメージ</div>
+          <div class="chips" style="margin-bottom:10px"><div class="chip on" onclick="tog(this)">さらさら<span class="chip-tl" id="ftl-0"></span></div><div class="chip" onclick="tog(this)">ふわっと<span class="chip-tl" id="ftl-1"></span></div><div class="chip" onclick="tog(this)">ナチュラル<span class="chip-tl" id="ftl-2"></span></div><div class="chip" onclick="tog(this)">ツヤサラ<span class="chip-tl" id="ftl-3"></span></div><div class="chip" onclick="tog(this)">まとまり感<span class="chip-tl" id="ftl-4"></span></div></div>
+          <button class="prop-btn" onclick="sendProp()">📱 お客様に見せる →</button>
+        </div>
+        <div class="card" style="padding:10px;background:#F2F2F7;margin-top:0">
+          <div style="font-size:11px;color:#8E8E93;margin-bottom:4px">📖 クイック参照</div>
+          <div id="quick-ref" style="font-size:11px;color:#1C1C1E;line-height:2.2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="mode-c" style="display:none">
+    <div class="client-screen">
+      <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span><button class="client-bar-back" onclick="backToStylist()">← 戻る</button></div>
+      <div class="yn-wrap">
+        <div class="yn-suggest-lbl"><span id="yn-lbl">Your stylist suggests:</span><span class="jp">スタイリストからの提案</span></div>
+        <div class="yn-card">
+          <div class="yn-main"><span id="yn-main">レイヤーカット</span><span class="jp-small" id="yn-main-jp">（レイヤーカット）</span></div>
+          <div class="yn-sub" id="yn-sub">Layer cut</div>
+          <div class="yn-desc" id="yn-desc">Light, airy layers for volume and movement.</div>
+        </div>
+        <div class="yn-btns">
+          <button class="yn-btn y" onclick="ynAns('y')"><span class="yn-client-area"><span class="yn-client-lbl" id="yn-yes-lbl">YES ✓</span><span class="yn-client-sub" id="yn-yes-sub">Yes, please go ahead</span></span><span class="yn-stylist-area">→ 美容師メモ：「はい・同意」</span></button>
+          <button class="yn-btn n" onclick="ynAns('n')"><span class="yn-client-area"><span class="yn-client-lbl" id="yn-no-lbl">NO ✗</span><span class="yn-client-sub" id="yn-no-sub">I'd like something different</span></span><span class="yn-stylist-area">→ 美容師メモ：「いいえ・別の提案を」</span></button>
+        </div>
+        <div class="yn-or"><span id="yn-or">Or I'd like something...</span><span class="jp">別のご要望</span></div>
+        <div class="yn-chips-wrap" id="yn-chips-en"><div class="yn-chip" onclick="ynChip(this,'もっと短く')">Shorter<span class="cjp">もっと短く</span></div><div class="yn-chip" onclick="ynChip(this,'もっと長く')">Longer<span class="cjp">もっと長く</span></div><div class="yn-chip" onclick="ynChip(this,'もっと軽く')">Lighter<span class="cjp">もっと軽く</span></div><div class="yn-chip" onclick="ynChip(this,'ボリュームを増やす')">More volume<span class="cjp">ボリュームを増やす</span></div><div class="yn-chip" onclick="ynChip(this,'もっとストレートに')">Straighter<span class="cjp">もっとストレートに</span></div></div>
+        <div class="yn-chips-wrap" id="yn-chips-zh" style="display:none"><div class="yn-chip" onclick="ynChip(this,'もっと短く')">更短一点<span class="cjp">もっと短く</span></div><div class="yn-chip" onclick="ynChip(this,'もっと長く')">更长一点<span class="cjp">もっと長く</span></div><div class="yn-chip" onclick="ynChip(this,'もっと軽く')">更轻盈<span class="cjp">もっと軽く</span></div><div class="yn-chip" onclick="ynChip(this,'ボリュームを増やす')">更有蓬松感<span class="cjp">ボリュームを増やす</span></div><div class="yn-chip" onclick="ynChip(this,'もっとストレートに')">更直一点<span class="cjp">もっとストレートに</span></div></div>
+        <div class="yn-chips-wrap" id="yn-chips-ko" style="display:none"><div class="yn-chip" onclick="ynChip(this,'もっと短く')">더 짧게<span class="cjp">もっと短く</span></div><div class="yn-chip" onclick="ynChip(this,'もっと長く')">더 길게<span class="cjp">もっと長く</span></div><div class="yn-chip" onclick="ynChip(this,'もっと軽く')">더 가볍게<span class="cjp">もっと軽く</span></div><div class="yn-chip" onclick="ynChip(this,'ボリュームを増やす')">볼륨 더<span class="cjp">ボリュームを増やす</span></div><div class="yn-chip" onclick="ynChip(this,'もっとストレートに')">더 직선으로<span class="cjp">もっとストレートに</span></div></div>
+        <div class="yn-chips-wrap" id="yn-chips-ja" style="display:none"><div class="yn-chip" onclick="ynChip(this,'もっと短く')">もっと短く</div><div class="yn-chip" onclick="ynChip(this,'もっと長く')">もっと長く</div><div class="yn-chip" onclick="ynChip(this,'もっと軽く')">もっと軽く</div><div class="yn-chip" onclick="ynChip(this,'ボリュームを増やす')">ボリュームを増やす</div><div class="yn-chip" onclick="ynChip(this,'もっとストレートに')">もっとストレートに</div></div>
+        <div class="yn-res" id="yn-res"></div>
+      </div>
+    </div>
+    <div style="margin-top:8px;text-align:center"><button onclick="backToStylist()" style="font-size:11px;padding:7px 15px;border:0.5px solid #E5E5EA;border-radius:999px;background:#fff;cursor:pointer;color:#8E8E93">← 美容師側に戻る（再提案）</button></div>
+  </div>
+  <button class="next-btn nb3" onclick="goStep(4)" style="margin-top:10px">合意完了 → 施術へ</button>
+</div>
+
+<!-- ④ -->
+<div class="screen" id="sc4">
+  <div class="card">
+    <div class="card-title">④ 施術中 — フレーズをタップ → お客様向けに大きく表示</div>
+    <div class="tabs" id="ph-tabs"><div class="tab coral on" onclick="selPT(this,'psh')">シャンプー</div><div class="tab coral" onclick="selPT(this,'pcu')">カット中</div><div class="tab coral" onclick="selPT(this,'pfi')">仕上げ</div></div>
+    <div id="psh"><div class="pc" onclick="tapP(this,'itchy')"><div class="ja">お痒いところはございませんか？</div><div class="tr" id="ph-itchy">Is there anywhere that feels itchy?</div><div class="ph-kana" id="ph-kana-itchy"></div></div><div class="pc" onclick="tapP(this,'temp')"><div class="ja">お湯加減はいかがですか？</div><div class="tr" id="ph-temp">How is the water temperature?</div><div class="ph-kana" id="ph-kana-temp"></div></div><div class="pc" onclick="tapP(this,'neck')"><div class="ja">首を楽にしてください</div><div class="tr" id="ph-neck">Please relax your neck.</div><div class="ph-kana" id="ph-kana-neck"></div></div><div class="pc" onclick="tapP(this,'wait')"><div class="ja">少々お待ちください</div><div class="tr" id="ph-wait">One moment, please.</div><div class="ph-kana" id="ph-kana-wait"></div></div></div>
+    <div id="pcu" style="display:none"><div class="pc" onclick="tapP(this,'thin')"><div class="ja">もう少し細かくしますか？</div><div class="tr" id="ph-thin">Shall I thin it out a bit more?</div><div class="ph-kana" id="ph-kana-thin"></div></div><div class="pc" onclick="tapP(this,'len')"><div class="ja">長さはいかがですか？</div><div class="tr" id="ph-len">How is the length so far?</div><div class="ph-kana" id="ph-kana-len"></div></div><div class="pc" onclick="tapP(this,'mir')"><div class="ja">鏡でご確認ください</div><div class="tr" id="ph-mir">Could you check in the mirror?</div><div class="ph-kana" id="ph-kana-mir"></div></div></div>
+    <div id="pfi" style="display:none"><div class="pc" onclick="tapP(this,'res')"><div class="ja">仕上がりはいかがですか？</div><div class="tr" id="ph-res">How do you like the result?</div><div class="ph-kana" id="ph-kana-res"></div></div><div class="pc" onclick="tapP(this,'back')"><div class="ja">後ろもご確認ください</div><div class="tr" id="ph-back">Please check the back as well.</div><div class="ph-kana" id="ph-kana-back"></div></div><div class="pc" onclick="tapP(this,'thnk')"><div class="ja">ありがとうございました</div><div class="tr" id="ph-thnk">Thank you so much!</div><div class="ph-kana" id="ph-kana-thnk"></div></div></div>
+    <div class="mic-bar" onclick="doMic()"><div class="mic-icon">🎤</div><div><div style="font-size:12px;font-weight:500;color:#1C1C1E">フリーワード音声翻訳</div><div style="font-size:10px;color:#8E8E93">マイクをタップして話しかけてください</div></div></div>
+    <div class="mic-out" id="mic-out"></div>
+  </div>
+  <div class="phrase-show" id="phrase-show"><div class="phrase-show-bar"><div class="client-bar-dot"></div><span>📱 この画面をお客様に向けてください</span></div><div class="phrase-show-body"><div class="phrase-big" id="phrase-big"></div><div class="phrase-jp-gloss" id="phrase-jp-gloss"><span class="phrase-jp-label">🗣 美容師メモ（日本語の意味）</span><span id="phrase-jp-text"></span></div><div class="kana-guide" id="phrase-kana-wrap" style="margin-top:10px;text-align:left;display:none"><div class="kana-guide-label">🗣 読み方（カタカナ）</div><div class="kana-text" id="phrase-kana-text"></div></div></div></div>
+  <button class="next-btn nb4" onclick="goStep(5)">施術完了 → 会計へ</button>
+</div>
+
+<!-- ⑤ -->
+<div class="screen" id="sc5">
+  <div class="two">
+    <!-- 料金明細（編集可能） -->
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div class="card-title" style="margin-bottom:0">⑤ 料金明細</div>
+        <button onclick="addFeeRow()" style="font-size:11px;padding:4px 12px;border:0.5px solid #1D9E75;border-radius:999px;background:#E1F5EE;color:#085041;cursor:pointer;font-weight:500">＋ 項目追加</button>
+      </div>
+      <table class="fee-table" id="fee-table-body">
+        <thead><tr><th id="fh1">メニュー</th><th id="fh2">料金</th><th style="width:32px"></th></tr></thead>
+        <tbody id="fee-rows"></tbody>
+      </table>
+      <div style="text-align:right;padding:10px 8px;border-top:1px solid #E5E5EA;margin-top:4px">
+        <span style="font-size:12px;color:#8E8E93" id="fee-total-label">合計</span>
+        <span style="font-size:18px;font-weight:700;color:#1C1C1E;margin-left:8px" id="fee-total-display">¥0</span>
+      </div>
+    </div>
+    <!-- ホームケア -->
+    <div class="card"><div class="card-title" id="fc2-title">次回予約・ホームケア</div><div class="care-grid"><div class="ccard"><div class="ico">💊</div><div class="nm" id="care1-nm">アウトバスオイル</div><div class="ds" id="care1-ds">Apply to damp hair</div></div><div class="ccard"><div class="ico">🧴</div><div class="nm" id="care2-nm">保湿シャンプー</div><div class="ds" id="care2-ds">Daily moisturizing</div></div></div></div>
+  </div>
+  <!-- お客様向け表示 -->
+  <div class="client-screen">
+    <div class="client-bar"><div class="client-bar-dot"></div><span class="client-bar-lbl">📱 この画面をお客様に向けてください</span></div>
+    <div style="padding:16px">
+      <!-- チップ不要 -->
+      <div id="tip-msg" style="font-size:16px;font-weight:500;color:#1C1C1E;margin-bottom:4px;line-height:1.8">ℹ️ No tip is necessary in Japan. Thank you!</div>
+      <div class="jp-gloss"><span class="jp-gloss-label">🗣 美容師メモ：</span>日本ではチップは不要です。ありがとうございました！</div>
+      <div id="tip-kana-line" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;margin-top:4px;display:none"></div>
+      <!-- 料金明細（お客様向け） -->
+      <div id="fee-client-block" style="margin-top:12px;background:#F9F9FB;border-radius:8px;padding:10px 12px">
+        <div style="font-size:11px;color:#8E8E93;margin-bottom:6px;font-weight:500" id="fee-client-title">料金明細</div>
+        <div id="fee-client-rows"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;border-top:0.5px solid #E5E5EA;padding-top:6px;margin-top:4px">
+          <span style="font-size:12px;font-weight:600;color:#1C1C1E" id="fee-client-total-label">合計</span>
+          <span style="font-size:16px;font-weight:700;color:#1C1C1E" id="fee-client-total">¥0</span>
+        </div>
+      </div>
+      <div id="done-s" style="font-size:14px;color:#8E8E93;margin-top:10px">We look forward to seeing you again.</div>
+      <div id="done-kana-line" style="font-size:11px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:4px;padding:3px 8px;margin-top:4px;display:none"></div>
+      <div style="font-size:13px;color:#8E8E93;margin-top:8px;margin-bottom:6px" id="qr-next-lbl">Next visit — scan to book:</div>
+      <div style="width:64px;height:64px;background:#F2F2F7;border:0.5px solid #E5E5EA;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:28px">⊞</div>
+      <div class="kana-guide" id="kana-tip" style="margin-top:10px;display:none"><div class="kana-guide-label">🗣 読み方（カタカナ）</div><div class="kana-text" id="kana-tip-text"></div></div>
+    </div>
+  </div>
+  <div class="done-banner"><div class="ico">🎉</div><div class="t" id="done-t">施術完了！ありがとうございました！</div><div class="s" id="done-s2">Thank you for visiting!</div></div>
+</div>
+
+<!-- 辞書2列 -->
+<div class="dict-zone">
+  <!-- 左：場面別辞書 -->
+  <div class="dict-panel">
+    <div class="dict-panel-hdr" id="sd-hdr" onclick="toggleSD()">
+      <span>📋</span><span class="ttl" id="sd-ttl">① 来店受付で役立つ用語</span>
+      <span class="cnt" id="sd-cnt">3件</span><span class="chev" id="sd-chev">▼</span>
+    </div>
+    <div class="dict-panel-body" id="sd-body"></div>
+  </div>
+  <!-- 右：全項目辞書 -->
+  <div class="dict-panel">
+    <div class="dict-panel-hdr" id="fd-hdr" onclick="toggleFD()" style="border-left-color:#185FA5">
+      <span>📖</span><span class="ttl">全項目辞書</span>
+      <span class="cnt" id="fd-cnt-lbl"></span><span class="chev" id="fd-chev">▼</span>
+    </div>
+    <div class="dict-panel-body" id="fd-body">
+      <div class="fd-controls">
+        <button class="fd-btn fd-all on" onclick="fdFilt('all',this)">すべて</button>
+        <button class="fd-btn fd-tech" onclick="fdFilt('tech',this)">✂️ 技術</button>
+        <button class="fd-btn fd-feel" onclick="fdFilt('feel',this)">✨ 感性</button>
+        <button class="fd-btn fd-serv" onclick="fdFilt('serv',this)">🫐 おもてなし</button>
+        <div class="fd-search"><span class="si">🔍</span><input type="text" id="fd-search-input" placeholder="検索..." oninput="fdSearch(this.value)"></div>
+      </div>
+      <div id="fd-items"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+var lang='en',currentStep=1,sdOpen=false,fdOpen=false,fdCat='all',fdQ='';
+var completedSteps=new Set();
+var propData={ja:'レイヤーカット',en:'Layer cut',zh:'分层剪发',ko:'레이어 커트',desc:'Light, airy layers for volume and movement.'};
+var histSel=new Set(),allergySel=new Set(),menuSel=null;
+
+var HIST=[{ja:'カット',en:'Cut',zh:'剪发',ko:'커트',red:false},{ja:'ファッションカラー',en:'Fashion colour',zh:'时尚染发',ko:'패션 컬러',red:false},{ja:'白髪染め',en:'Grey coverage',zh:'白发染色',ko:'새치 커버',red:false},{ja:'パーマ',en:'Perm',zh:'烫发',ko:'파마',red:false},{ja:'縮毛矯正',en:'Straightening',zh:'拉直烫',ko:'매직 스트레이트',red:false},{ja:'ブリーチ',en:'Bleach',zh:'漂发',ko:'블리치',red:true},{ja:'なし',en:'None',zh:'没有',ko:'없음',red:false}];
+var ALLERGY=[{ja:'染料アレルギー',en:'Dye allergy',zh:'染料过敏',ko:'염료 알레르기',red:true},{ja:'ラテックス',en:'Latex allergy',zh:'乳胶过敏',ko:'라텍스 알레르기',red:true},{ja:'頭皮敏感',en:'Sensitive scalp',zh:'头皮敏感',ko:'두피 민감',red:true},{ja:'なし',en:'None',zh:'没有',ko:'없음',red:false}];
+var MENU=[{ja:'カット',en:'Cut',zh:'剪发',ko:'커트'},{ja:'カラー',en:'Colour',zh:'染发',ko:'컬러'},{ja:'パーマ',en:'Perm',zh:'烫发',ko:'파마'},{ja:'トリートメント',en:'Treatment',zh:'护发护理',ko:'트리트먼트'},{ja:'カット＋カラー',en:'Cut + Colour',zh:'剪发＋染发',ko:'커트＋컬러'}];
+var LANG_FLAGS={en:'🇺🇸',zh:'🇨🇳',ko:'🇰🇷',ja:'🇯🇵'};
+function fl(it){return lang==='ja'?it.ja:(it[lang]||it.en);}
+
+/* 場面別辞書データ */
+var STEP_DICT={
+  1:[{jp:'いらっしゃいませ',badge:'おもてなし',bc:'#185FA5',ctx:'来店時の第一声',
+      en:'Welcome!',en_kana:'ウェルカム！',
+      zh:'欢迎光临！',zh_jp:'ようこそ！',zh_kana:'ファン イン グアン リン！',
+      ko:'어서오세요！',ko_jp:'いらっしゃいませ！',ko_kana:'オソオセヨ！',note:'笑顔で迎える'},
+     {jp:'言語を選んでください',badge:'受付',bc:'#1D9E75',ctx:'操作の案内',
+      en:'Please select your language.',en_kana:'プリーズ セレクト ユア ランゲージ。',
+      zh:'请选择您的语言。',zh_jp:'言語を選んでください。',zh_kana:'チン シュワン ズェ ニン ダ ユー イェン。',
+      ko:'언어를 선택해 주세요。',ko_jp:'言語を選択してください。',ko_kana:'オノルル ソンテケ ジュセヨ。',note:'指差しで示す'},
+     {jp:'ご予約はありますか？',badge:'受付',bc:'#1D9E75',ctx:'予約有無の確認',
+      en:'Do you have a reservation?',en_kana:'ドゥ ユー ハヴ ア レザベーション？',
+      zh:'您有预约吗？',zh_jp:'ご予約はありますか？',zh_kana:'ニン ヨウ ユー ユエ マ？',
+      ko:'예약하셨나요?',ko_jp:'予約はされていますか？',ko_kana:'イェヤカションナヨ？',note:'笑顔で確認'}],
+  2:[{jp:'アレルギー',badge:'問診',bc:'#534AB7',ctx:'薬剤反応の有無確認',
+      en:'Allergy',en_kana:'アレルジー',
+      zh:'过敏',zh_jp:'アレルギー',zh_kana:'グオ ミン',
+      ko:'알레르기',ko_jp:'アレルギー',ko_kana:'アルレルギ',note:'同意書と併用'},
+     {jp:'ブリーチ',badge:'技術',bc:'#BA7517',ctx:'過去のブリーチ確認',
+      en:'Bleach',en_kana:'ブリーチ',
+      zh:'漂发',zh_jp:'ブリーチ・脱色',zh_kana:'ピャオ ファ',
+      ko:'블리치',ko_jp:'ブリーチ',ko_kana:'ブルリチ',note:'ダメージ確認必須'},
+     {jp:'縮毛矯正',badge:'技術',bc:'#BA7517',ctx:'過去の縮毛矯正確認',
+      en:'Straightening',en_kana:'ストレイトゥニング',
+      zh:'拉直烫',zh_jp:'ストレートパーマ',zh_kana:'ラー ジー タン',
+      ko:'매직 스트레이트',ko_jp:'マジックストレート',ko_kana:'メジク スルトゥレイトゥ',note:'薬剤重複に注意'},
+     {jp:'頭皮が敏感',badge:'問診',bc:'#534AB7',ctx:'刺激に弱い頭皮',
+      en:'Sensitive scalp',en_kana:'センシティヴ スカルプ',
+      zh:'头皮敏感',zh_jp:'頭皮が敏感',zh_kana:'トウ ピー ミン ガン',
+      ko:'두피 민감',ko_jp:'頭皮が敏感',ko_kana:'トゥピ ミンガム',note:'マイルドな薬剤を選択'}],
+  3:[{jp:'レイヤー',badge:'技術',bc:'#BA7517',ctx:'段カット',
+      en:'Layer',en_kana:'レイヤー',
+      zh:'分层',zh_jp:'レイヤー（段カット）',zh_kana:'フェン ツォン',
+      ko:'레이어',ko_jp:'レイヤーカット',ko_kana:'レイオ',note:'長さ・位置を確認'},
+     {jp:'さらさら',badge:'感性',bc:'#3B6D11',ctx:'滑らかな手触り',
+      en:'Silky smooth',en_kana:'シルキー スムース',
+      zh:'顺滑',zh_jp:'サラサラ',zh_kana:'シュン ホア',
+      ko:'매끄럽게',ko_jp:'サラサラ',ko_kana:'メックルプゲ',note:'縮毛矯正・ブロー'},
+     {jp:'すく',badge:'技術',bc:'#BA7517',ctx:'毛量を減らして軽くする',
+      en:'Thin out',en_kana:'シン アウト',
+      zh:'打薄',zh_jp:'すく・量を減らす',zh_kana:'ダー バォ',
+      ko:'숱 치기',ko_jp:'すく',ko_kana:'スル チギ',note:'量・割合を確認'},
+     {jp:'ふわっと',badge:'感性',bc:'#3B6D11',ctx:'空気感あるボリューム',
+      en:'Airy / Fluffy',en_kana:'エアリー / フラッフィー',
+      zh:'蓬松',zh_jp:'ふわっと',zh_kana:'ポン ソン',
+      ko:'폭신한 볼륨',ko_jp:'ふわっと',ko_kana:'ポクシナン ボルリュム',note:'パーマ・ブロー'},
+     {jp:'ハイライト',badge:'技術',bc:'#BA7517',ctx:'部分的に明るくする',
+      en:'Highlights',en_kana:'ハイライツ',
+      zh:'挑染',zh_jp:'ハイライト',zh_kana:'ティアオ ラン',
+      ko:'하이라이트',ko_jp:'ハイライト',ko_kana:'ハイライトゥ',note:'ダメージ同意を得る'}],
+  4:[{jp:'お痒いところはございませんか？',badge:'施術中',bc:'#D85A30',ctx:'シャンプー中の確認',
+      en:'Is there anywhere itchy?',en_kana:'イズ ゼア エニィウェア イッチー？',
+      zh:'有没有痒的地方？',zh_jp:'かゆいところはありますか？',zh_kana:'ヨウ メイ ヨウ ヤン ダ ディ ファン？',
+      ko:'가려운 곳은요?',ko_jp:'かゆいところは？',ko_kana:'カリョウン コスン ヨ？',note:'必ず声かけ'},
+     {jp:'お湯加減はいかがですか？',badge:'施術中',bc:'#D85A30',ctx:'温度確認',
+      en:'How is the temperature?',en_kana:'ハウ イズ ザ テンペラチャー？',
+      zh:'水温合适吗？',zh_jp:'お湯の温度はどうですか？',zh_kana:'シュイ ウェン ハァ シー マ？',
+      ko:'온도는 어때요?',ko_jp:'温度はどうですか？',ko_kana:'オンドヌン オッテヨ？',note:'外国人は温度感覚差に注意'},
+     {jp:'少々お待ちください',badge:'施術中',bc:'#D85A30',ctx:'薬剤放置中・準備中',
+      en:'One moment, please.',en_kana:'ワン モーメント、プリーズ。',
+      zh:'请稍等一下。',zh_jp:'少々お待ちください。',zh_kana:'チン シャオ ドン イー シャ。',
+      ko:'잠시만요。',ko_jp:'少々お待ちください。',ko_kana:'チャムシマンヨ。',note:'目安時間も伝える'},
+     {jp:'仕上がりはいかがですか？',badge:'仕上げ',bc:'#B54B00',ctx:'施術完了後の確認',
+      en:'How do you like the result?',en_kana:'ハウ ドゥ ユー ライク ザ リザルト？',
+      zh:'满意吗？',zh_jp:'仕上がりはいかがですか？',zh_kana:'マン イー マ？',
+      ko:'마음에 드세요?',ko_jp:'お気に召しましたか？',ko_kana:'マウメ ドゥセヨ？',note:'手鏡で後ろも必ず'}],
+  5:[{jp:'チップは不要です',badge:'会計',bc:'#3B6D11',ctx:'日本はチップ文化なし',
+      en:'No tip is necessary.',en_kana:'ノー チップ イズ ネセサリー。',
+      zh:'不需要小费。',zh_jp:'チップは要りません。',zh_kana:'ブー シュー ヤオ シャオ フェイ。',
+      ko:'팁은 필요 없어요。',ko_jp:'チップは不要です。',ko_kana:'ティブン ピリョ オプソヨ。',note:'文化の違いを丁寧に'},
+     {jp:'次回のご予約はいかがですか？',badge:'アフター',bc:'#3B6D11',ctx:'リピート促進',
+      en:'Would you like to book next time?',en_kana:'ウッド ユー ライク トゥ ブック ネクスト タイム？',
+      zh:'下次预约吗？',zh_jp:'次回のご予約はいかがですか？',zh_kana:'シャ ツー ユー ユエ マ？',
+      ko:'다음 예약할까요?',ko_jp:'次回の予約はどうですか？',ko_kana:'タウム イェヤッカルカヨ？',note:'1〜3ヶ月後を提案'},
+     {jp:'ありがとうございました',badge:'お見送り',bc:'#1D9E75',ctx:'施術完了のお礼',
+      en:'Thank you so much!',en_kana:'サンキュー ソー マッチ！',
+      zh:'非常感谢！',zh_jp:'ありがとうございました！',zh_kana:'フェイ チャン ガン シェ！',
+      ko:'감사합니다！',ko_jp:'ありがとうございました！',ko_kana:'カムサハムニダ！',note:'笑顔でお見送り'}]
+};
+
+/* 全項目辞書データ（カタカナ読み追加） */
+var FULL_DICT={
+  tech:{label:'技術用語',color:'#BA7517',items:[
+    {jp:'すく',read:'梳く',ctx:'毛量を減らして軽くする',
+     en:'Thin out / Texturize',ens:'remove bulk with thinning shears',en_kana:'シン アウト / テクスチャライズ',
+     zh:'打薄',zhs:'用打薄剪减少发量',zh_kana:'ダー バォ',
+     ko:'숱 치기',kos:'숱가위로 볼륨을 줄임',ko_kana:'スル チギ',note:'量・割合を確認'},
+    {jp:'段を入れる',read:'だんをいれる',ctx:'長さを段階的に変えてレイヤーを作る',
+     en:'Add layers / Layering',ens:'cut at different lengths for movement',en_kana:'アド レイヤーズ / レイヤリング',
+     zh:'分层剪发',zhs:'通过层次增加动感',zh_kana:'フェン ツォン ジェン ファ',
+     ko:'레이어 커트',kos:'단계적으로 길이를 조절',ko_kana:'レイオ コトゥ',note:'長さ・位置を確認'},
+    {jp:'枝毛を整える',read:'えだげをととのえる',ctx:'傷んだ毛先だけを最小限カット',
+     en:'Dusting / Trim split ends',ens:'remove only damaged tips',en_kana:'ダスティング / トリム スプリット エンズ',
+     zh:'修剪发梢',zhs:'仅修剪受损发梢',zh_kana:'シウ ジェン ファ シャオ',
+     ko:'끝머리 정리',kos:'손상된 끝만 최소한으로',ko_kana:'クンモリ チョンリ',note:'長さ維持の意図を伝える'},
+    {jp:'刈り上げ',read:'かりあげ',ctx:'首の後ろを短く刈る',
+     en:'Undercut / Clipper back',ens:'shave or clip the nape short',en_kana:'アンダーカット / クリッパー バック',
+     zh:'后颈推剪',zhs:'使用推剪处理后颈部',zh_kana:'ホウ ジン トゥイ ジェン',
+     ko:'뒷목 정리',kos:'네이프 부분을 짧게 정리',ko_kana:'ドゥィンモク チョンリ',note:'長さとグラデを確認'},
+    {jp:'ハイライト',read:'ハイライト',ctx:'部分的に明るくして立体感を出す',
+     en:'Highlights',ens:'lightened sections for depth',en_kana:'ハイライツ',
+     zh:'高光 / 挑染',zhs:'局部提亮，增加立体感',zh_kana:'ガオ グアン / ティアオ ラン',
+     ko:'하이라이트',kos:'부분적으로 밝게',ko_kana:'ハイライトゥ',note:'ダメージの同意を得る'},
+    {jp:'ブリーチ',read:'ブリーチ',ctx:'髪の色素を抜く。ダメージが大きい',
+     en:'Bleach / Hair lightening',ens:'removes pigment — high damage',en_kana:'ブリーチ / ヘア ライトゥニング',
+     zh:'漂发 / 脱色',zhs:'去除色素，损伤较大',zh_kana:'ピャオ ファ / トゥオ スー',
+     ko:'블리치 / 탈색',kos:'모발 색소 제거. 손상도 높음',ko_kana:'ブルリチ / タルセク',note:'アレルギー確認必須'},
+    {jp:'トリートメント',read:'トリートメント',ctx:'髪の内部を補修・保湿するメニュー',
+     en:'Hair treatment / Deep conditioning',ens:'repair & moisturize from within',en_kana:'ヘア トリートメント / ディープ コンディショニング',
+     zh:'护发 / 发膜护理',zhs:'修复并保湿发丝内部',zh_kana:'フー ファ / ファ モー フー リー',
+     ko:'트리트먼트',kos:'모발 내부 보수 및 보습',ko_kana:'トゥリトゥモントゥ',note:'時間・料金を事前説明'},
+    {jp:'内巻き / 外巻き',read:'うちまき / そとまき',ctx:'毛先を内側か外側に巻くか',
+     en:'Inward / Outward curl',ens:'ends curl under or away',en_kana:'インワード / アウトワード カール',
+     zh:'内扣 / 外翻',zhs:'发梢向内或向外卷曲',zh_kana:'ネイ コウ / ワイ ファン',
+     ko:'안말음 / 밖말음',kos:'모발 끝을 안 또는 밖으로 컬링',ko_kana:'アンマルム / バンマルム',note:'鏡で確認推奨'},
+    {jp:'もみあげ',read:'もみあげ',ctx:'耳前の細い毛。残す/剃るを確認する',
+     en:'Sideburns',ens:'hair in front of the ears',en_kana:'サイドバーンズ',
+     zh:'鬓角',zhs:'耳朵前方的头发',zh_kana:'ビン ジャオ',
+     ko:'구레나룻',kos:'귀 앞쪽의 머리카락',ko_kana:'クレナルッ',note:'残す/剃るを必ず確認'},
+    {jp:'前髪の幅',read:'まえがみのはば',ctx:'前髪をどこから分けるか',
+     en:'Fringe width / Bang section',ens:'how wide the fringe is parted',en_kana:'フリンジ ウィドゥス / バング セクション',
+     zh:'刘海宽度',zhs:'决定刘海的分线位置',zh_kana:'リウ ハイ クアン ドゥー',
+     ko:'앞머리 폭',kos:'앞머리 분선 위치 결정',ko_kana:'アプモリ ポク',note:'顔型に合わせて提案'}
+  ]},
+  feel:{label:'感性表現',color:'#3B6D11',items:[
+    {jp:'さらさら',read:'サラサラ',ctx:'摩擦がなく滑らかな手触り',
+     en:'Silky smooth / Sleek',ens:'flows with no frizz, low friction',en_kana:'シルキー スムース / スリーク',
+     zh:'顺滑 / 丝滑',zhs:'发丝光滑，无毛躁感',zh_kana:'シュン ホア / スー ホア',
+     ko:'매끄럽고 부드러운',kos:'마찰 없이 흐르는 실크 촉감',ko_kana:'メックルプコ プドゥロウン',note:'縮毛矯正・ブロー'},
+    {jp:'しっとり',read:'シットリ',ctx:'水分を含んで重みのある落ち着いた感じ',
+     en:'Moisturized & weighted',ens:'hydrated, calm, with gentle body',en_kana:'モイスチャライズド アンド ウェイテッド',
+     zh:'滋润感',zhs:'湿润有重量感',zh_kana:'ズー ルン ガン',
+     ko:'촉촉하고 차분한',kos:'수분감 있고 정돈된 스타일',ko_kana:'チョクチョカゴ チャブナン',note:'トリートメント訴求'},
+    {jp:'ふわっと',read:'フワッと',ctx:'空気を含んだ軽いボリューム',
+     en:'Airy / Fluffy volume',ens:'light, bouncy, air-filled',en_kana:'エアリー / フラッフィー ボリューム',
+     zh:'蓬松 / 轻盈',zhs:'充满空气感，轻盈有弹性',zh_kana:'ポン ソン / チン イン',
+     ko:'가볍고 폭신한',kos:'공기감 있는 가볍고 탄력 있는',ko_kana:'カビョプコ ポクシナン',note:'パーマ・ブロー'},
+    {jp:'つやつや',read:'ツヤツヤ',ctx:'光を反射する艶',
+     en:'Glossy / High-shine',ens:'reflects light, healthy luster',en_kana:'グロッシー / ハイシャイン',
+     zh:'有光泽 / 亮丽',zhs:'光滑亮丽，反光感强',zh_kana:'ヨウ グアン ズェ / リャン リー',
+     ko:'윤기있고 빛나는',kos:'빛을 반사하는 건강한 광택',ko_kana:'ユンギイッコ ビンナヌン',note:'グロストリートメント'},
+    {jp:'ゆるふわ',read:'ゆるふわ',ctx:'きつくないゆるやかなウェーブ',
+     en:'Soft wavy / Loose perm',ens:'relaxed, gentle waves',en_kana:'ソフト ウェイヴィー / ルース パーム',
+     zh:'慵懒波浪',zhs:'松散自然的波浪感',zh_kana:'ヨン ラン ボー ラン',
+     ko:'루즈한 웨이브',kos:'느슨하고 자연스러운 웨이브',ko_kana:'ルジュハン ウェイブ',note:'パーマの強さを確認'},
+    {jp:'まとまり感',read:'まとまりかん',ctx:'広がらず落ち着いてまとまる状態',
+     en:'Controlled / Frizz-free',ens:'stays in place, no flyaways',en_kana:'コントロールド / フリズフリー',
+     zh:'服帖感',zhs:'不蓬乱，自然服帖',zh_kana:'フー ティエ ガン',
+     ko:'단정하게 정돈된',kos:'흩날리지 않고 차분하게',ko_kana:'タンジョンハゲ チョンドンデン',note:'縮毛・トリートメント'},
+    {jp:'ナチュラル',read:'ナチュラル',ctx:'作りすぎず自然体の仕上がり',
+     en:'Natural / Effortless',ens:'not overdone, relaxed',en_kana:'ナチュラル / エフォートレス',
+     zh:'自然感',zhs:'不做作，随意自然',zh_kana:'ズー ラン ガン',
+     ko:'자연스러운 느낌',kos:'과하지 않고 자연스러운',ko_kana:'チャヨンスロウン ヌッキム',note:'過度な加工をしない'},
+    {jp:'ツヤサラ',read:'ツヤサラ',ctx:'艶と滑らかさを合わせた複合語',
+     en:'Glossy-smooth',ens:'high-gloss AND silky combined',en_kana:'グロッシー スムース',
+     zh:'亮滑感',zhs:'光泽感与顺滑感兼具',zh_kana:'リャン ホア ガン',
+     ko:'광택+실크 질감',kos:'윤기와 부드러움을 동시에',ko_kana:'グァンテク シルク チルガム',note:'縮毛矯正後の目標'},
+    {jp:'軽い感じ',read:'かるいかんじ',ctx:'毛量が少なく動きやすい状態',
+     en:'Light & effortless',ens:'less bulk, moves freely',en_kana:'ライト アンド エフォートレス',
+     zh:'轻盈感',zhs:'减少发量，自然动感',zh_kana:'チン イン ガン',
+     ko:'가벼운 느낌',kos:'볼륨을 줄여 자연스럽게',ko_kana:'カビョウン ヌッキム',note:'すきすぎに注意'},
+    {jp:'重め',read:'おもめ',ctx:'毛量を残し、落ち着いたヘビーな印象',
+     en:'Heavy / Blunt weight',ens:'full, dense — minimal thinning',en_kana:'ヘヴィー / ブラント ウェイト',
+     zh:'厚重感',zhs:'保留发量，沉稳有重量感',zh_kana:'ホウ ヂョン ガン',
+     ko:'무거운 느낌',kos:'풍성하고 묵직한 스타일',ko_kana:'ムゴウン ヌッキム',note:'段なし・すかずで実現'}
+  ]},
+  serv:{label:'おもてなしフレーズ',color:'#185FA5',items:[
+    {jp:'お痒いところはございませんか？',read:'かゆいところ確認',ctx:'シャンプー中にかゆみや不快感がないか確認',
+     en:'Is there anywhere that feels itchy?',ens:'Check for discomfort during shampoo',en_kana:'イズ ゼア エニィウェア ザット フィールズ イッチー？',
+     zh:'有没有感觉痒的地方？',zhs:'洗头时询问是否有不适',zh_kana:'ヨウ メイ ヨウ ガンジュエ ヤン ダ ディ ファン？',
+     ko:'가려운 곳은 없으신가요?',kos:'샴푸 중 두피 불편 여부 확인',ko_kana:'カリョウン コスン オブスシンガヨ？',note:'施術中 必須確認'},
+    {jp:'お湯加減はいかがですか？',read:'お湯の温度確認',ctx:'シャンプー台でのお湯温度確認',
+     en:'How is the water temperature?',ens:'Too hot or cold? Adjust immediately',en_kana:'ハウ イズ ザ ウォーター テンペラチャー？',
+     zh:'水温合适吗？',zhs:'询问洗头水温是否舒适',zh_kana:'シュイ ウェン ハァ シー マ？',
+     ko:'물 온도는 어떠세요?',kos:'샴푸 시 물 온도 확인',ko_kana:'ムル オンドヌン オットセヨ？',note:'外国人は温度差に注意'},
+    {jp:'首を楽にしてください',read:'首の力を抜いてください',ctx:'シャンプー台に横たわるとき首を脱力するよう促す',
+     en:'Please relax your neck.',ens:'Let your neck go loose',en_kana:'プリーズ リラックス ユア ネック。',
+     zh:'请放松您的脖子。',zhs:'躺上洗发台时请放松颈部',zh_kana:'チン ファン ソン ニン ダ ボーズ。',
+     ko:'목에 힘을 빼주세요。',kos:'샴푸볼에 누울 때 목을 편안하게',ko_kana:'モゲ ヒムル ペジュセヨ。',note:'体勢変更時に必ず伝える'},
+    {jp:'少々お待ちください',read:'しばらくお待ちください',ctx:'薬剤の放置時間や準備中に待ってもらう',
+     en:'One moment, please.',ens:'Brief wait for prep or processing',en_kana:'ワン モーメント、プリーズ。',
+     zh:'请稍等一下。',zhs:'准备或等待药剂作用时',zh_kana:'チン シャオ ドン イー シャ。',
+     ko:'잠시만 기다려 주세요。',kos:'약제 방치 시간이나 준비 중',ko_kana:'チャムシマン キダリョ ジュセヨ。',note:'放置時間の目安も伝える'},
+    {jp:'こちらにどうぞ',read:'こちらへどうぞ',ctx:'お客様を席やシャンプー台に誘導する',
+     en:'Right this way, please.',ens:'Guide to seat or shampoo area',en_kana:'ライト ディス ウェイ、プリーズ。',
+     zh:'请这边走。',zhs:'引导客人到座位或洗发区',zh_kana:'チン ヂェ ビェン ゾウ。',
+     ko:'이쪽으로 오세요。',kos:'고객을 좌석이나 샴푸 대로 안내',ko_kana:'イジョグロ オセヨ。',note:'ジェスチャー必ず併用'},
+    {jp:'チップは不要です',read:'チップはいりません',ctx:'日本ではチップの文化がない旨を丁寧に伝える',
+     en:'No tip is necessary in Japan.',ens:'Tipping is not customary here',en_kana:'ノー チップ イズ ネセサリー イン ジャパン。',
+     zh:'日本不需要给小费。',zhs:'礼貌说明日本不存在小费文化',zh_kana:'リー ベン ブー シュー ヤオ ゲイ シャオ フェイ。',
+     ko:'일본에서는 팁이 필요하지 않습니다。',kos:'일본은 팁 문화가 없음을 정중히 안내',ko_kana:'イルボネソヌン チップイ ピリョハジ アンスムニダ。',note:'文化の違いを説明'},
+    {jp:'どのくらいの長さにしますか？',read:'長さの確認',ctx:'具体的にどのくらい切るか確認する',
+     en:'How much length would you like off?',ens:"Show with fingers — e.g. '2cm'",en_kana:'ハウ マッチ レングス ウッド ユー ライク オフ？',
+     zh:'您想剪多少长度？',zhs:'用手指比划长度',zh_kana:'ニン シャン ジェン ドゥオ シャオ チャン ドゥー？',
+     ko:'어느 정도 길이로 자를까요?',kos:'손가락으로 길이를 표시해 달라고 요청',ko_kana:'オヌ チョンド キリロ チャルカヨ？',note:'必ずcm単位で確認'},
+    {jp:'仕上がりはいかがですか？',read:'しあがり確認',ctx:'施術完了後に満足度を確認する',
+     en:'How do you like the result?',ens:'Final check — hand mirror for back',en_kana:'ハウ ドゥ ユー ライク ザ リザルト？',
+     zh:'您对造型满意吗？',zhs:'完成后询问满意度',zh_kana:'ニン ドゥイ ザオ シン マン イー マ？',
+     ko:'마무리는 어떠세요?',kos:'시술 완료 후 만족도 확인',ko_kana:'マムリヌン オットセヨ？',note:'手鏡で後ろも必ず確認'},
+    {jp:'アレルギーはございますか？',read:'アレルギーの確認',ctx:'カラーやパーマの薬剤に対するアレルギー確認',
+     en:'Do you have any allergies?',ens:'Chemical allergy — check before service',en_kana:'ドゥ ユー ハヴ エニー アレルジーズ？',
+     zh:'您有过敏史吗？',zhs:'染发或烫发前确认过敏情况',zh_kana:'ニン ヨウ グオ ミン シー マ？',
+     ko:'알레르기가 있으신가요?',kos:'염색/파마 약제 알레르기 여부를 시술 전 확인',ko_kana:'アルレルギガ イッスシンガヨ？',note:'同意書と組み合わせる'},
+    {jp:'次回のご予約はいかがですか？',read:'次回予約の提案',ctx:'アフターケアも兼ねた次回予約の提案',
+     en:'Would you like to book your next visit?',ens:'Suggest timing for maintenance',en_kana:'ウッド ユー ライク トゥ ブック ユア ネクスト ヴィジット？',
+     zh:'下次预约什么时候方便？',zhs:'推荐下次预约时间',zh_kana:'シャ ツー ユー ユエ シェン マ シー ホウ ファン ビェン？',
+     ko:'다음 예약은 어떻게 하시겠어요?',kos:'다음 방문 시기를 제안하며 재방문 유도',ko_kana:'タウム イェヤグン オットケ ハシゲッオヨ？',note:'1〜3ヶ月後を提案'}
+  ]}
+};
+
+var T={
+  welcome:{en:'Welcome! Please feel free to let us know your hair preferences today.',zh:'欢迎光临！请告诉我们您今天的发型需求。',ko:'어서오세요! 오늘 원하시는 헤어스타일을 알려주세요。',ja:'いらっしゃいませ！本日のご希望をお聞かせください。'},
+  consent:{en:'Do you have any allergies to hair dye or chemical treatments?\nPlease let us know before we begin.',zh:'您对染发剂或化学药品有过敏史吗？\n开始前请告知我们。',ko:'헤어 염료나 화학 제품에 알레르기가 있으신가요?\n시술 전에 알려주세요。',ja:'ヘアカラーや薬剤にアレルギーはありますか？\n施術前にお知らせください。'},
+  yn_lbl:{en:'Your stylist suggests:',zh:'您的发型师建议：',ko:'스타일리스트가 제안합니다：',ja:'担当スタイリストの提案：'},
+  yn_yes:{en:'YES ✓',zh:'✓ 好的',ko:'✓ 네',ja:'✓ はい'},yn_yes_sub:{en:'Yes, please go ahead',zh:'好的，请继续',ko:'네, 진행해 주세요',ja:'はい、お願いします'},
+  yn_no:{en:'NO ✗',zh:'✗ 不',ko:'✗ 아니요',ja:'✗ いいえ'},yn_no_sub:{en:"I'd like something different",zh:'我想要不同的效果',ko:'다른 스타일을 원해요',ja:'他のスタイルを見たい'},
+  yn_or:{en:"Or I'd like something...",zh:'或者我想要...',ko:'또는 이런 느낌으로...',ja:'またはこんな感じで...'},
+  sl1a:{en:'Thinning',zh:'打薄',ko:'숱 치기',ja:'すく'},sl1b:{en:'Keep bulk',zh:'保留发量',ko:'볼륨 유지',ja:'残す'},
+  sl2a:{en:'Silky',zh:'顺滑',ko:'매끄럽게',ja:'さらさら'},sl2b:{en:'Fluffy',zh:'蓬松',ko:'폭신하게',ja:'ふわっと'},
+  phrases:{
+    itchy:{en:'Is there anywhere that feels itchy?',zh:'有没有感觉痒的地方？',ko:'가려운 곳은 없으신가요?',ja:'お痒いところはございませんか？',kana:{en:'イズ ゼア エニィウェア ザット フィールズ イッチー？',zh:'ヨウ メイ ヨウ ガンジュエ ヤン ダ ディ ファン マ？',ko:'カリョウン コスン オブスシンガヨ？'}},
+    temp:{en:'How is the water temperature?',zh:'水温合适吗？',ko:'물 온도는 어떠세요?',ja:'お湯加減はいかがですか？',kana:{en:'ハウ イズ ザ ウォーター テンペラチャー？',zh:'シュイ ウェン ハァ シー マ？',ko:'ムル オンドヌン オットセヨ？'}},
+    neck:{en:'Please relax your neck.',zh:'请放松您的脖子。',ko:'목에 힘을 빼주세요。',ja:'首を楽にしてください。',kana:{en:'プリーズ リラックス ユア ネック。',zh:'チン ファン ソン ニン ダ ボーズ。',ko:'モゲ ヒムル ペジュセヨ。'}},
+    wait:{en:'One moment, please.',zh:'请稍等一下。',ko:'잠시만 기다려 주세요。',ja:'少々お待ちください。',kana:{en:'ワン モーメント、プリーズ。',zh:'チン シャオ ドン イー シャ。',ko:'チャムシマン キダリョ ジュセヨ。'}},
+    thin:{en:'Shall I thin it out a bit more?',zh:'需要打薄一点吗？',ko:'좀 더 숱을 칠까요?',ja:'もう少し細かくしますか？',kana:{en:'シャル アイ シン イット アウト ア ビット モア？',zh:'シュー ヤオ ダー バォ イー ディェン マ？',ko:'チョム ド スルル チルカヨ？'}},
+    len:{en:'How is the length so far?',zh:'长度合适吗？',ko:'길이는 어떠세요?',ja:'長さはいかがですか？',kana:{en:'ハウ イズ ザ レングス ソー ファー？',zh:'チャン ドゥー ハァ シー マ？',ko:'キリヌン オットセヨ？'}},
+    mir:{en:'Could you check in the mirror?',zh:'请在镜子里确认一下。',ko:'거울에서 확인해 주세요。',ja:'鏡でご確認ください。',kana:{en:'クッド ユー チェック イン ザ ミラー？',zh:'チン ザイ ジン ズ リー チュエ レン イー シャ。',ko:'コウレソ ファギンヘ ジュセヨ。'}},
+    res:{en:'How do you like the result?',zh:'您对造型满意吗？',ko:'마무리는 어떠세요?',ja:'仕上がりはいかがですか？',kana:{en:'ハウ ドゥ ユー ライク ザ リザルト？',zh:'ニン ドゥイ ザオ シン マン イー マ？',ko:'マムリヌン オットセヨ？'}},
+    back:{en:'Please check the back as well.',zh:'请也看一下后面的效果。',ko:'뒤도 확인해 주세요。',ja:'後ろもご確認ください。',kana:{en:'プリーズ チェック ザ バック アズ ウェル。',zh:'チン イェ カン イー シャ ホウ ミェン ダ シャオ グオ。',ko:'ドゥィド ファギンヘ ジュセヨ。'}},
+    thnk:{en:'Thank you so much!',zh:'非常感谢！',ko:'감사합니다!',ja:'ありがとうございました！',kana:{en:'サンキュー ソー マッチ！',zh:'フェイ チャン ガン シェ！',ko:'カムサハムニダ！'}}
+  },
+  fee_menu:{en:'Menu',zh:'项目',ko:'메뉴',ja:'メニュー'},fee_price:{en:'Price',zh:'价格',ko:'가격',ja:'料金'},
+  fee_cut:{en:'Cut',zh:'剪发',ko:'커트',ja:'カット'},fee_shampoo:{en:'Shampoo & Blowdry',zh:'洗发吹发',ko:'샴푸·블로우',ja:'シャンプー・ブロー'},fee_treat:{en:'Treatment',zh:'护发护理',ko:'트리트먼트',ja:'トリートメント'},fee_total:{en:'Total',zh:'合计',ko:'합계',ja:'合計'},
+  tip:{en:'ℹ️ No tip is necessary in Japan. Thank you!',zh:'ℹ️ 日本不需要给小费。非常感谢！',ko:'ℹ️ 일본에서는 팁이 필요하지 않습니다。감사합니다!',ja:'ℹ️ 日本ではチップは不要です。ありがとうございました！'},
+  done_after:{en:'We look forward to seeing you again.',zh:'期待您的再次光临！',ko:'또 방문해 주세요！',ja:'またのご来店をお待ちしております。'},
+  qr_next:{en:'Next visit — scan to book:',zh:'下次预约，请扫描：',ko:'다음 예약은 QR로：',ja:'次回予約はこちら：'},
+  care1_nm:{en:'Leave-in hair oil',zh:'免洗护发油',ko:'아웃바스 오일',ja:'アウトバスオイル'},care1_ds:{en:'Apply to damp hair',zh:'湿发时使用',ko:'젖은 머리에 발라',ja:'濡れた髪に使用'},
+  care2_nm:{en:'Moisturizing shampoo',zh:'保湿洗发水',ko:'보습 샴푸',ja:'保湿シャンプー'},care2_ds:{en:'Daily use for hydration',zh:'日常使用',ko:'매일 사용',ja:'毎日使いで'},
+  done_t:{en:'Treatment complete — thank you!',zh:'护理完成，谢谢！',ko:'시술 완료！감사합니다！',ja:'施術完了！ありがとうございました！'},
+  next_appt:{en:'Next visit & Home care',zh:'下次预约・居家护理',ko:'다음 예약・홈 케어',ja:'次回予約・ホームケア'}
+};
+var KANA={
+  welcome:{en:'ウェルカム！ プリーズ フィール フリー トゥ レット アス ノウ ユア ヘア プレファレンシズ トゥデイ。',zh:'ファン イン グアン リン！ チン ガオ スー ウォー メン ニン ジン ティエン ダ ファ シン シュー チウ。',ko:'オソオセヨ！ オヌル ウォナシヌン ヘオスタイルル アリョジュセヨ。',ja:''},
+  consent:{en:'ドゥ ユー ハヴ エニー アレルジーズ トゥ ヘア ダイ オア ケミカル トリートメンツ？',zh:'ニン ドゥイ ラン ファ ジー フォ ホア シュエ ヤオ ピン ヨウ グオ ミン シー マ？',ko:'ヘア ヨムニョナ ファハク チェプムエ アルレルギガ イッスシンガヨ？',ja:''},
+  tip:{en:'ノー チップ イズ ネセサリー イン ジャパン。 サンキュー！',zh:'リー ベン ブー シュー ヤオ ゲイ シャオ フェイ。 フェイ チャン ガン シェ！',ko:'イルボネソヌン チップイ ピリョハジ アンスムニダ。 カムサハムニダ！',ja:''}
+};
+
+function g(id){return document.getElementById(id)}
+function gt(k){return T[k]?T[k][lang]||T[k].en:''}
+function tog(el){el.classList.toggle('on')}
+
+
+/* ────── 料金明細（編集可能） ────── */
+var feeItems=[
+  {name:'カット',       price:5500, en:'Cut',           zh:'剪发',    ko:'커트'},
+  {name:'シャンプー・ブロー', price:1100, en:'Shampoo & Blowdry', zh:'洗发吹发', ko:'샴푸·블로우'},
+  {name:'トリートメント',    price:2200, en:'Treatment',     zh:'护发护理', ko:'트리트먼트'}
+];
+
+/* 料金表を描画 */
+function renderFeeTable(){
+  var tbody=g('fee-rows');if(!tbody)return;
+  tbody.innerHTML='';
+  feeItems.forEach(function(item,i){
+    var tr=document.createElement('tr');
+    var langName=lang==='en'?item.en:(lang==='zh'?item.zh:(lang==='ko'?item.ko:''));
+    var langPlaceholder=lang==='en'?'English name':(lang==='zh'?'中文名称':(lang==='ko'?'한국어 명칭':''));
+    var langRow=lang!=='ja'?
+      '<div style="font-size:10px;color:#8E8E93;margin-top:2px">'+
+        '<input class="fee-lang-input" placeholder="'+langPlaceholder+'" value="'+(langName||'')
+        +'" onchange="feeItems['+i+'].'+lang+'=this.value;updateFeeClientBlock()"></div>':'';
+    tr.innerHTML=
+      '<td style="padding:6px 8px"><input class="fee-row-input" value="'+item.name+'" onchange="feeItems['+i+'].name=this.value;updateFeeDisplay()">'+langRow+'</td>'+
+      '<td style="padding:6px 8px;text-align:right">¥<input class="fee-price-input" type="number" value="'+item.price+'" min="0" step="100" onchange="feeItems['+i+'].price=parseInt(this.value)||0;updateFeeDisplay()"></td>'+
+      '<td style="padding:6px 4px;text-align:center"><button class="fee-del-btn" onclick="delFeeRow('+i+')">×</button></td>';
+    tbody.appendChild(tr);
+  });
+  updateFeeTotal();
+  updateFeeClientBlock();
+}
+
+function addFeeRow(){
+  feeItems.push({name:'',price:0,en:'',zh:'',ko:''});
+  renderFeeTable();
+  /* 最後の行の名前inputにフォーカス */
+  var inputs=g('fee-rows').querySelectorAll('.fee-row-input');
+  if(inputs.length)inputs[inputs.length-1].focus();
+}
+
+function delFeeRow(i){
+  feeItems.splice(i,1);
+  renderFeeTable();
+}
+
+function updateFeeTotal(){
+  var total=feeItems.reduce(function(s,it){return s+(parseInt(it.price)||0);},0);
+  var el=g('fee-total-display');if(el)el.textContent='¥'+total.toLocaleString();
+  var cl=g('fee-client-total');if(cl)cl.textContent='¥'+total.toLocaleString();
+}
+
+function updateFeeClientBlock(){
+  /* お客様向け料金明細 */
+  var area=g('fee-client-rows');if(!area)return;
+  area.innerHTML='';
+  feeItems.forEach(function(item){
+    if(!item.name&&!item.price)return;
+    var langName=lang==='en'?item.en:(lang==='zh'?item.zh:(lang==='ko'?item.ko:''));
+    /* 選択言語名 + 日本語（2行） */
+    var nameHtml=lang==='ja'
+      ? '<span>'+item.name+'</span>'
+      : '<span><span style="display:block;font-size:13px;font-weight:500">'+(langName||item.name)+'</span>'
+        +'<span style="display:block;font-size:11px;color:#8E8E93;margin-top:1px">'+item.name+'</span></span>';
+    var row=document.createElement('div');row.className='fee-client-row';
+    row.innerHTML=nameHtml+'<span style="font-weight:600;font-size:14px;flex-shrink:0">¥'+(parseInt(item.price)||0).toLocaleString()+'</span>';
+    area.appendChild(row);
+  });
+  updateFeeTotal();
+}
+
+/* 言語切替時：ラベルと明細名の翻訳 */
+var FEE_LABELS={
+  title:    {ja:'料金明細',en:'Billing',    zh:'费用明细',      ko:'요금 명세'},
+  total:    {ja:'合計',    en:'Total',      zh:'合计',          ko:'합계'},
+  tipFree:  {
+    ja:'日本ではチップは不要です。ありがとうございました！',
+    en:'ℹ️ No tip is necessary in Japan. Thank you!',
+    zh:'ℹ️ 日本不需要给小费。非常感谢！',
+    ko:'ℹ️ 일본에서는 팁이 필요하지 않습니다。감사합니다!'
+  },
+  tipKana:{
+    en:'ノー チップ イズ ネセサリー イン ジャパン。 サンキュー！',
+    zh:'リー ベン ブー シュー ヤオ ゲイ シャオ フェイ。 フェイ チャン ガン シェ！',
+    ko:'イルボネソヌン チップイ ピリョハジ アンスムニダ。 カムサハムニダ！',
+    ja:''
+  },
+  seeAgain:{
+    ja:'またのご来店をお待ちしております。',
+    en:'We look forward to seeing you again.',
+    zh:'期待您的再次光临！',
+    ko:'또 방문해 주세요！'
+  },
+  seeAgainKana:{
+    en:'ウィー ルック フォワード トゥ シーイング ユー アゲイン。',
+    zh:'チー ダイ ニン ダ ザイ ツー グアン リン！',
+    ko:'ット バンムネ ジュセヨ！',
+    ja:''
+  },
+  qrNext:{
+    ja:'次回予約はこちら：',en:'Next visit — scan to book:',
+    zh:'下次预约，请扫描：',ko:'다음 예약은 QR로：'
+  }
+};
+
+function updateFeeDisplay(){
+  /* ヘッダー */
+  var fh1=g('fh1'),fh2=g('fh2');
+  if(fh1){
+    if(lang==='ja')fh1.textContent='メニュー';
+    else{var m1=lang==='zh'?'菜单':(lang==='ko'?'메뉴':'Menu');fh1.innerHTML=m1+'<br><span style="font-size:9px;color:#aaa;font-weight:400">メニュー</span>';}
+  }
+  if(fh2){
+    if(lang==='ja')fh2.textContent='料金';
+    else{var m2=lang==='zh'?'价格':(lang==='ko'?'가격':'Price');fh2.innerHTML=m2+'<br><span style="font-size:9px;color:#aaa;font-weight:400">料金</span>';}
+  }
+  /* 合計ラベル */
+  var ftl=g('fee-total-label');if(ftl){
+    if(lang==='ja')ftl.textContent='合計';
+    else{var tl2=FEE_LABELS.total[lang]||FEE_LABELS.total.en;ftl.innerHTML=tl2+'<span style="font-size:9px;color:#aaa;margin-left:4px">合計</span>';}
+  }
+  /* お客様向けタイトル */
+  var fct=g('fee-client-title');if(fct)fct.textContent=FEE_LABELS.title[lang]||FEE_LABELS.title.en;
+  var fctl=g('fee-client-total-label');if(fctl){
+    if(lang==='ja'){fctl.innerHTML='合計';}
+    else{var tl=FEE_LABELS.total[lang]||FEE_LABELS.total.en;fctl.innerHTML='<span style="display:block">'+tl+'</span><span style="display:block;font-size:10px;color:#8E8E93;font-weight:400">合計</span>';}
+  }
+  /* チップ不要文 */
+  var tm=g('tip-msg');if(tm)tm.textContent=FEE_LABELS.tipFree[lang]||FEE_LABELS.tipFree.en;
+  var tkl=g('tip-kana-line');if(tkl){var tk=FEE_LABELS.tipKana[lang]||'';tkl.textContent=tk?'🗣 '+tk:'';tkl.style.display=tk&&lang!=='ja'?'':'none';}
+  /* また来てください */
+  var ds=g('done-s');if(ds)ds.textContent=FEE_LABELS.seeAgain[lang]||FEE_LABELS.seeAgain.en;
+  var dkl=g('done-kana-line');if(dkl){var dk=FEE_LABELS.seeAgainKana[lang]||'';dkl.textContent=dk?'🗣 '+dk:'';dkl.style.display=dk&&lang!=='ja'?'':'none';}
+  /* 次回予約 */
+  var qn=g('qr-next-lbl');if(qn)qn.textContent=FEE_LABELS.qrNext[lang]||FEE_LABELS.qrNext.en;
+  /* ホームケア翻訳 */
+  var fc2=g('fc2-title');if(fc2)fc2.textContent=gt('next_appt');
+  g('care1-nm').textContent=gt('care1_nm');g('care1-ds').textContent=gt('care1_ds');
+  g('care2-nm').textContent=gt('care2_nm');g('care2-ds').textContent=gt('care2_ds');
+  var dt=g('done-t');if(dt)dt.textContent=gt('done_t');var ds2=g('done-s2');if(ds2)ds2.textContent=gt('done_after');
+  /* カタカナ tip */
+  var ktw=g('kana-tip');var ktt=g('kana-tip-text');
+  if(ktw&&ktt){
+    var KANA_TIP={en:'ノー チップ イズ ネセサリー イン ジャパン。',zh:'リー ベン ブー シュー ヤオ ゲイ シャオ フェイ。',ko:'イルボネソヌン チップイ ピリョハジ アンスムニダ。',ja:''};
+    var tk2=KANA_TIP[lang]||'';ktt.textContent=tk2;ktw.style.display=(lang!=='ja'&&tk2)?'':'none';
+  }
+  renderFeeTable();
+}
+
+function renderChips(){
+  var hc=g('hist-chips');hc.innerHTML='';
+  HIST.forEach(function(it,i){var d=document.createElement('div');d.className='bichip'+(it.red?' red':'')+(histSel.has(i)?' on':'');var hk=getKana(HIST_KANA,i);d.innerHTML='<span class="ja">'+it.ja+'</span>'+(lang!=='ja'?'<span class="fl">'+fl(it)+'</span>':'')+(hk&&lang!=='ja'?'<span class="chip-kana">🗣 '+hk+'</span>':'');d.onclick=function(){histSel.has(i)?histSel.delete(i):histSel.add(i);renderChips();updSums();};hc.appendChild(d);});
+  var ac=g('allergy-chips');ac.innerHTML='';
+  ALLERGY.forEach(function(it,i){var d=document.createElement('div');d.className='bichip'+(it.red?' red':'')+(allergySel.has(i)?' on':'');var ak=getKana(ALLERGY_KANA,i);d.innerHTML='<span class="ja">'+it.ja+'</span>'+(lang!=='ja'?'<span class="fl">'+fl(it)+'</span>':'')+(ak&&lang!=='ja'?'<span class="chip-kana">🗣 '+ak+'</span>':'');d.onclick=function(){allergySel.has(i)?allergySel.delete(i):allergySel.add(i);renderChips();updSums();};ac.appendChild(d);});
+  var mc=g('menu-chips');mc.innerHTML='';
+  MENU.forEach(function(it,i){var d=document.createElement('div');d.className='birbtn'+(menuSel===i?' on':'');var mk=getKana(MENU_KANA,i);d.innerHTML='<span class="ja">'+it.ja+'</span>'+(lang!=='ja'?'<span class="fl">'+fl(it)+'</span>':'')+(mk&&lang!=='ja'?'<span class="chip-kana">🗣 '+mk+'</span>':'');d.onclick=function(){menuSel=i;renderChips();updSums();};mc.appendChild(d);});
+  var f=LANG_FLAGS[lang]||'🌐';
+  ['hist','allergy','menu'].forEach(function(k){var el=g('lang-flag-'+k);if(el)el.textContent=f;});
+}
+function updSums(){
+  updSum('hist-ja-out','hist-fl-out',HIST,histSel,false);
+  updSum('allergy-ja-out','allergy-fl-out',ALLERGY,allergySel,true);
+  var jao=g('menu-ja-out'),flo=g('menu-fl-out');
+  if(menuSel===null){jao.innerHTML='<span class="ss-empty">未選択</span>';flo.innerHTML='<span class="ss-empty">—</span>';}
+  else{var it=MENU[menuSel];jao.innerHTML='<span class="ss-chip sel">'+it.ja+'</span>';flo.innerHTML=lang==='ja'?'<span class="ss-empty">（日本語のみ）</span>':'<span class="ss-chip sel">'+fl(it)+'</span>';}
+}
+function updSum(jid,fid,items,sel,isRed){
+  var jao=g(jid),flo=g(fid);
+  if(sel.size===0){jao.innerHTML='<span class="ss-empty">未選択</span>';flo.innerHTML='<span class="ss-empty">—</span>';return;}
+  var jh='',fh='';
+  sel.forEach(function(i){var it=items[i],cls=(isRed&&it.red)?'ss-chip sel-red':'ss-chip sel';jh+='<span class="'+cls+'">'+it.ja+'</span>';if(lang!=='ja')fh+='<span class="'+cls+'">'+fl(it)+'</span>';});
+  jao.innerHTML=jh;flo.innerHTML=lang==='ja'?'<span class="ss-empty">（日本語のみ）</span>':fh;
+}
+
+function applyLang(){
+  renderChips();updSums();
+  var wm=g('welcome-msg');if(wm)wm.textContent=gt('welcome');
+  var wk=KANA.welcome[lang];var kw=g('kana-welcome');if(kw){kw.style.display=(lang==='ja'||!wk)?'none':'';var kt=g('kana-welcome-text');if(kt)kt.textContent=wk||'';}
+  var sc=g('s2-consent');if(sc)sc.innerHTML=(gt('consent')||'').replace(/\n/g,'<br>');
+  ['en','zh','ko','ja'].forEach(function(l){var el=g('s2-chips-'+l);if(el)el.style.display=l===lang?'flex':'none';});
+  var ck=KANA.consent[lang];var kc=g('kana-consent');if(kc){kc.style.display=(lang==='ja'||!ck)?'none':'';var kct=g('kana-consent-text');if(kct)kct.textContent=ck||'';}
+  var yl=g('yn-lbl');if(yl)yl.textContent=gt('yn_lbl');
+  var ym=g('yn-main');if(ym&&ym.childNodes[0])ym.childNodes[0].textContent=propData[lang]||propData.ja;
+  var ymj=g('yn-main-jp');if(ymj)ymj.textContent=lang==='ja'?'':('（'+propData.ja+'）');
+  var ys=g('yn-sub');if(ys)ys.textContent=lang==='ja'?'':propData.en;
+  var yd=g('yn-desc');if(yd)yd.textContent=propData.desc;
+  var yyl=g('yn-yes-lbl');if(yyl)yyl.textContent=gt('yn_yes');
+  var yys=g('yn-yes-sub');if(yys)yys.textContent=gt('yn_yes_sub');
+  var ynl=g('yn-no-lbl');if(ynl)ynl.textContent=gt('yn_no');
+  var yns=g('yn-no-sub');if(yns)yns.textContent=gt('yn_no_sub');
+  var yor=g('yn-or');if(yor)yor.textContent=gt('yn_or');
+  ['en','zh','ko','ja'].forEach(function(l){var el=g('yn-chips-'+l);if(el)el.style.display=l===lang?'flex':'none';});
+  g('sl1a').textContent=gt('sl1a');g('sl1b').textContent=gt('sl1b');g('sl2a').textContent=gt('sl2a');g('sl2b').textContent=gt('sl2b');
+  Object.keys(T.phrases).forEach(function(k){
+    var el=g('ph-'+k);if(el)el.textContent=T.phrases[k][lang]||T.phrases[k].en;
+    var ke=g('ph-kana-'+k);if(ke){
+      var kd=T.phrases[k].kana&&T.phrases[k].kana[lang];
+      ke.textContent=(lang!=='ja'&&kd)?kd:'';
+    }
+  });
+  updateFeeDisplay();
+  var tm=g('tip-msg');if(tm)tm.textContent=gt('tip');var ds=g('done-s');if(ds)ds.textContent=gt('done_after');var qn=g('qr-next-lbl');if(qn)qn.textContent=gt('qr_next');var fc=g('fc2-title');if(fc)fc.textContent=gt('next_appt');
+  g('care1-nm').textContent=gt('care1_nm');g('care1-ds').textContent=gt('care1_ds');g('care2-nm').textContent=gt('care2_nm');g('care2-ds').textContent=gt('care2_ds');
+  var dt=g('done-t');if(dt)dt.textContent=gt('done_t');var ds2=g('done-s2');if(ds2)ds2.textContent=gt('done_after');
+  var ts=g('top-sub');if(ts)ts.textContent={en:'Multilingual Salon Counseling',zh:'多语言美容院咨询系统',ko:'다국어 미용실 카운슬링',ja:'多言語カウンセリングシステム'}[lang];
+  var tk=KANA.tip[lang];var ktw=g('kana-tip');if(ktw){ktw.style.display=(lang==='ja'||!tk)?'none':'';var ktt=g('kana-tip-text');if(ktt)ktt.textContent=tk||'';}
+  var pb=g('phrase-big');if(pb&&pb.getAttribute('data-key')){var k=pb.getAttribute('data-key');var ph=T.phrases[k];if(ph){pb.textContent=ph[lang]||ph.en;var pjt=g('phrase-jp-text');if(pjt)pjt.textContent=ph.ja||'';var pkw=g('phrase-kana-wrap'),pkt=g('phrase-kana-text');var kd=ph.kana&&ph.kana[lang];if(pkw)pkw.style.display=(lang==='ja'||!kd)?'none':'';if(pkt)pkt.textContent=kd||'';}}
+  updateCounselTL();buildQuickRef();buildSD(currentStep);buildFD();
+}
+
+function setLang(l,btn){lang=l;document.querySelectorAll('.lb').forEach(function(b){b.classList.remove('on')});btn.classList.add('on');applyLang();}
+function pickLang(el,l){document.querySelectorAll('.lcard').forEach(function(c){c.classList.remove('on')});el.classList.add('on');lang=l;document.querySelectorAll('.lb').forEach(function(b){b.classList.remove('on');if((l==='en'&&b.textContent.includes('EN'))||(l==='zh'&&b.textContent.includes('中'))||(l==='ko'&&b.textContent.includes('한')))b.classList.add('on');});applyLang();}
+function goStep(n){
+  if(n>1)completedSteps.add(n-1);currentStep=n;
+  for(var i=1;i<=5;i++){var s=g('sc'+i),b=g('snb'+i);if(s)s.className='screen'+(i===n?' on':'');if(b){b.className='snb s'+i;if(i===n)b.classList.add('active');else if(completedSteps.has(i))b.classList.add('done');}}
+  buildSD(n);applyLang();
+}
+function selTT(el,id){el.closest('#tech-tabs').querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});el.classList.add('on');['tcut','tcol','tper','tcar'].forEach(function(k){var d=g(k);if(d)d.style.display=k===id?'':'none';});}
+function selVC(el,ja,en,zh,ko,desc){el.closest('.vg').querySelectorAll('.vc').forEach(function(v){v.classList.remove('on')});el.classList.add('on');propData={ja:ja,en:en,zh:zh,ko:ko,desc:desc};g('prop-ja').textContent=ja;g('prop-en').textContent=en;var ym=g('yn-main');if(ym&&ym.childNodes[0])ym.childNodes[0].textContent=propData[lang]||ja;var ymj=g('yn-main-jp');if(ymj)ymj.textContent=lang==='ja'?'':('（'+ja+'）');var ys=g('yn-sub');if(ys)ys.textContent=lang==='ja'?'':en;var yd=g('yn-desc');if(yd)yd.textContent=desc;updateCounselTL();}
+function setMode(m,btn){g('mode-s').style.display=m==='s'?'':'none';g('mode-c').style.display=m==='c'?'':'none';document.querySelectorAll('.mtb').forEach(function(b){b.classList.remove('on')});if(btn)btn.classList.add('on');if(m==='c')applyLang();}
+function backToStylist(){setMode('s',g('mt-st'));g('mt-st').classList.add('on');g('mt-cl').classList.remove('on');var r=g('yn-res');if(r)r.style.display='none';document.querySelectorAll('.yn-chip').forEach(function(c){c.classList.remove('on')});}
+function sendProp(){var ym=g('yn-main');if(ym&&ym.childNodes[0])ym.childNodes[0].textContent=propData[lang]||propData.ja;var ymj=g('yn-main-jp');if(ymj)ymj.textContent=lang==='ja'?'':('（'+propData.ja+'）');var ys=g('yn-sub');if(ys)ys.textContent=lang==='ja'?'':propData.en;var yd=g('yn-desc');if(yd)yd.textContent=propData.desc;setMode('c',g('mt-cl'));}
+function ynAns(v){var r=g('yn-res');r.style.display='block';if(v==='y'){r.style.background='#EAF3DE';r.style.color='#27500A';r.textContent={en:'✓ Great! We will proceed.',zh:'✓ 好的！我们按照建议进行。',ko:'✓ 알겠습니다！제안대로 진행합니다。',ja:'✓ ありがとうございます！'}[lang];}else{r.style.background='#FAECE7';r.style.color='#993C1D';r.textContent={en:'Please use the options below.',zh:'请用下方选项告诉我们。',ko:'아래 옵션으로 알려주세요。',ja:'下のボタンでご要望をお知らせください。'}[lang];}}
+function ynChip(el,jp){document.querySelectorAll('.yn-chip').forEach(function(c){c.classList.remove('on')});el.classList.add('on');var r=g('yn-res');r.style.display='block';r.style.background='#EAF3DE';r.style.color='#27500A';r.textContent='→ 美容師メモ：「'+jp+'」をご希望です。';}
+function selPT(el,id){el.closest('#ph-tabs').querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});el.classList.add('on');['psh','pcu','pfi'].forEach(function(k){var d=g(k);if(d)d.style.display=k===id?'':'none';});}
+function tapP(el,key){el.classList.add('flashed');setTimeout(function(){el.classList.remove('flashed')},500);var ph=T.phrases[key];if(!ph)return;var ps=g('phrase-show'),pb=g('phrase-big');pb.textContent=ph[lang]||ph.en;pb.setAttribute('data-key',key);ps.style.display='block';var pjt=g('phrase-jp-text');if(pjt)pjt.textContent=ph.ja||'';var pkw=g('phrase-kana-wrap'),pkt=g('phrase-kana-text');var kd=ph.kana&&ph.kana[lang];if(pkw)pkw.style.display=(lang==='ja'||!kd)?'none':'';if(pkt)pkt.textContent=kd||'';}
+function doMic(){var out=g('mic-out');out.style.display='block';out.textContent='🎤 '+{en:'Listening...',zh:'正在聆听...',ko:'듣는 중...',ja:'聞いています...'}[lang];var s={en:['How is the water temperature?','One moment, please.','Thank you so much!'],zh:['水温合适吗？','请稍等一下。','非常感谢！'],ko:['물 온도는 어떠세요?','잠시만 기다려 주세요。','감사합니다!'],ja:['お湯加減はいかがですか？','少々お待ちください。','ありがとうございました！']};var arr=s[lang]||s.en;setTimeout(function(){out.textContent='✓ '+arr[Math.floor(Math.random()*arr.length)];},1000);}
+
+/* 場面別辞書 */
+function buildSD(step){
+  var items=STEP_DICT[step]||[];
+  var stepColors={1:'#1D9E75',2:'#534AB7',3:'#BA7517',4:'#D85A30',5:'#3B6D11'};
+  var stepNames={1:'① 来店受付',2:'② 事前問診',3:'③ カウンセリング',4:'④ 施術中',5:'⑤ 会計・アフター'};
+  var hdr=g('sd-hdr');if(hdr)hdr.style.borderLeft='3px solid '+(stepColors[step]||'#ccc');
+  var ttl=g('sd-ttl');if(ttl)ttl.textContent='📋 '+stepNames[step]+'で役立つ用語';
+  var cnt=g('sd-cnt');if(cnt)cnt.textContent=items.length+'件';
+  var body=g('sd-body');if(!body)return;body.innerHTML='';
+  items.forEach(function(it){
+    var mainTxt,jpTxt,kanaTxt;
+    if(lang==='zh'){mainTxt=it.zh;jpTxt=it.zh_jp;kanaTxt=it.zh_kana;}
+    else if(lang==='ko'){mainTxt=it.ko;jpTxt=it.ko_jp;kanaTxt=it.ko_kana;}
+    else{mainTxt=it.en;jpTxt='';kanaTxt=it.en_kana||'';}
+    var th='<div class="sd-trans-main">'+mainTxt+'</div>';
+    if(jpTxt)th+='<div class="sd-trans-jp">日本語：'+jpTxt+'</div>';
+    if(kanaTxt)th+='<div class="sd-trans-kana">🗣 '+kanaTxt+'</div>';
+    var tr=document.createElement('div');tr.className='sd-item';
+    tr.innerHTML='<div><div class="sd-jp">'+it.jp+'</div></div><div><span class="sd-badge" style="background:'+it.bc+'22;color:'+it.bc+'">'+it.badge+'</span><div class="sd-ctx">'+it.ctx+'</div></div><div>'+th+'</div>';
+    body.appendChild(tr);
+  });
+  if(sdOpen)body.classList.add('open');
+}
+function toggleSD(){sdOpen=!sdOpen;var body=g('sd-body'),hdr=g('sd-hdr'),chev=g('sd-chev');if(body)body.classList.toggle('open',sdOpen);if(hdr)hdr.classList.toggle('open',sdOpen);if(chev)chev.style.transform=sdOpen?'rotate(180deg)':'';}
+
+/* 全項目辞書 */
+function buildFD(){
+  var cats=fdCat==='all'?['tech','feel','serv']:[fdCat];
+  var total=0;
+  var area=g('fd-items');if(!area)return;area.innerHTML='';
+  cats.forEach(function(ck){
+    var cat=FULL_DICT[ck];
+    var items=cat.items.filter(function(it){
+      if(!fdQ)return true;var q=fdQ.toLowerCase();
+      return [it.jp,it.read,it.ctx,it.en,it.zh,it.ko].some(function(s){return s&&s.toLowerCase().indexOf(q)!==-1;});
+    });
+    if(!items.length)return;
+    total+=items.length;
+    var sh=document.createElement('div');sh.className='fd-section-head';
+    sh.innerHTML='<div class="fd-dot" style="background:'+cat.color+'"></div><span style="color:'+cat.color+'">'+cat.label+'</span><span class="fd-cnt">'+items.length+'件</span>';
+    area.appendChild(sh);
+    items.forEach(function(it){
+      /* 表示言語選択 */
+      var mainTxt,subTxt,kanaTxt;
+      if(lang==='zh'){mainTxt=it.zh;subTxt=it.zhs;kanaTxt=it.zh_kana;}
+      else if(lang==='ko'){mainTxt=it.ko;subTxt=it.kos;kanaTxt=it.ko_kana;}
+      else{mainTxt=it.en;subTxt=it.ens;kanaTxt=it.en_kana||'';}
+
+      var wrap=document.createElement('div');wrap.className='fi-wrap';
+      var row=document.createElement('div');row.className='fi-item';
+      row.innerHTML=
+        '<div><div class="fi-jp">'+it.jp+'</div><div class="fi-read">'+it.read+'</div></div>'+
+        '<div style="display:flex;flex-direction:column;gap:2px">'+
+          '<div style="display:flex;justify-content:space-between;align-items:start">'+
+            '<div><span class="fi-badge" style="background:'+cat.color+'22;color:'+cat.color+'">'+cat.label+'</span><div class="fi-ctx">'+it.ctx+'</div>'+
+            '<div style="margin-top:3px"><div class="fi-en">'+mainTxt+'</div>'+
+            (kanaTxt?'<div class="fi-lang-kana" style="font-size:10px;margin-top:2px">🗣 '+kanaTxt+'</div>':'')+'</div></div>'+
+            '<span class="fi-chev">▼</span>'+
+          '</div>'+
+        '</div>';
+
+      /* 展開詳細 */
+      var detail=document.createElement('div');detail.className='fi-detail';
+      detail.innerHTML=
+        '<div class="fi-detail-grid">'+
+          '<div class="fi-lang-card"><div class="fi-lang-flag">🇺🇸</div><div class="fi-lang-main">'+it.en+'</div><div class="fi-lang-sub">'+it.ens+'</div>'+(it.en_kana?'<div class="fi-lang-kana">🗣 '+it.en_kana+'</div>':'')+'</div>'+
+          '<div class="fi-lang-card"><div class="fi-lang-flag">🇨🇳</div><div class="fi-lang-main">'+it.zh+'</div><div class="fi-lang-sub">'+it.zhs+'</div>'+(it.zh_kana?'<div class="fi-lang-kana">🗣 '+it.zh_kana+'</div>':'')+'</div>'+
+          '<div class="fi-lang-card"><div class="fi-lang-flag">🇰🇷</div><div class="fi-lang-main">'+it.ko+'</div><div class="fi-lang-sub">'+it.kos+'</div>'+(it.ko_kana?'<div class="fi-lang-kana">🗣 '+it.ko_kana+'</div>':'')+'</div>'+
+        '</div>'+
+        '<div class="fi-note">⚠ '+it.note+'</div>';
+
+      row.onclick=function(){
+        var isOpen=detail.classList.contains('open');
+        area.querySelectorAll('.fi-detail.open').forEach(function(d){d.classList.remove('open');});
+        area.querySelectorAll('.fi-item.open').forEach(function(r){r.classList.remove('open');});
+        if(!isOpen){detail.classList.add('open');row.classList.add('open');}
+      };
+      wrap.appendChild(row);wrap.appendChild(detail);area.appendChild(wrap);
+    });
+  });
+  var lbl=g('fd-cnt-lbl');if(lbl)lbl.textContent=total+'件';
+}
+function toggleFD(){fdOpen=!fdOpen;var body=g('fd-body'),hdr=g('fd-hdr'),chev=g('fd-chev');if(body)body.classList.toggle('open',fdOpen);if(hdr)hdr.classList.toggle('open',fdOpen);if(chev)chev.style.transform=fdOpen?'rotate(180deg)':'';}
+function fdFilt(cat,btn){fdCat=cat;document.querySelectorAll('.fd-btn').forEach(function(b){b.classList.remove('on')});btn.classList.add('on');buildFD();}
+function fdSearch(q){fdQ=q;buildFD();}
+
+
+
+var HIST_KANA=[
+  {en_k:'カット',zh_k:'ジェン ファ',ko_k:'コトゥ'},
+  {en_k:'ファッション カラー',zh_k:'シー シャン ラン ファ',ko_k:'ペション コルロ'},
+  {en_k:'グレイ カバレッジ',zh_k:'バイ ファ ラン スー',ko_k:'セチ コボ'},
+  {en_k:'パーム',zh_k:'タン ファ',ko_k:'パマ'},
+  {en_k:'ストレイトゥニング',zh_k:'ラー ジー タン',ko_k:'メジク スルトゥレイトゥ'},
+  {en_k:'ブリーチ',zh_k:'ピャオ ファ',ko_k:'ブルリチ'},
+  {en_k:'ノン',zh_k:'メイ ヨウ',ko_k:'オプスム'}
+];
+var ALLERGY_KANA=[
+  {en_k:'ダイ アレルジー',zh_k:'ラン リャオ グオ ミン',ko_k:'ヨムニョ アルレルギ'},
+  {en_k:'ラテックス アレルジー',zh_k:'ルー ジャオ グオ ミン',ko_k:'ラテクス アルレルギ'},
+  {en_k:'センシティヴ スカルプ',zh_k:'トウ ピー ミン ガン',ko_k:'トゥピ ミンガム'},
+  {en_k:'ノン',zh_k:'メイ ヨウ',ko_k:'オプスム'}
+];
+var MENU_KANA=[
+  {en_k:'カット',zh_k:'ジェン ファ',ko_k:'コトゥ'},
+  {en_k:'カラー',zh_k:'ラン ファ',ko_k:'コルロ'},
+  {en_k:'パーム',zh_k:'タン ファ',ko_k:'パマ'},
+  {en_k:'トリートメント',zh_k:'フー ファ フー リー',ko_k:'トゥリトゥモントゥ'},
+  {en_k:'カット アンド カラー',zh_k:'ジェン ファ ラン ファ',ko_k:'コトゥ コルロ'}
+];
+function getKana(kanaArr,i){if(!kanaArr[i])return '';var d=kanaArr[i];return lang==='en'?d.en_k:(lang==='zh'?d.zh_k:(lang==='ko'?d.ko_k:''));}
+
+/* ── カウンセリング美容師側 翻訳更新 ── */
+
+var QUICK_REF=[
+  {ja:'さらさら',
+   en:'silky smooth',    en_k:'シルキー スムース',
+   zh:'顺滑',            zh_k:'シュン ホア',
+   ko:'매끄럽게',         ko_k:'メックルプゲ'},
+  {ja:'すく',
+   en:'thin out',        en_k:'シン アウト',
+   zh:'打薄',            zh_k:'ダー バォ',
+   ko:'숱 치기',          ko_k:'スル チギ'},
+  {ja:'段を入れる',
+   en:'add layers',      en_k:'アド レイヤーズ',
+   zh:'分层',            zh_k:'フェン ツォン',
+   ko:'레이어 넣기',      ko_k:'レイオ ノッキ'}
+];
+function buildQuickRef(){
+  var el=g('quick-ref');if(!el)return;
+  el.innerHTML=QUICK_REF.map(function(d){
+    var txt=lang==='zh'?d.zh:(lang==='ko'?d.ko:d.en);
+    var kana=lang==='zh'?d.zh_k:(lang==='ko'?d.ko_k:d.en_k);
+    return '<div>'+d.ja+' → <b>'+txt+'</b>'
+          +(kana?'<br><span style="font-size:10px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:3px;padding:1px 5px">🗣 '+kana+'</span>':'')+'</div>';
+  }).join('');
+}
+
+var VC_TL_DATA=[
+  {en:'Layer cut',     zh:'分层剪发', ko:'레이어 커트',  en_k:'レイヤー カット',    zh_k:'フェン ツォン ジェン ファ', ko_k:'レイオ コトゥ'},
+  {en:'Graduation',    zh:'渐层剪发', ko:'그라데이션',   en_k:'グラデュエーション',  zh_k:'ジェン ツォン ジェン ファ',ko_k:'グラデイション'},
+  {en:'One length',    zh:'齐发',     ko:'원랭스',       en_k:'ワン レングス',       zh_k:'チー ファ',               ko_k:'ウォンレンス'},
+  {en:'Bob',           zh:'波波头',   ko:'보브',         en_k:'ボブ',                zh_k:'ボー ボー トウ',           ko_k:'ボブ'},
+  {en:'Highlights',    zh:'挑染',     ko:'하이라이트',   en_k:'ハイライツ',          zh_k:'ティアオ ラン',            ko_k:'ハイライトゥ'},
+  {en:'Balayage',      zh:'挑染渐变', ko:'발라야주',     en_k:'バレイヤージュ',       zh_k:'ティアオ ラン ジェン ビェン',ko_k:'バラヤジュ'},
+  {en:'All-over',      zh:'全头染色', ko:'전체 염색',    en_k:'オール オーバー',      zh_k:'チュエン トウ ラン スー',  ko_k:'チョンチェ ヨムセク'},
+  {en:'Grey cover',    zh:'白发染色', ko:'새치 커버',    en_k:'グレイ カバー',        zh_k:'バイ ファ ラン スー',      ko_k:'セチ コボ'},
+  {en:'Soft wave',     zh:'宽松烫发', ko:'소프트 웨이브', en_k:'ソフト ウェイブ',     zh_k:'クアン ソン タン ファ',    ko_k:'ソプトゥ ウェイブ'},
+  {en:'Digital perm',  zh:'数码烫',   ko:'디지털 펌',    en_k:'デジタル パーム',      zh_k:'シュー マー タン',         ko_k:'ディジトル ポム'},
+  {en:'Straight',      zh:'拉直烫',   ko:'매직 스트레이트',en_k:'ストレイトゥ',       zh_k:'ラー ジー タン',           ko_k:'メジク スルトゥレイトゥ'},
+  {en:'Treatment',     zh:'护发护理', ko:'트리트먼트',   en_k:'トリートメント',       zh_k:'フー ファ フー リー',      ko_k:'トゥリトゥモントゥ'},
+  {en:'Scalp care',    zh:'头皮护理', ko:'두피 케어',    en_k:'スカルプ ケア',        zh_k:'トウ ピー フー リー',      ko_k:'トゥピ ケオ'}
+];
+var FINISH_TL_DATA=[
+  {en:'Silky',      en_k:'シルキー',       zh:'顺滑', zh_k:'シュン ホア',  ko:'매끄럽게', ko_k:'メックルプゲ'},
+  {en:'Fluffy',     en_k:'フラッフィー',    zh:'蓬松', zh_k:'ポン ソン',   ko:'폭신하게', ko_k:'ポクシナゲ'},
+  {en:'Natural',    en_k:'ナチュラル',      zh:'自然', zh_k:'ズー ラン',   ko:'자연',     ko_k:'チャヨン'},
+  {en:'Glossy',     en_k:'グロッシー',      zh:'亮滑', zh_k:'リャン ホア', ko:'광택실크', ko_k:'グァンテク シルク'},
+  {en:'Frizz-free', en_k:'フリズフリー',    zh:'服帖', zh_k:'フー ティエ', ko:'정돈됨',   ko_k:'チョンドンデム'}
+];
+var SL_TL={
+  sl1a:{en:'Thinning',    zh:'打薄',    ko:'숱 치기',  en_k:'シニング',          zh_k:'ダー バォ',    ko_k:'スル チギ'},
+  sl1b:{en:'Keep bulk',   zh:'保留发量', ko:'볼륨 유지', en_k:'キープ バルク',      zh_k:'バオ リウ ファ リャン',ko_k:'ボルリュム ユジ'},
+  sl2a:{en:'Silky',       zh:'顺滑',    ko:'매끄럽게', en_k:'シルキー',          zh_k:'シュン ホア',  ko_k:'メックルプゲ'},
+  sl2b:{en:'Fluffy',      zh:'蓬松',    ko:'폭신하게', en_k:'フラッフィー',       zh_k:'ポン ソン',    ko_k:'ポクシナゲ'}
+};
+function updateCounselTL(){
+  /* カード翻訳ラベル（言語テキスト＋カタカナ読み）＋英語行の表示制御 */
+  /* 英語以外の時は .vc-en（英語行）を非表示に */
+  document.querySelectorAll('.vc-en').forEach(function(el){
+    el.style.display=(lang==='en'||lang==='ja')?'':'none';
+  });
+  VC_TL_DATA.forEach(function(d,i){
+    var tlEl=g('vc-tl-'+i);
+    var kEl=g('vc-kana-'+i);
+    if(!tlEl)return;
+    if(lang==='ja'){
+      tlEl.textContent='';
+      if(kEl)kEl.textContent='';
+      return;
+    }
+    if(lang==='en'){
+      /* 英語選択時：vc-tl不要（en行が表示される）、カタカナのみ */
+      tlEl.textContent='';
+      if(kEl)kEl.textContent=d.en_k?'🗣 '+d.en_k:'';
+      return;
+    }
+    var txt=lang==='zh'?d.zh:d.ko;
+    var kana=lang==='zh'?d.zh_k:d.ko_k;
+    tlEl.textContent=txt||'';
+    if(kEl)kEl.textContent=kana?'🗣 '+kana:'';
+  });
+  /* スライダーラベル翻訳（言語テキスト＋カタカナ別行） */
+  Object.keys(SL_TL).forEach(function(sid){
+    var el=g(sid+'-tl');if(!el)return;
+    if(lang==='ja'){el.innerHTML='';return;}
+    var d=SL_TL[sid];
+    var txt=lang==='zh'?d.zh:(lang==='ko'?d.ko:d.en);
+    var kana=lang==='zh'?d.zh_k:(lang==='ko'?d.ko_k:d.en_k);
+    el.innerHTML='<span style="display:block;color:#1D9E75;font-size:9px;font-weight:500">'+txt+'</span>'+(kana?'<span style="display:block;color:#85500B;font-size:9px;font-weight:500;background:#FFF8E7;border-radius:3px;padding:0 2px">🗣 '+kana+'</span>':'');
+  });
+  /* 仕上がりイメージチップ翻訳（言語＋カタカナ別行） */
+  FINISH_TL_DATA.forEach(function(d,i){
+    var el=g('ftl-'+i);if(!el)return;
+    if(lang==='ja'){el.innerHTML='';return;}
+    var txt=lang==='en'?d.en:(lang==='zh'?d.zh:(lang==='ko'?d.ko:''));
+    var kana=lang==='en'?d.en_k:(lang==='zh'?d.zh_k:(lang==='ko'?d.ko_k:''));
+    el.innerHTML=(txt?'<span style="display:block;font-size:9px;color:#1D9E75;font-weight:500">/ '+txt+'</span>':'')
+               +(kana?'<span style="display:block;font-size:9px;color:#85500B;font-weight:500;background:#FFF8E7;border-radius:3px;padding:0 2px">🗣 '+kana+'</span>':'');
+  });
+  /* 現在の提案エリア翻訳 */
+  var ptl=g('prop-tl');if(ptl){
+    if(lang==='ja'||lang==='en'){ptl.style.display='none';}
+    else{var t=propData[lang]||'';ptl.textContent=t;ptl.style.display=t?'':'none';}
+  }
+  buildQuickRef();
+}
+
+renderChips();updSums();buildSD(1);buildFD();updateCounselTL();buildQuickRef();renderFeeTable();updateFeeDisplay();
+</script>
+</body>
+</html>
